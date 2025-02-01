@@ -11,8 +11,6 @@
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                         <x-nav-link :href="url('/')">Home</x-nav-link>
                         <x-nav-link :href="url('/posts')">Blog</x-nav-link>
-                        <x-nav-link :href="url('/about')">About</x-nav-link>
-                        <x-nav-link :href="url('/contact')">Contact</x-nav-link>
                     </div>
                 </div>
             </div>
@@ -90,10 +88,8 @@
     <div x-show="isOpen" class="md:hidden" id="mobile-menu">
         <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-            <x-nav-link :href="url('/')">Home</x-nav-link>
-            <x-nav-link :href="url('/posts')">Blog</x-nav-link>
-            <x-nav-link :href="url('/about')">About</x-nav-link>
-            <x-nav-link :href="url('/contact')">Contact</x-nav-link>
+            <x-nav-link :href="url('/ekskul')">Ekstrakulikuler</x-nav-link>
+            <x-nav-link :href="url('/gallery')">Gallery</x-nav-link>
         </div>
         <div class="border-t border-gray-700 pt-4 pb-3">
             <div class="flex items-center px-5">
