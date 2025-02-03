@@ -1,50 +1,27 @@
 <x-layout>
-    <!--
-  This example requires updating your template:
-
-  ```
-  <html class="h-full bg-white">
-  <body class="h-full">
-  ```
--->
-    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-            <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-                alt="Your Company">
-            <h2 class="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Sign in to your account</h2>
-        </div>
-
-        <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form class="space-y-6" action="#" method="POST">
-                <div>
-                    <label for="email" class="block text-sm/6 font-medium text-gray-900">Username</label>
-                    <div class="mt-2">
-                        <input type="email" name="email" id="email" autocomplete="email"
-                            placeholder="Masukan Username" required
-                            class="block w-full rounded-md bg-gray-300 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                    </div>
+    <div class="flex items-center justify-center min-h-screen bg-white">
+        <div class="bg-[#863942] p-16 rounded-lg shadow-md w-[500px]">
+            <h2 class="text-white text-center text-2xl font-bold">LOGIN</h2>
+            
+           
+                
+                <div class="mt-3">
+                    <input type="text" id="username" name="username" placeholder="Username" required
+                        class="w-full mt-2 p-1 bg-gray-300 rounded focus:outline-none text-black text-lg">
                 </div>
-
-                <div>
-                    <div class="flex items-center justify-between">
-                        <label for="password" class="block text-sm/6 font-medium text-gray-900">Password</label>
-                        <div class="text-sm">
-                        </div>
-                    </div>
-                    <div class="mt-2">
-                        <input type="password" name="password" placeholder="Masukan Password" id="password"
-                            autocomplete="current-password" required
-                            class="block w-full rounded-md bg-gray-300 px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
-                    </div>
+                
+                <div class="mt-3">
+                    <input type="password" id="password" name="password" placeholder="Password" required
+                        class="w-full mt-2 p-1 bg-gray-300 rounded focus:outline-none text-black text-lg">
                 </div>
-
-                <div>
+                
+                <div class="mt-8 flex justify-center">
                     <button type="submit"
-                        class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Masuk
-                        1</button>
+                        class="bg-[#8174A0] text-black font-semibold px-8 py-3 rounded-lg hover:bg-[#6a547e] text-lg">
+                        LOGIN
+                    </button>
                 </div>
             </form>
         </div>
     </div>
-
 </x-layout>
