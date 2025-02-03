@@ -2,13 +2,17 @@
 
 namespace Database\Factories;
 
+use App\Models\Ekskul;
+use App\Models\Jabatan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Ekskul>
  */
-class ekskulFactory extends Factory
+class EkskulFactory extends Factory
 {
+    protected $model = Ekskul::class;
+
     /**
      * Define the model's default state.
      *
@@ -17,14 +21,13 @@ class ekskulFactory extends Factory
     public function definition(): array
     {
         return [
-            'nama' => $this->faker->name,
-            'deskripsi' => $this->faker->text,
-            'foto' => $this->faker->imageUrl,
-            'id_pembina' => $this->faker->randomNumber(),
-            'id_ketua' => $this->faker->randomNumber(),
-            'jadwal' => $this->faker->date,
-            'status' => $this->faker->randomElement(["aktif", "tidak aktif"]),
-
+            'nama_ekskul' => $this->faker->word,
+            'jml_anggota' => $this->faker->randomNumber(2, true),
+            'id_pembina' => Jabatan::factory(),
+            'id_ketua' => Jabatan::factory(),
+            'id_sekertaris' => Jabatan::factory(),
+            'id_bendahara' => Jabatan::factory(),
+            'jadwal' => $this->faker->randomNumber(2, true),
         ];
     }
 }

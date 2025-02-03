@@ -13,3 +13,7 @@ Route::get('/gallery', function () {
 Route::get('/ekskul', function () {
     return view('ekskul');
 });
+
+Route::get('/dashboard_admin', function () {
+    return view('dashboard_admin');
+});

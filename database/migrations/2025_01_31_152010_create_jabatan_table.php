@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('jabatan', function (Blueprint $table) {
             $table->id("id_jabatan")->primary();
             $table->string("kode_jabatan", 6)->unique();
-            $table->string("nama_jabatan", 255)->unique();
+            $table->string("nama_jabatan", 255);
         });
     }
 

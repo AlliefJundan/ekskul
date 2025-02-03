@@ -11,6 +11,9 @@ export default {
     ],
     theme: {
         extend: {
+            colors: {
+        'ekskul': '#863942',
+      },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
