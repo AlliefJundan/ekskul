@@ -21,7 +21,7 @@ class EkskulFactory extends Factory
     public function definition(): array
     {
         return [
-            'nama_ekskul' => $this->faker->word,
+            'nama_ekskul' => $this->faker->words(3, true),
             'jml_anggota' => $this->faker->randomNumber(2, true),
             'id_pembina' => Jabatan::factory(),
             'id_ketua' => Jabatan::factory(),

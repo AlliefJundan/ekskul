@@ -2,47 +2,51 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    protected $table = 'users'; // Explicitly define the table name
+    protected $primaryKey = 'id_user'; // Set the primary key to match the migration
+
+    public $timestamps = false; // Disable timestamps since they're not present in migration
+
     protected $fillable = [
-        'name',
-        'email',
+        'username',
         'password',
+        'nama',
+        'id_kelas',
+        'id_ekskul',
+        'id_jabatan',
+        'role',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
+    protected $casts = [
+        'role' => 'string',
+    ];
+
     /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
+     * Relationship with the Kelas model
      */
-    protected function casts(): array
+    public function kelas()
     {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
+        return $this->belongsTo(Kelas::class, 'id_kelas', 'id_kelas');
+    }
+    public function ekskul()
+    {
+        return $this->belongsTo(Ekskul::class, 'id_ekskul');
+    }
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class, 'id_jabatan');
     }
 }
