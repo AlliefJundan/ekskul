@@ -13,19 +13,19 @@ return new class extends Migration
     {
         Schema::create('kelas', function (Blueprint $table) {
             $table->id('id_kelas');
-            $table->enum('kelas', ['10', '11', '12'])->unique();
-            $table->enum('jurusan', ['PPLG', 'DKV', 'AKT', 'ANM', 'BDP'])->unique();
-            $table->enum('nomor_kelas', ['1', '2', '3'])->unique();
+            $table->enum('kelas', ['10', '11', '12']);
+            $table->enum('jurusan', ['PPLG', 'DKV', 'AKT', 'ANM', 'BDP']);
+            $table->enum('nomor_kelas', ['1', '2', '3']);
         });
 
         Schema::create('users', function (Blueprint $table) {
             $table->id('id_user');
             $table->string('username', 30)->unique();
-            $table->string('password', 35);
+            $table->string('password', 255);
             $table->string('nama', 25)->unique();
             $table->unsignedBigInteger('id_kelas')->nullable();
             $table->integer('id_ekskul')->nullable();
-            $table->integer('id_jabatan')->nullable();
+            $table->integer('id_jabatan')->nullable()->unique();
             $table->enum('role', ['admin', 'user']);
 
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas');

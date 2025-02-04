@@ -1,11 +1,34 @@
-<x-layout>
+<!-- resources/views/materi.blade.php -->
 
-    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-        <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-            <img class="mx-auto h-10 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-                alt="Your Company">
-            <h2 class="mt-10 text
-            -center text-2xl/9 font-bold tracking-tight text-gray-900">Sign in to your
-                account</h2>
+<x-layout>
+    <div class="container mx-auto mt-8 px-4">
+        <!-- Header -->
+        <h1 class="text-4xl font-bold text-center mb-8" style="font-family: 'cursive';">OSIS</h1>
+
+        <!-- "Materi Hari Ini" Card -->
+        <div class="bg-ekskul text-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold">Tes</h2>
         </div>
+
+        <!-- Smaller Content Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Example Card -->
+            <div class="bg-white shadow-lg rounded-lg p-4">
+                <h3 class="text-xl font-bold mb-2">Kepribadian Unggul</h3>
+                <p class="text-gray-600 mb-4">
+                    Body text for whatever you'd like to say. Add main takeaway points, quotes, anecdotes, or even a
+                    very
+                    very short story.
+                </p>
+                <!-- Gray Box for Attachment -->
+                <div class="w-full h-24 bg-gray-200 rounded flex flex-col justify-center items-center">
+                    <p class="text-sm text-gray-600 mb-2">Attachment</p>
+                    <button
+                        class="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600 transition">Download</button>
+                </div>
+            </div>
+
+            <!-- Add more cards as needed -->
+        </div>
+    </div>
 </x-layout>

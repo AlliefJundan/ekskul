@@ -2,20 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    protected $table = 'users'; // Menentukan nama tabel secara eksplisit
-    protected $primaryKey = 'id_user'; // Menyesuaikan dengan migration
+    protected $table = 'users'; // Explicitly define the table name
+    protected $primaryKey = 'id_user'; // Set the primary key to match the migration
 
-    public $timestamps = true; // Mengaktifkan timestamps (created_at & updated_at)
+    public $timestamps = false; // Disable timestamps since they're not present in migration
 
     protected $fillable = [
         'username',
@@ -37,10 +35,18 @@ class User extends Authenticatable
     ];
 
     /**
-     * Relasi ke tabel kelas
+     * Relationship with the Kelas model
      */
     public function kelas()
     {
         return $this->belongsTo(Kelas::class, 'id_kelas', 'id_kelas');
+    }
+    public function ekskul()
+    {
+        return $this->belongsTo(Ekskul::class, 'id_ekskul');
+    }
+    public function jabatan()
+    {
+        return $this->belongsTo(Jabatan::class, 'id_jabatan');
     }
 }

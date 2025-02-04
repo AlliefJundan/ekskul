@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class MateriFactory extends Factory
 {
     /**
-     * Define the model's default state.
+     * 
      *
      * @return array<string, mixed>
      */
