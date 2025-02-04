@@ -20,7 +20,7 @@ class JabatanFactory extends Factory
     public function definition(): array
     {
         return [
-            'kode_jabatan' => $this->faker->randomNumber(3, true), // 3-digit number
+            'kode_jabatan' => $this->faker->unique()->randomNumber(3, true), // 3-digit number
             'nama_jabatan' => $this->faker->jobTitle, // Lebih cocok untuk jabatan
 
 
