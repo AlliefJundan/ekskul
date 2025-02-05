@@ -15,6 +15,13 @@ Route::get('/ekskul', function () {
 Route::get('/dashboard_admin', function () {
     return view('dashboard_admin');
 });
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
+
+Route::get('/ekskul_user', function () {
+    return view('ekskul_user');
+});
 
 Route::get('/login', function () {
     return view('login');
