@@ -27,10 +27,16 @@ Route::get('/login', function () {
     return view('login');
 });
 
+Route::get('/tabel_akun', function () {
+    return view('tabel_akun');
+});
+
 
 Route::post('/ekskul/store',
 [EkskulController::class, 
 'store'])->name('ekskul.store');
+
+
 
 
 
