@@ -8,7 +8,7 @@
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#home" class="text-white font-semibold hover:text-amber-400">Home</a>
+                        <a href="/" class="text-white font-semibold hover:text-amber-400">Home</a>
                         <a href="#gallery" class="text-white font-semibold hover:text-amber-400">Galeri</a>
                         <a href="#about" class="text-white font-semibold hover:text-amber-400">About</a>
                         <a href="/login" class="text-white font-semibold hover:text-amber-400">Login</a>

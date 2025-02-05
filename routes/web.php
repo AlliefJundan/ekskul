@@ -12,7 +12,6 @@ Route::get('/ekskul', function () {
     return view('ekskul');
 });
 
-<<<<<<< HEAD
 Route::get('/dashboard_admin', function () {
     return view('dashboard_admin');
 });
@@ -22,12 +21,10 @@ Route::get('/login', function () {
 });
 
 
-
-=======
-// Route::get('/dashboard_admin', function () {
-//     return view('dashboard_admin');
-// });
+Route::post('/ekskul/store',
+[EkskulController::class, 
+'store'])->name('ekskul.store');
 
 
-Route::get('/dashboard_admin', [EkskulController::class, 'dashboard_admin']);
->>>>>>> e2303ad83b37cbd4c6f71d0b39e593140c7103d6
+
+
