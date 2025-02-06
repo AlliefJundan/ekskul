@@ -9,9 +9,11 @@ class EkskulController extends Controller
 {
     public function dashboard_admin()
     {
-        $ekskuls = Ekskul::with(['pembina', 'ketua'])->get();
+        $ekskuls = Ekskul::with(['pembina', 'ketua', 'sekertaris', 'bendahara'])->get();
+
         return view('dashboard_admin', compact('ekskuls'));
     }
+
 
     public function show($nama_ekskul)
     {

@@ -17,21 +17,21 @@ class Ekskul extends Model
     // Relasi ke User (mencari siapa yang memiliki jabatan tertentu)
     public function pembina()
     {
-        return $this->belongsTo(User::class, 'id_pembina', 'id_jabatan');
+        return $this->belongsTo(User::class, 'id_pembina', 'id_user');
     }
 
     public function ketua()
     {
-        return $this->belongsTo(User::class, 'id_ketua', 'id_jabatan');
+        return $this->belongsTo(User::class, 'id_ketua', 'id_user');
     }
 
     public function sekertaris()
     {
-        return $this->belongsTo(User::class, 'id_sekertaris', 'id_jabatan');
+        return $this->belongsTo(User::class, 'id_sekertaris', 'id_user');
     }
 
     public function bendahara()
     {
-        return $this->belongsTo(User::class, 'id_bendahara', 'id_jabatan');
+        return $this->belongsTo(User::class, 'id_bendahara', 'id_user');
     }
 }

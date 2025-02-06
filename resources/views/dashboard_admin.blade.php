@@ -90,10 +90,12 @@
                                 ✖
                             </button>
                             <h2 class="text-xl font-bold mb-4">Detail Ekskul</h2>
-                            <p><strong>Nama Ekskul:</strong> {{ $ekskul->nama_ekskul }}</p>
                             <p><strong>Nama Pembina:</strong> {{ optional($ekskul->pembina)->nama ?? 'Belum ada' }}</p>
                             <p><strong>Nama Ketua:</strong> {{ optional($ekskul->ketua)->nama ?? 'Belum ada' }}</p>
-                            <p><strong>Jumlah Anggota:</strong> {{ $ekskul->jml_anggota }}</p>
+                            <p><strong>Nama Sekretaris:</strong>
+                                {{ optional($ekskul->sekertaris)->nama ?? 'Belum ada' }}</p>
+                            <p><strong>Nama Bendahara:</strong> {{ optional($ekskul->bendahara)->nama ?? 'Belum ada' }}
+                            </p>
 
                             <div class="mt-6 flex justify-end gap-3">
                                 <a href="{{ route('ekskul.show', ['nama_ekskul' => Str::slug($ekskul->nama_ekskul)]) }}"
