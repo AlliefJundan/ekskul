@@ -27,7 +27,6 @@ class UserFactory extends Factory
             'nama' => $this->faker->name,
             'id_kelas' => $this->faker->randomElement([Kelas::inRandomOrder()->first()?->id_kelas, null]), // Random Kelas ID or null
             'id_ekskul' => $this->faker->randomElement([Ekskul::inRandomOrder()->first()?->id_ekskul, null]), // Random Ekskul ID or null
-            'id_jabatan' => $this->getUniqueJabatan(),
             'role' => $this->faker->randomElement(['admin', 'user']), // Randomly assign 'admin' or 'user'
         ];
     }
