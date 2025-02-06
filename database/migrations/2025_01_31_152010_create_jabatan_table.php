@@ -15,6 +15,12 @@ return new class extends Migration
             $table->id("id_jabatan")->primary();
             $table->string("kode_jabatan", 6)->unique();
             $table->string("nama_jabatan", 255);
+            $table->unsignedBigInteger('id_ekskul');
+            $table->unsignedBigInteger('id_user');
+            $table->string("slug", 255)->unique();
+
+            $table->foreignId('id_ekskul')->references('id_ekskul')->on('ekskul');
+            $table->foreignId('id_user')->references('id_user')->on('users');
         });
     }
 

@@ -10,7 +10,7 @@ class Ekskul extends Model
     use HasFactory;
 
     protected $table = 'ekskul';
-    protected $fillable = ['nama_ekskul', 'id_pembina', 'id_ketua', 'id_sekertaris', 'id_bendahara'];
+    protected $fillable = ['nama_ekskul', 'slug', 'id_pembina', 'id_ketua', 'id_sekertaris', 'id_bendahara'];
     protected $primaryKey = 'id_ekskul';
     public $timestamps = false;
 

@@ -12,4 +12,11 @@ class EkskulController extends Controller
         $ekskuls = Ekskul::with(['pembina', 'ketua'])->get();
         return view('dashboard_admin', compact('ekskuls'));
     }
+
+    public function show($nama_ekskul)
+    {
+        $ekskul = Ekskul::whereRaw("REPLACE(nama_ekskul, ' ', '-') = ?", [$nama_ekskul])->firstOrFail();
+
+        return view('ekskul', compact('ekskul'));
+    }
 }

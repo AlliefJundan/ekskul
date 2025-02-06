@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Ekskul;
 use App\Models\Jabatan;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,8 +21,10 @@ class EkskulFactory extends Factory
      */
     public function definition(): array
     {
+        $namaEkskul = $this->faker->words(3, true);
         return [
-            'nama_ekskul' => $this->faker->words(3, true),
+            'nama_ekskul' => $namaEkskul,
+            'slug' => Str::slug($namaEkskul),
             'jml_anggota' => $this->faker->randomNumber(2, true),
             'id_pembina' => Jabatan::factory(),
             'id_ketua' => Jabatan::factory(),

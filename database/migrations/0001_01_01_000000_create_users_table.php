@@ -22,10 +22,9 @@ return new class extends Migration
             $table->id('id_user');
             $table->string('username', 30)->unique();
             $table->string('password', 255);
-            $table->string('nama', 25)->unique();
+            $table->string('nama', 100)->unique();
             $table->unsignedBigInteger('id_kelas')->nullable();
             $table->integer('id_ekskul')->nullable();
-            $table->integer('id_jabatan')->nullable()->unique();
             $table->enum('role', ['admin', 'user']);
 
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas');

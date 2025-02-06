@@ -43,7 +43,7 @@ class User extends Authenticatable
     }
     public function ekskul()
     {
-        return $this->belongsTo(Ekskul::class, 'id_ekskul');
+        return $this->hasMany(Ekskul::class, 'id_ekskul');
     }
     public function jabatan()
     {

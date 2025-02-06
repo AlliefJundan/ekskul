@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('ekskul', function (Blueprint $table) {
             $table->id("id_ekskul")->primary();
             $table->string("nama_ekskul", 30);
+            $table->string("slug", 255)->unique();
             $table->integer("jml_anggota");
             $table->unsignedBigInteger("id_pembina");
             $table->unsignedBigInteger("id_ketua");
