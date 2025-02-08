@@ -98,7 +98,7 @@
                             </p>
 
                             <div class="mt-6 flex justify-end gap-3">
-                                <a href="{{ route('ekskul.show', ['nama_ekskul' => Str::slug($ekskul->nama_ekskul)]) }}"
+                                <a href="{{ route('ekskul.show', $ekskul->slug) }}"
                                     class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
                                     Lihat
                                 </a>

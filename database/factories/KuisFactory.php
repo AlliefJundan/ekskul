@@ -18,8 +18,8 @@ class KuisFactory extends Factory
     public function definition(): array
     {
         return [
-            'nama_kuis' => $this->faker->word,
-            'isi_kuis' => $this->faker->text(200), // Kuis maksimal 200 karakter
+            'nama_kuis' => $this->faker->sentence(3), // Nama kuis lebih jelas
+            'isi_kuis' => $this->faker->url, // Menghasilkan URL valid
             'id_ekskul' => $this->faker->randomElement(Ekskul::pluck('id_ekskul')->toArray()),
         ];
     }

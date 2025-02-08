@@ -13,7 +13,8 @@ export default {
         extend: {
             colors: {
                 'ekskul': '#FFC145',
-                'nav-text': '#black'
+                'nav-text': '#black',
+                'ekskul2' : '#312e81',
       },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
