@@ -15,6 +15,6 @@ class Kuis extends Model
 
     public function ekskul()
     {
-        return $this->hasMany(Ekskul::class, 'id_ekskul', 'id_ekskul');
+        return $this->belongsTo(Ekskul::class, 'id_ekskul', 'id_ekskul');
     }
 }
