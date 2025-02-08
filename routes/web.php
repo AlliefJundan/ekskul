@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Kuis;
 use App\Models\Ekskul;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,14 @@ Route::get('/ekskul', function () {
 
 Route::get('/kuis/{slug}', [KuisController::class, 'show'])->name('kuis.show');
 
+Route::get('/kuis', [KuisController::class, 'index'])->name('kuis.index');
+
+Route::get('/redirect-kuis/{id}', function ($id) {
+    $kuis = Kuis::findOrFail($id);
+    return redirect()->away($kuis->link_kuis);
+})->name('redirect.kuis');
+
+
 //dashboard admin
 Route::get('/dashboard_admin', [EkskulController::class, 'dashboard_admin'])->name('dashboard_admin');
 
@@ -32,7 +41,7 @@ Route::get('/kuis', function () {
 });
 
 //ekskul
-Route::get('/ekskul/{nama_ekskul}', [EkskulController::class, 'show'])->name('ekskul.show');
+Route::get('/ekskul/{slug}', [EkskulController::class, 'show'])->name('ekskul.show');
 
 Route::get('/ekskul_user', function () {
     return view('ekskul_user');
