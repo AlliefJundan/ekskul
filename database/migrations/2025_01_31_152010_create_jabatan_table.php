@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id("id_jabatan"); // Primary Key
             $table->string("kode_jabatan", 6)->unique();
             $table->string("nama_jabatan", 255);
-            $table->unsignedBigInteger('id_ekskul'); // Foreign Key
-            $table->unsignedBigInteger('id_user'); // Foreign Key
+            $table->unsignedBigInteger('id_ekskul')->nullable(); // Foreign Key
+            $table->unsignedBigInteger('id_user')->nullable(); // Foreign Key
             $table->string("slug", 255)->unique();
 
             // Menambahkan foreign key constraint

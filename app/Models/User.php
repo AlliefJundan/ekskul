@@ -47,7 +47,7 @@ class User extends Authenticatable
     }
     public function jabatan()
     {
-        return $this->belongsTo(Jabatan::class, 'id_jabatan');
+        return $this->hasOne(Jabatan::class, 'id_jabatan');
     }
 
     public function ekskul_pembina()

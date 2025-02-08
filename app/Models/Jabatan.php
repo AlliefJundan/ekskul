@@ -19,6 +19,6 @@ class Jabatan extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user', 'user');
+        return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
 }
