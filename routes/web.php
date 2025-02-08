@@ -5,6 +5,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KuisController;
 use App\Http\Controllers\EkskulController;
+use App\Http\Controllers\AkunController;
 
 Route::get('/', function () {
     return view('home');
@@ -46,10 +47,7 @@ Route::get('/login', function () {
     return view('login');
 });
 
-Route::get('/tabel_akun', function () {
-    return view('tabel_akun');
-});
-
+Route::resource('akun', AkunController::class);
 
 Route::post(
     '/ekskul/store',
