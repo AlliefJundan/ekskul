@@ -1,5 +1,8 @@
+
 <?php use Illuminate\Support\Str; ?>
 <x-layout>
+
+ 
     <div class="container mx-auto mt-8">
         <h1 class="text-2xl font-bold mb-4">Daftar Ekskul</h1>
 
@@ -9,55 +12,59 @@
                 class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition">
                 Tambah Ekskul
             </button>
+    <!-- Modal Tambah Ekskul -->
+    <div x-show="modalTambah" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+        @click.away="if (!document.querySelector('.select2-container--open')) modalTambah = false"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-90" style="display: none;">
 
-            <!-- Modal Tambah Ekskul -->
-            <div x-show="modalTambah" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-                @click.away="modalTambah = false" x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
-                x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
-                x-transition:leave-end="opacity-0 scale-90" style="display: none;">
-
-                <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
-                    <button @click="modalTambah = false"
-                        class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">
-                        ✖
-                    </button>
-                    <h2 class="text-xl font-bold mb-4">Tambah Ekskul</h2>
-                    <form action="{{ route('ekskul.store') }}" method="POST">
-                        @csrf
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Nama Ekskul</label>
-                            <input type="text" name="nama_ekskul"
-                                class="w-full border border-gray-300 rounded-md p-2">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Nama Pembina</label>
-                            <input type="text" name="nama_pembina"
-                                class="w-full border border-gray-300 rounded-md p-2">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Nama Ketua</label>
-                            <input type="text" name="nama_ketua"
-                                class="w-full border border-gray-300 rounded-md p-2">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Jumlah Anggota</label>
-                            <input type="number" name="jml_anggota"
-                                class="w-full border border-gray-300 rounded-md p-2">
-                        </div>
-                        <div class="mt-6 flex justify-end">
-                            <button type="button" @click="modalTambah = false"
-                                class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition">
-                                ✖ Batal
-                            </button>
-                            <button type="submit"
-                                class="bg-blue-500 text-white px-4 py-2 rounded-md ml-2 hover:bg-blue-600 transition">
-                                ✔ Simpan
-                            </button>
-                        </div>
-                    </form>
+        <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
+            <button @click="modalTambah = false"
+                class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">
+                ✖
+            </button>
+            <h2 class="text-xl font-bold mb-4">Tambah Ekskul</h2>
+            <form action="{{ route('ekskul.store') }}" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label class="block text-gray-700">Nama Ekskul</label>
+                    <input type="text" name="nama_ekskul" class="w-full border border-gray-300 rounded-md p-2">
                 </div>
-            </div>
+              <div class="mb-4">
+                <?php $jabatans = App\Models\Jabatan::all()?>
+                    <label class="block text-gray-700">Nama Pembina</label>
+                    <select name="id_pembina" class="w-full border border-gray-300 rounded-md p-2">
+                        @foreach ($jabatans as $jabatan)
+                            <option value="{{ $jabatan->id_jabatan }}">{{ $jabatan->user }}</option>
+                        @endforeach
+                    </select>
+                </div>
+             <div class="mb-4">
+                    <label class="block text-gray-700">Nama Ketua</label>
+                    <input type="text" name="nama_ekskul" class="w-full border border-gray-300 rounded-md p-2">
+                </div>
+
+                <div class="mb-4">
+                    <label class="block text-gray-700">Jumlah Anggota</label>
+                    <input type="number" name="jml_anggota" class="w-full border border-gray-300 rounded-md p-2">
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button type="button" @click="modalTambah = false"
+                        class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition">
+                        ✖ Batal
+                    </button>
+                    <button type="submit"
+                        class="bg-blue-500 text-white px-4 py-2 rounded-md ml-2 hover:bg-blue-600 transition">
+                        ✔ Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
         </div>
 
         <!-- Grid Ekskul -->
@@ -90,12 +97,11 @@
                                 ✖
                             </button>
                             <h2 class="text-xl font-bold mb-4">Detail Ekskul</h2>
-                            <p><strong>Nama Pembina:</strong> {{ optional($ekskul->pembina)->nama ?? 'Belum ada' }}</p>
-                            <p><strong>Nama Ketua:</strong> {{ optional($ekskul->ketua)->nama ?? 'Belum ada' }}</p>
-                            <p><strong>Nama Sekretaris:</strong>
-                                {{ optional($ekskul->sekertaris)->nama ?? 'Belum ada' }}</p>
-                            <p><strong>Nama Bendahara:</strong> {{ optional($ekskul->bendahara)->nama ?? 'Belum ada' }}
-                            </p>
+                            <p><strong>Nama Ekskul:</strong> {{ $ekskul->nama_ekskul ?? 'Belum ada' }}</p>
+                            <p><strong>Nama Pembina:</strong> {{ ($ekskul->pembina)->nama ?? 'Belum ada' }}</p>
+                            <p><strong>Nama Ketua:</strong> {{ $ekskul->nama_ketua ?? 'Belum ada' }}</p>
+                            <p><strong>Jumlah Anggota:</strong> {{ $ekskul->jml_anggota ?? 'Belum ada' }}</p>
+
 
                             <div class="mt-6 flex justify-end gap-3">
                                 <a href="{{ route('ekskul.show', ['nama_ekskul' => Str::slug($ekskul->nama_ekskul)]) }}"
@@ -111,4 +117,5 @@
             @endforeach
         </div>
     </div>
+
 </x-layout>

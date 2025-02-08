@@ -47,7 +47,7 @@ class User extends Authenticatable
     }
     public function jabatan()
     {
-        return $this->hasOne(Jabatan::class, 'id_jabatan');
+        return $this->hasOne(Jabatan::class, 'id_user');
     }
 
     public function ekskul_pembina()
@@ -69,7 +69,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Ekskul::class, 'id_bendahara', 'id_user');
     }
-
+    
 }
 
 

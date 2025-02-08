@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Ekskul;
 use Illuminate\Support\Str;
+use App\Models\Jabatan;
 
 class EkskulController extends Controller
 {
     public function dashboard_admin()
     {
-        $ekskuls = Ekskul::with(['pembina', 'ketua', 'sekertaris', 'bendahara'])->get();
+        $ekskuls = Ekskul::with(['pembina.user', 'ketua.user', 'sekertaris.user', 'bendahara.user'])->get();
 
         return view('dashboard_admin', compact('ekskuls'));
     }
@@ -48,5 +49,4 @@ class EkskulController extends Controller
 
     return redirect()->back()->with('success', 'Ekskul berhasil ditambahkan!');
 }
-
 }

@@ -58,3 +58,10 @@ Route::post(
         'store'
     ]
 )->name('ekskul.store');
+
+Route::get('/get-pembina/{id_jabatan}', [EkskulController::class, 'getPembinaByJabatan'])->name('get-pembina');
+
+
+Route::get('/coba', function () {
+    return view('coba');
+});
