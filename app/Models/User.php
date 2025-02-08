@@ -49,4 +49,27 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Jabatan::class, 'id_jabatan');
     }
+
+    public function ekskul_pembina()
+    {
+        return $this->hasMany(Ekskul::class, 'id_pembina', 'id_user');
+    }
+
+    public function ekskul_ketua()
+    {
+        return $this->hasMany(Ekskul::class, 'id_ketua', 'id_user');
+    }
+
+    public function ekskul_sekertaris()
+    {
+        return $this->hasMany(Ekskul::class, 'id_sekertaris', 'id_user');
+    }
+
+    public function ekskul_bendahara()
+    {
+        return $this->hasMany(Ekskul::class, 'id_bendahara', 'id_user');
+    }
+
 }
+
+

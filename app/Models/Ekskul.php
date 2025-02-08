@@ -10,7 +10,7 @@ class Ekskul extends Model
     use HasFactory;
 
     protected $table = 'ekskul';
-    protected $fillable = ['nama_ekskul', 'slug', 'id_pembina', 'id_ketua', 'id_sekertaris', 'id_bendahara'];
+    protected $fillable = ['nama_ekskul', 'slug', 'id_pembina', 'id_ketua', 'id_sekertaris', 'id_bendahara','jml_anggota'];
     protected $primaryKey = 'id_ekskul';
     public $timestamps = false;
 
@@ -34,4 +34,6 @@ class Ekskul extends Model
     {
         return $this->belongsTo(User::class, 'id_bendahara', 'id_jabatan');
     }
+
+    
 }
