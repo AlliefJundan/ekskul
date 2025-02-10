@@ -3,25 +3,27 @@
         <div class="bg-[#0B0022] p-16 rounded-lg shadow-md w-[500px]">
             <h2 class="text-2xl font-bold text-center text-white">LOGIN</h2>
             <div class="mt-3">
-                <form>
+                <form action="{{ route('login.submit') }}" method="POST">
+                    @csrf
                     <div class="form-group">
-                        <label for="exampleInputEmail1"
-                            style="color: white; font-bold:'Times New Roman';">Username</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                            placeholder="Masukan Username">
+                        <label for="username" style="color: white;">Username</label>
+                        <input type="text" name="username" class="form-control" placeholder="Masukan Username"
+                            required>
                     </div>
-
                     <div class="mt-5 form-group">
-                        <label for="exampleInputPassword1"
-                            style="color: white; font-bold:'Times New Roman';">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1"
-                            placeholder="Masukan Password">
+                        <label for="password" style="color: white;">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="Masukan Password"
+                            required>
                     </div>
                     <div class="flex justify-center mt-5">
-                        <button type="submit" class="px-4 py-2 btn btn-warning">Submit</button>
+                        <button type="submit" class="px-4 py-2 btn btn-warning font-bold">Login</button>
                     </div>
-
                 </form>
+                @if (session('gagal'))
+                    <div class="alert alert-danger mt-3">
+                        {{ session('gagal') }}
+                    </div>
+                @endif
             </div>
         </div>
 
