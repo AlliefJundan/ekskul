@@ -37,13 +37,12 @@ Route::get('/redirect-kuis/{id}', function ($id) {
 
 //dashboard admin
 Route::get('/ekskul/{ekskul:slug}', [DashboardController::class, 'show'])->name('ekskul.show');
-Route::get('/dashboard_admin', [DashboardController::class, 'dashboard_admin'])->name('dashboard_admin');
 Route::get('/dashboard_admin/{ekskul:id_ekskul}', function (Ekskul $ekskul) {
     return view('Ekskul', ['post' => $ekskul]);
 });
 
 //Login
-Route::get('/login', [AuthController::class, 'tampilLogin'])->name('login');
+// Route::get('/login', [AuthController::class, 'tampilLogin'])->name('login');
 Route::post('/login/submit', [AuthController::class, 'submitLogin'])->name('login.submit');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -55,7 +54,11 @@ Route::get('/ekskul_user', function () {
 });
 
 //dashboard
-Route::middleware(['auth', 'role:user'])->group(function () {
+Route::middleware(['auth'])->group(function () {
+    Route::middleware(['auth', 'role:admin'])->group(function () {
+        Route::get('/dashboard_admin', [DashboardController::class, 'dashboard_admin'])->name('dashboard_admin');
+    });
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 Route::resource('akun', AkunController::class);
@@ -74,7 +77,7 @@ Route::post('/ekskul/store', [EkskulController::class, 'store'])->name('ekskul.s
 Route::get('/get-pembina/{id_jabatan}', [EkskulController::class, 'getPembinaByJabatan'])->name('get-pembina');
 
 Route::middleware(['guest'])->group(function () {
-    Route::get('/login', [AuthController::class, 'tampilLogin'])->name('login.tampil');
+    Route::get('/login', [AuthController::class, 'tampilLogin'])->name('login');
     Route::post('/login/submit', [AuthController::class, 'submitLogin'])->name('login.submit');
 });
 

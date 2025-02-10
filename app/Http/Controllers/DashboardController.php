@@ -15,7 +15,11 @@ class DashboardController extends Controller
 
     public function index()
     {
-        return $this->dashboard_admin(); // Langsung panggil dashboard_admin
+        if (auth()->user()->role == 'admin') {
+            return $this->dashboard_admin(); // Langsung panggil dashboard_admin
+        }
+        return $this->dashboard_user(); // Langsung panggil dashboard_admin
+
     }
 
     public function dashboard_admin()
@@ -28,6 +32,18 @@ class DashboardController extends Controller
         ])->get();
 
         return view('dashboard_admin', compact('ekskuls'));
+    }
+
+    public function dashboard_user()
+    {
+        $ekskuls = Ekskul::with([
+            'pembina.user',
+            'ketua.user',
+            'sekertaris.user',
+            'bendahara.user'
+        ])->get();
+
+        return view('dashboard', compact('ekskuls'));
     }
 
     public function show($slug)
