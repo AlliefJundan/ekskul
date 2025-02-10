@@ -7,6 +7,7 @@ use App\Models\User;
 
 class AkunController extends Controller
 {
+
     public function index()
     {
         $akun = User::all();
@@ -21,21 +22,22 @@ class AkunController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'username' => 'required|unique:users',
-            'password' => 'required|min:6',
-            'nama' => 'required',
-            'role' => 'required',
+            'nama' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
+            'password' => 'required|string|min:6',
+            'role' => 'required|string',
         ]);
 
         User::create([
+            'nama' => $request->nama,
             'username' => $request->username,
             'password' => bcrypt($request->password), // Enkripsi password
-            'nama' => $request->nama,
             'role' => $request->role,
         ]);
 
         return redirect()->route('akun.index')->with('success', 'Akun berhasil ditambahkan!');
     }
+
 
     public function show($id_user)
     {

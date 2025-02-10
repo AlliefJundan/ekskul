@@ -9,7 +9,7 @@ class AuthController extends Controller
 {
     public function tampilLogin()
     {
-        return view('login'); // Sesuaikan dengan lokasi view login
+        return view('login');
     }
 
     public function submitLogin(Request $request)

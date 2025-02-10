@@ -4,7 +4,9 @@
         <div class="flex h-16 items-center justify-between">
             <div class="flex items-center w-full justify-between">
                 <div class="shrink-0">
-                    <img class="size-8" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">
+                    <img class="size-8"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbWZUP1A5Frsl8Gc3GeuB31hfIA9xib6SI2Q&s"
+                        alt="Your Company">
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
