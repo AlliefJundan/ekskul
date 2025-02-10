@@ -69,7 +69,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Ekskul::class, 'id_bendahara', 'id_user');
     }
-    
 }
-
-
