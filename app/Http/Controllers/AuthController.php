@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function showLoginForm()
+    public function tampilLogin()
     {
-        return view('auth.login'); // Sesuaikan dengan lokasi view login
+        return view('login');
     }
 
-    public function login(Request $request)
+    public function submitLogin(Request $request)
     {
         $credentials = $request->validate([
             'username' => 'required|string',
@@ -21,12 +21,16 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboard'); // Redirect ke halaman setelah login
+
+            $user = Auth::user();
+            if ($user->role == 'admin') {
+                return redirect()->route('dashboard_admin'); // Redirect admin ke dashboard admin
+            } else {
+                return redirect()->route('dashboard'); // Redirect user biasa ke dashboard user
+            }
         }
 
-        return back()->withErrors([
-            'username' => 'Username atau password salah.',
-        ]);
+        return redirect()->back()->with('error', 'Login Gagal');
     }
 
     public function logout(Request $request)
