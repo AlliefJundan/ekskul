@@ -13,6 +13,10 @@
                         <a href="#about" class="text-white font-semibold hover:text-amber-400">About</a>
                         <a href="/login" class="text-white font-semibold hover:text-amber-400">Login</a>
                     </div>
+                    <form action="{{ route('logout') }}" method="post">
+                        @csrf
+                        <button class="btn btn-danger btn-sm">Logout</button>
+                    </form>
                 </div>
             </div>
         </div>

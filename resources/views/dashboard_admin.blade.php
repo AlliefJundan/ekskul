@@ -4,6 +4,9 @@
 
  
     <div class="container mx-auto mt-8">
+        @if (Auth::check())
+            <b>Haloo admin {{ Auth::user()->nama }}</b>
+        @endif
         <h1 class="text-2xl font-bold mb-4">Daftar Ekskul</h1>
 
         <!-- Tombol Tambah Ekskul -->

@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KuisController;
 use App\Http\Controllers\EkskulController;
 use App\Http\Controllers\AkunController;
+use App\Http\Controllers\AuthController;
+use App\Http\Middleware\RoleMiddleware;
+
 
 Route::get('/', function () {
     return view('home');
@@ -51,13 +54,7 @@ Route::get('/ekskul_user', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 });
-
-Route::get('/login', function () {
-    return view('login');
-});
-
 Route::resource('akun', AkunController::class);
-
 Route::post(
     '/ekskul/store',
     [
@@ -67,6 +64,16 @@ Route::post(
 )->name('ekskul.store');
 
 Route::get('/get-pembina/{id_jabatan}', [EkskulController::class, 'getPembinaByJabatan'])->name('get-pembina');
+
+Route::middleware(['guest'])->group(function () {
+    Route::get('/login', [AuthController::class, 'tampilLogin'])->name('login.tampil');
+    Route::post('/login/submit', [AuthController::class, 'submitLogin'])->name('login.submit');
+});
+
+
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 
 
 Route::get('/coba', function () {
