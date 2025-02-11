@@ -55,12 +55,9 @@ Route::get('/ekskul_user', function () {
 
 //dashboard
 Route::middleware(['auth'])->group(function () {
-    Route::middleware(['auth', 'role:admin'])->group(function () {
-        Route::get('/dashboard_admin', [DashboardController::class, 'dashboard_admin'])->name('dashboard_admin');
-    });
-
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard_admin', [DashboardController::class, 'index'])->name('dashboard_admin');
 });
+
 Route::resource('akun', AkunController::class);
 Route::post(
     '/ekskul/store',

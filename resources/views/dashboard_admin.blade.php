@@ -4,13 +4,16 @@
 
     <div class="container mx-auto mt-8">
         @if (Auth::check())
-            <b>Haloo admin {{ Auth::user()->nama }}</b>
+            <b>Haloo {{ Auth::user()->nama }}</b>
         @endif
-        <h1 class="text-2xl font-bold mb-4">Daftar Ekskul</h1>
+         <div class="text-center mt-5">
+            <h2 class="text-2xl font-bold font-serif">AYO DAFTAR ESKUL BIAR</h2>
+            <h2 class="text-2xl font-bold font-serif">HIDUP KAMU GA NGEBOSENIN</h2>
+        </div>  
 
         <!-- Tombol Tambah Ekskul -->
         <div x-data="{ modalTambah: false }">
-            @if (auth()->user()->jabatan)
+            @if (auth()->user()->role=='admin')
                 <button @click="modalTambah = true"
                     class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition">
                     Tambah Ekskul

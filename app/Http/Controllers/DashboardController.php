@@ -15,7 +15,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        if (auth()->user()->role == 'admin') {
+        if (auth()->user()->role) {
             return $this->dashboard_admin(); // Langsung panggil dashboard_admin
         }
         return $this->dashboard_user(); // Langsung panggil dashboard_admin

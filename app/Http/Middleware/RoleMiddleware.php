@@ -17,7 +17,7 @@ class RoleMiddleware
     {
         $role = auth()->user()->role;
         if (!in_array($role, $roles)) {
-            return redirect('/dashboard');
+            return redirect('/dashboard_admin');
         }
         return $next($request);
     }
