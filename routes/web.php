@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KuisController;
 use App\Http\Controllers\EkskulController;
 use App\Http\Controllers\MateriController;
+use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HasilKuisController;
 
@@ -96,3 +97,8 @@ Route::get('/coba', function () {
 //materi
 Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');
 Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
+
+
+//Absensi
+Route::get('/absensi', [AbsensiController::class, 'index'])->middleware('auth');
+Route::post('/absensi', [AbsensiController::class, 'store'])->middleware('auth');
