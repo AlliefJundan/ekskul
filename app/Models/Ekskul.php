@@ -34,6 +34,4 @@ class Ekskul extends Model
     {
         return $this->belongsTo(Jabatan::class, 'id_bendahara', 'id_jabatan')->with('user');
     }
-
-    
 }
