@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string("nama_ekskul", 30);
             $table->string("slug", 255)->unique();
             $table->integer("jml_anggota");
+            $table->text('deskripsi')->nullable();
+            $table->string("gambar")->nullable();
             $table->unsignedBigInteger("id_pembina")->nullable();
             $table->unsignedBigInteger("id_ketua")->nullable();
             $table->unsignedBigInteger("id_sekertaris")->nullable();

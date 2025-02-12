@@ -1,7 +1,7 @@
   <x-layout>
       <section id="home"
           class="relative w-full h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center pt-20 "
-          style="background-image: url('/img/image.png');">
+          style="background-image: url('/img/imagee.png');">
           <div class="absolute inset-0 bg-black bg-opacity-50"></div>
           <div class="relative text-center text-white px-6">
               <h1 class="text-5xl md:text-6xl font-bold uppercase">Ekstrakurikuler</h1>

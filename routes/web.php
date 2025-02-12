@@ -12,8 +12,10 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MateriController;
 
 Route::get('/', function () {
-    return view('home');
+    return view('home', [EkskulController::class, 'index']);
 });
+
+Route::get('/', [EkskulController::class, 'index'])->name('galeri');
 
 Route::get('/ekskul', function () {
     return view('ekskul');
