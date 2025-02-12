@@ -21,7 +21,7 @@ class EkskulController extends Controller
     {
         $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
 
-        return view('ekskul', compact('ekskul'));
+        return view('ekskul.ekskul', compact('ekskul'));
     }
 
 

@@ -12,11 +12,7 @@ class KuisController extends Controller
     public function show(Request $request, $slug)
     {
         $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
-
-        // Ambil keyword dari input pencarian
         $search = $request->input('search');
-
-        // Jika ada keyword pencarian, filter berdasarkan nama kuis
         $kuis = Kuis::where('id_ekskul', $ekskul->id_ekskul)
             ->when($search, function ($query, $search) {
                 return $query->where('nama_kuis', 'like', "%$search%");
@@ -47,18 +43,41 @@ class KuisController extends Controller
 
     public function hasil(Request $request)
     {
+
         $request->validate([
             'id_kuis' => 'required|exists:kuis,id_kuis',
             'id_user' => 'integer',
             'skor' => 'required|integer',
-            'bukti' => 'required|image|mimes:jpeg,png,jpg,gif,svg,|max:2048',
+            'bukti' => 'required|file|mimes:jpeg,png,jpg,gif,svg,pdf|max:2048',
+            'id_ekskul' => 'required|exists:ekskul,id_ekskul',
         ]);
+
+
+        // Debugging
+
         HasilKuis::create([
             'id_kuis' => $request->id_kuis,
-            'id_user' => '123',
+            'id_user' => $request->id_user,
+            'id_ekskul' => $request->id_ekskul,
             'skor' => $request->skor,
-            'bukti' => '123',
+            'bukti' => $request->file('bukti')->store('bukti_kuis', 'public'),
         ]);
-        return redirect()->route('kuis.show', Ekskul::find($request->id_ekskul)->slug)->with('success', 'Hasil berhasil dikirim');
+
+        return redirect()->route('kuis.show', Ekskul::find($request->id_ekskul)->slug)
+            ->with('success', 'Kuis berhasil ditambahkan.');
+    }
+
+    public function hasilKuis(Request $request, $slug)
+    {
+        $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
+        $search = $request->input('search');
+        $kuis = Kuis::where('id_ekskul', $ekskul->id_ekskul)
+            ->when($search, function ($query, $search) {
+                return $query->where('nama_kuis', 'like', "%$search%");
+            })
+            ->orderBy('id_kuis', 'desc')
+            ->paginate(10);
+
+        return view('hasilKuis', compact('ekskul', 'kuis', 'search',));
     }
 }

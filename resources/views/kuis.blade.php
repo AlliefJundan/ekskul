@@ -1,7 +1,6 @@
 <x-layout>
     <div class="container mx-auto mt-8">
-        <h1 class="text-2xl font-bold mb-4">Kuis untuk {{ $ekskul->nama_ekskul }}</h1>
-
+        <h1 class="text-2xl font-bold mb-4">Kuis untuk {{ $ekskul->slug }}</h1>
         <!-- Form Pencarian -->
         <div class="flex justify-between mb-4">
             <div>
@@ -28,6 +27,10 @@
                     </form>
                 </x-modal>
             </div>
+            <a type="button"
+                class="bg-ekskul ml-4 text-ekskul2 px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition"
+                href="{{ route('kuis.hasilKuis', ['slug' => $ekskul->slug]) }}">Lihat Hasil</a>
+
             <div class="ml-auto">
                 <form method="GET" action="{{ route('kuis.show', $ekskul->slug) }}" class="flex">
                     <input type="text" name="search" value="{{ request('search') }}"
@@ -59,17 +62,19 @@
                         <h3 class="text-indigo-900 font-bold">{{ $item->nama_kuis }}</h3>
                         <div class="flex gap-4">
                             <a href="{{ $item->isi_kuis }}" target="_blank"
-                                class="px-4 py-2 bg-amber-400 hover:bg-orange-600 text-indigo-900 font-bold rounded-lg shadow-md">
+                                class="px-4 py-2 bg-ekskul hover:bg-orange-600 text-indigo-900 font-bold rounded-lg shadow-md">
                                 Ikuti
                             </a>
                             <x-modal title="Masukan Hasil Kuis" trigger="Tambah Hasil"
-                                buttonClass="bg-ekskul text-ekskul2 px-4 py-2 rounded-md font-bold hover:bg-blue-700 transition">
-                                <form action="{{ route('kuis.hasil') }}" method="POST">
+                                buttonClass="bg-ekskul text-ekskul2 px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition">
+                                <form action="{{ route('kuis.hasil') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
+                                    <input type="hidden" name="id_kuis" value="{{ $item->id_kuis }}">
+                                    <input type="hidden" name="id_user" value="{{ Auth::user()->id_user }}">
                                     <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
                                     <div class="mb-4">
                                         <label class="block text-white">Score</label>
-                                        <input type="number" name="nama_kuis"
+                                        <input type="number" name="skor"
                                             class="w-full border border-gray-300 rounded-md p-2"
                                             placeholder="Masukan score yang didapat" required>
                                     </div>
@@ -77,7 +82,6 @@
                                         <label class="block text-white">Bukti</label>
                                         <input type="file" name="bukti" accept=".jpg,.jpeg,.png,.pdf"
                                             class="w-full border border-gray-300 rounded-md p-2 bg-gray-100">
-
                                     </div>
                                     <div class="mt-6 flex justify-center items-end">
                                         <button type="submit"
@@ -90,7 +94,6 @@
                         </div>
                     </div>
                 @endforeach
-
                 <!-- Pagination Links -->
                 <div class="mt-6">
                     {{ $kuis->appends(['search' => request('search')])->links('pagination::tailwind') }}

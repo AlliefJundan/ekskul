@@ -14,15 +14,14 @@ Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/ekskul', function () {
-    return view('ekskul');
-});
+
 
 //kuis
 
 Route::get('/kuis/{slug}', [KuisController::class, 'show'])->name('kuis.show');
 Route::post('/kuis/store', [KuisController::class, 'store'])->name('kuis.store');
 Route::post('/kuis/hasil', [KuisController::class, 'hasil'])->name('kuis.hasil');
+Route::get('/kuis/hasil/{slug}', [KuisController::class, 'hasilKuis'])->name('kuis.hasilKuis');
 
 
 Route::get('/kuis', function () {
@@ -48,7 +47,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //ekskul
 Route::get('/ekskul/{slug}', [EkskulController::class, 'show'])->name('ekskul.show');
-
 Route::get('/ekskul_user', function () {
     return view('ekskul_user');
 });
@@ -78,10 +76,7 @@ Route::middleware(['guest'])->group(function () {
     Route::post('/login/submit', [AuthController::class, 'submitLogin'])->name('login.submit');
 });
 
-
-
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
 
 
 Route::get('/coba', function () {
