@@ -34,49 +34,49 @@
                         ✖
                     </button>
                     <h2 class="text-xl font-bold mb-4">Tambah Ekskul</h2>
-                    <form action="{{ route('ekskul.store') }}" method="POST">
+                    <form action="{{ route('ekskul.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-4">
                             <label class="block text-gray-700">Nama Ekskul</label>
                             <input type="text" name="nama_ekskul"
                                 class="w-full border border-gray-300 rounded-md p-2">
                         </div>
-                        
-                            <div class="form-group mb-4">
-                                <label class="font-weight-bold">Gambar</label>
-                                <input type="file" class="form-control @error('image') is-invalid @enderror" name="image">
-                            
-                                <!-- error message untuk title -->
-                                @error('image')
-                                    <div class="alert alert-danger mt-2">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
 
-                             <div class="form-group">
-                                <label class="font-weight-bold">Deskripsi</label>
-                                <textarea class="form-control @error('content') is-invalid @enderror" name="content" rows="5" placeholder="Masukkan Deskripsi">{{ old('content') }}</textarea>
-                            
-                                <!-- error message untuk content -->
-                                @error('content')
-                                    <div class="alert alert-danger mt-2">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
+                        <div class="form-group mb-4">
+                            <label class="font-weight-bold">Gambar</label>
+                            <input type="file" class="form-control @error('image') is-invalid @enderror"
+                                name="image">
+
+                            <!-- error message untuk title -->
+                            @error('image')
+                                <div class="alert alert-danger mt-2">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
+                            <label class="font-weight-bold">Deskripsi</label>
+                            <textarea class="form-control @error('content') is-invalid @enderror" name="deskripsi" rows="5"
+                                placeholder="Masukkan Deskripsi">{{ old('content') }}</textarea>
+
+                            <!-- error message untuk content -->
+                            @error('content')
+                                <div class="alert alert-danger mt-2">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
 
                         <div class="mb-4 ">
                             <label class="block text-gray-700">Nama Pembina</label>
-                                <input type="text" name="nama_ekskul"
+                            <input type="text" name="id_pembina"
                                 class="w-full border border-gray-300 rounded-md p-2">
                         </div>
                         <div class="mb-4">
                             <label class="block text-gray-700">Nama Ketua</label>
-                            <input type="text" name="nama_ketua"
-                                class="w-full border border-gray-300 rounded-md p-2">
+                            <input type="text" name="id_ketua" class="w-full border border-gray-300 rounded-md p-2">
                         </div>
-
                         <div class="mb-4">
                             <label class="block text-gray-700">Jumlah Anggota</label>
                             <input type="number" name="jml_anggota"
@@ -106,7 +106,8 @@
             <div x-data="{ open: false }"
                 class="cursor-pointer w-full max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden flex flex-col">
                 <div @click="open = true">
-                    <img src="{{ asset('storage/img/' . $ekskul->gambar) }}" alt="Card Image" class="w-full h-48 object-cover">
+                    <img src="{{ asset('storage/' . $ekskul->gambar) }}" alt="Gambar Ekskul"
+                        class="w-full h-48 object-cover">
                     <div class="p-6 flex-1">
                         <h2 class="text-xl font-semibold text-gray-800">{{ $ekskul->nama_ekskul }}</h2>
                         <p>{{ $ekskul->deskripsi }}</p>

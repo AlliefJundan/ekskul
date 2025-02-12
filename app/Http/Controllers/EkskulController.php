@@ -21,7 +21,7 @@ class EkskulController extends Controller
         $ekskuls = Ekskul::all(); // Mengambil semua data ekskul dari database
         return view('home', compact('ekskuls')); // Mengirimkan data ke view
     }
-    
+
     public function show($slug)
     {
         $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
@@ -32,12 +32,12 @@ class EkskulController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input
-        // dd($request->all());
 
+        // dd($request->all());
+        // Validasi input
         $request->validate([
             'nama_ekskul' => 'required|string|max:255',
-            'gambar'     => 'required|image|mimes:png,jpg,jpeg',
+            'image' => 'required|image|mimes:png,jpg,jpeg',
             'deskripsi' => 'nullable|string',
             'id_pembina' => 'nullable|integer|exists:jabatan,id_jabatan',
             'id_ketua' => 'nullable|integer|exists:jabatan,id_jabatan',
@@ -45,24 +45,23 @@ class EkskulController extends Controller
             'id_bendahara' => 'nullable|integer|exists:jabatan,id_jabatan',
             'jml_anggota' => 'required|integer|min:1',
         ]);
-        $image = $request->file('gambar'); // Sesuaikan dengan input form
-        $image->storeAs('public/img', $image->hashName());
 
+        // Simpan gambar
+        $image = $request->file('image'); // Pastikan nama input sesuai
 
-        // Simpan ke database dengan nilai default NULL jika tidak diisi
-         $ekskul=Ekskul::create([
+        // Simpan ke database
+        $ekskul = Ekskul::create([
             'nama_ekskul' => $request->nama_ekskul,
-            'gambar'     => $image->hashName(),
-            'deskripsi' => $request->deskripsi, 
+            'gambar' =>
+            $request->file('image')->store('pp_ekskul', 'public'),
+            'deskripsi' => $request->deskripsi,
             'slug' => Str::slug($request->nama_ekskul),
             'id_pembina' => $request->id_pembina ?? null,
             'id_ketua' => $request->id_ketua ?? null,
             'id_sekertaris' => $request->id_sekertaris ?? null,
             'id_bendahara' => $request->id_bendahara ?? null,
             'jml_anggota' => $request->jml_anggota,
-
         ]);
-    
 
         return redirect()->back()->with('success', 'Ekskul berhasil ditambahkan!');
     }
