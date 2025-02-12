@@ -9,6 +9,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KuisController;
 use App\Http\Controllers\EkskulController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MateriController;
 
 Route::get('/', function () {
     return view('home');
@@ -56,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard_admin', [DashboardController::class, 'index'])->name('dashboard_admin');
 });
 
+//akun
 Route::resource('akun', AkunController::class);
 Route::post(
     '/ekskul/store',
@@ -64,8 +66,6 @@ Route::post(
         'store'
     ]
 )->name('ekskul.store');
-
-
 
 Route::resource('akun', AkunController::class);
 Route::post('/ekskul/store', [EkskulController::class, 'store'])->name('ekskul.store');
@@ -82,3 +82,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/coba', function () {
     return view('coba');
 });
+
+
+//materi
+Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');
+Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
+
