@@ -11,7 +11,7 @@ class Materi extends Model
     use HasFactory;
     protected $table = 'materi';
     protected $fillable = ['id_ekskul', 'isi_materi', 'lampiran_materi'];
-    public $timestamps = false;
+
 
     public function ekskul()
     {

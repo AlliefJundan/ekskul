@@ -30,7 +30,6 @@
             <a type="button"
                 class="bg-ekskul ml-4 text-ekskul2 px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition"
                 href="{{ route('kuis.hasilKuis', ['slug' => $ekskul->slug]) }}">Lihat Hasil</a>
-
             <div class="ml-auto">
                 <form method="GET" action="{{ route('kuis.show', $ekskul->slug) }}" class="flex">
                     <input type="text" name="search" value="{{ request('search') }}"
@@ -41,7 +40,6 @@
                 </form>
             </div>
         </div>
-
     </div>
     <div class="grid gap-6 mt-8" style="grid-template-columns: auto 1fr;">
         <!-- Card Kecil (Total Kuis) -->

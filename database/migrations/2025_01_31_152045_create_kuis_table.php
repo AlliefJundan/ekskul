@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('kuis', function (Blueprint $table) {
             $table->id("id_kuis")->primary();
             $table->string("nama_kuis", 100);
+            $table->string("slug");
             $table->string("isi_kuis");
             $table->unsignedBigInteger("id_ekskul");
 

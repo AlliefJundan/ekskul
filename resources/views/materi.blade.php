@@ -2,13 +2,14 @@
     <div class="container mx-auto mt-10 p-5">
         <h1 class="text-3xl font-bold text-center mb-5">Materi Hari Ini</h1>
 
-        @if(session('success'))
+        @if (session('success'))
             <div class="bg-green-200 p-3 text-green-800 rounded mb-4">
                 {{ session('success') }}
             </div>
         @endif
 
-        <form action="{{ route('materi.store') }}" method="POST" enctype="multipart/form-data" class="bg-white p-6 shadow rounded">
+        <form action="{{ route('materi.store') }}" method="POST" enctype="multipart/form-data"
+            class="bg-white p-6 shadow rounded">
             @csrf
 
             <table class="w-full border border-gray-300">
@@ -34,7 +35,7 @@
                 <tr>
                     <th class="border p-2 text-left">Lampiran (Folder)</th>
                     <td class="border p-2">
-                        <input type="file" name="lampiran_materi[]" multiple webkitdirectory directory class="w-full border p-2">
+                        <input type="file" name="lampiran_materi[]" class="w-full border p-2">
                         <small class="text-gray-500">Pilih folder untuk mengunggah semua file di dalamnya.</small>
                     </td>
                 </tr>
