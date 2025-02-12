@@ -8,8 +8,9 @@ use App\Http\Controllers\AkunController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KuisController;
 use App\Http\Controllers\EkskulController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MateriController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HasilKuisController;
 
 Route::get('/', function () {
     return view('home');
@@ -23,6 +24,10 @@ Route::get('/kuis/{slug}', [KuisController::class, 'show'])->name('kuis.show');
 Route::post('/kuis/store', [KuisController::class, 'store'])->name('kuis.store');
 Route::post('/kuis/hasil', [KuisController::class, 'hasil'])->name('kuis.hasil');
 Route::get('/kuis/hasil/{slug}', [KuisController::class, 'hasilKuis'])->name('kuis.hasilKuis');
+
+//hasil kuis
+Route::get('/kuis/hasil/jawaban/{slug}', [HasilKuisController::class, 'hasil'])
+    ->name('hasil_kuis.hasil');
 
 
 Route::get('/kuis', function () {
@@ -87,4 +92,3 @@ Route::get('/coba', function () {
 //materi
 Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');
 Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
-

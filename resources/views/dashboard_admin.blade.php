@@ -52,7 +52,7 @@
                         </div>
                         <div class="mb-4">
                             <label class="block text-gray-700">Nama Ketua</label>
-                            <input type="text" name="nama_ekskul"
+                            <input type="text" name="nama_ketua"
                                 class="w-full border border-gray-300 rounded-md p-2">
                         </div>
 

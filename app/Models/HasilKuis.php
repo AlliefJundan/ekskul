@@ -18,6 +18,11 @@ class HasilKuis extends Model
         return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
 
+    public function kuis()
+    {
+        return $this->belongsTo(Kuis::class, 'id_kuis', 'id_kuis');
+    }
+
     public function id_ekskul()
     {
         return $this->belongsTo(Ekskul::class, 'id_ekskul', 'id_ekskul');

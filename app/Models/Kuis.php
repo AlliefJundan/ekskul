@@ -10,7 +10,7 @@ class Kuis extends Model
 
     use HasFactory;
     protected $table = 'kuis';
-    protected $fillable = ['nama_kuis', 'isi_kuis', 'id_ekskul'];
+    protected $fillable = ['nama_kuis', 'slug', 'isi_kuis', 'id_ekskul'];
     public $timestamps = false;
 
     public function ekskul()

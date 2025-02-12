@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kuis;
 use App\Models\Ekskul;
 use App\Models\HasilKuis;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class KuisController extends Controller
@@ -13,6 +14,7 @@ class KuisController extends Controller
     {
         $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
         $search = $request->input('search');
+
         $kuis = Kuis::where('id_ekskul', $ekskul->id_ekskul)
             ->when($search, function ($query, $search) {
                 return $query->where('nama_kuis', 'like', "%$search%");
@@ -20,8 +22,15 @@ class KuisController extends Controller
             ->orderBy('id_kuis', 'desc')
             ->paginate(10);
 
-        return view('kuis', compact('ekskul', 'kuis', 'search'));
+        // Cek apakah user sudah mengirim hasil untuk setiap kuis
+        $userId = auth()->id();
+        $hasil_kuis_user = HasilKuis::where('id_user', $userId)->pluck('id_kuis')->toArray();
+
+        return view('kuis', compact('ekskul', 'kuis', 'search', 'hasil_kuis_user'));
     }
+
+
+
 
 
     public function store(Request $request)
@@ -32,14 +41,20 @@ class KuisController extends Controller
             'id_ekskul' => 'required|exists:ekskul,id_ekskul'
         ]);
 
+        $slug = Str::slug($request->nama_kuis) . '-' . now(); // Bikin slug unik
+
         Kuis::create([
             'nama_kuis' => $request->nama_kuis,
+            'slug' => $slug,
             'isi_kuis' => $request->isi_kuis,
             'id_ekskul' => $request->id_ekskul,
         ]);
+
         return redirect()->route('kuis.show', Ekskul::find($request->id_ekskul)->slug)
             ->with('success', 'Kuis berhasil ditambahkan.');
     }
+
+
 
     public function hasil(Request $request)
     {
