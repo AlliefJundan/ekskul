@@ -8,14 +8,20 @@ use App\Http\Controllers\AkunController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KuisController;
 use App\Http\Controllers\EkskulController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HasilKuisController;
+
 Route::get('/', function () {
-    return view('home');
+    return view('home', [EkskulController::class, 'index']);
 });
 
+Route::get('/', [EkskulController::class, 'index'])->name('galeri');
 
+Route::get('/ekskul', function () {
+    return view('ekskul');
+});
 
 //kuis
 
@@ -23,6 +29,10 @@ Route::get('/kuis/{slug}', [KuisController::class, 'show'])->name('kuis.show');
 Route::post('/kuis/store', [KuisController::class, 'store'])->name('kuis.store');
 Route::post('/kuis/hasil', [KuisController::class, 'hasil'])->name('kuis.hasil');
 Route::get('/kuis/hasil/{slug}', [KuisController::class, 'hasilKuis'])->name('kuis.hasilKuis');
+
+//hasil kuis
+Route::get('/kuis/hasil/jawaban/{slug}', [HasilKuisController::class, 'hasil'])
+    ->name('hasil_kuis.hasil');
 
 
 Route::get('/kuis', function () {

@@ -1,11 +1,9 @@
 <x-layout>
-
     <div class="flex justify-beetween mb-3">
         <div>
             <x-button1 href="{{ route('kuis.show', $ekskul->slug) }}">
                 Kembali
             </x-button1>
-
         </div>
         <div class="ml-auto">
             <form method="GET" action="{{ route('kuis.hasilKuis', $ekskul->slug) }}" class="flex">
@@ -23,10 +21,9 @@
                 <div class="shadow-lg rounded-lg p-4 flex justify-between items-center bg-white mb-3">
                     <h3 class="text-indigo-900 font-bold">{{ $item->nama_kuis }}</h3>
                     <div class="flex gap-4">
-                        <a href="{{ $item->isi_kuis }}" target="_blank"
-                            class="px-4 py-2 bg-amber-400 hover:bg-orange-600 text-indigo-900 font-bold rounded-lg shadow-md">
+                        <x-button1 href="{{ route('hasil_kuis.hasil', ['slug' => $item->slug]) }}">
                             Lihat Hasil
-                        </a>
+                        </x-button1>
                     </div>
                 </div>
             @endforeach

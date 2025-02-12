@@ -16,6 +16,11 @@ class EkskulController extends Controller
         return view('dashboard_admin', compact('ekskuls'));
     }
 
+    public function index()
+    {
+        $ekskuls = Ekskul::all(); // Mengambil semua data ekskul dari database
+        return view('home', compact('ekskuls')); // Mengirimkan data ke view
+    }
 
     public function show($slug)
     {
@@ -27,9 +32,13 @@ class EkskulController extends Controller
 
     public function store(Request $request)
     {
+
+        // dd($request->all());
         // Validasi input
         $request->validate([
             'nama_ekskul' => 'required|string|max:255',
+            'image' => 'required|image|mimes:png,jpg,jpeg',
+            'deskripsi' => 'nullable|string',
             'id_pembina' => 'nullable|integer|exists:jabatan,id_jabatan',
             'id_ketua' => 'nullable|integer|exists:jabatan,id_jabatan',
             'id_sekertaris' => 'nullable|integer|exists:jabatan,id_jabatan',
@@ -37,9 +46,15 @@ class EkskulController extends Controller
             'jml_anggota' => 'required|integer|min:1',
         ]);
 
-        // Simpan ke database dengan nilai default NULL jika tidak diisi
-        Ekskul::create([
+        // Simpan gambar
+        $image = $request->file('image'); // Pastikan nama input sesuai
+
+        // Simpan ke database
+        $ekskul = Ekskul::create([
             'nama_ekskul' => $request->nama_ekskul,
+            'gambar' =>
+            $request->file('image')->store('pp_ekskul', 'public'),
+            'deskripsi' => $request->deskripsi,
             'slug' => Str::slug($request->nama_ekskul),
             'id_pembina' => $request->id_pembina ?? null,
             'id_ketua' => $request->id_ketua ?? null,

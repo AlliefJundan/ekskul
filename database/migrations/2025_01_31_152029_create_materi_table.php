@@ -13,6 +13,7 @@ return new class extends Migration
             $table->unsignedBigInteger("id_ekskul");
             $table->text("isi_materi");
             $table->string("lampiran_materi")->nullable();
+            $table->timestamps();
 
             $table->foreign("id_ekskul")->references("id_ekskul")->on("ekskul")->onDelete("cascade");
         });
