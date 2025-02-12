@@ -67,21 +67,6 @@
                                 </div>
                             @enderror
                         </div>
-
-                        <div class="mb-4 ">
-                            <label class="block text-gray-700">Nama Pembina</label>
-                            <input type="text" name="id_pembina"
-                                class="w-full border border-gray-300 rounded-md p-2">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Nama Ketua</label>
-                            <input type="text" name="id_ketua" class="w-full border border-gray-300 rounded-md p-2">
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700">Jumlah Anggota</label>
-                            <input type="number" name="jml_anggota"
-                                class="w-full border border-gray-300 rounded-md p-2">
-                        </div>
                         <div class="mt-6 flex justify-end">
                             <button type="button" @click="modalTambah = false"
                                 class="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition">
