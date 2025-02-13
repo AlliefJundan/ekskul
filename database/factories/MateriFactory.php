@@ -2,25 +2,24 @@
 
 namespace Database\Factories;
 
-use App\Models\Ekskul;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Materi;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Materi>
  */
 class MateriFactory extends Factory
 {
-    /**
-     * 
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Materi::class;
+
     public function definition(): array
     {
         return [
-            'id_ekskul' => $this->faker->randomElement(Ekskul::pluck('id_ekskul')->toArray()),
-            'isi_materi' => $this->faker->text(200), // Materi maksimal 200 karakter
-            'lampiran_materi' => $this->faker->word, // Lampiran berbentuk kata acak
+            'id_ekskul' => 1, // Sesuaikan dengan ID ekskul yang ada di database
+            'isi_materi' => $this->faker->paragraph(2), // Buat teks random
+            'lampiran_materi' => null, // Bisa diisi dengan path file dummy jika perlu
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

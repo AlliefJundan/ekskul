@@ -1,53 +1,75 @@
 <x-layout>
-    <div class="container mx-auto mt-10 p-5">
-        <h1 class="text-3xl font-bold text-center mb-5">Materi Hari Ini</h1>
+    <div class="container mx-auto mt-8">
+        <h1 class="text-2xl font-bold mb-4">Materi untuk {{ $ekskul->slug }}</h1>
 
-        @if (session('success'))
-            <div class="bg-green-200 p-3 text-green-800 rounded mb-4">
-                {{ session('success') }}
+        <!-- Form Pencarian -->
+        <div class="flex justify-between mb-4">
+            <div>
+                <x-modal title="Tambah Materi" trigger="Tambah Materi">
+                    <form action="{{ route('materi.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
+
+                        <div class="mb-4">
+                            <label class="block text-white">Isi Materi</label>
+                            <textarea name="isi_materi" class="w-full border border-gray-300 rounded-md p-2" placeholder="Masukkan Materi" required></textarea>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-white">Lampiran (Opsional)</label>
+                            <input type="file" name="lampiran_materi" class="w-full text-white border border-gray-300 rounded-md p-2">
+                        </div>
+
+                        <div class="mt-6 flex justify-center">
+                            <button type="submit" class="bg-ekskul font-bold text-ekskul2 px-4 py-2 rounded-md hover:bg-blue-600 transition">
+                                ✔ Simpan
+                            </button>
+                        </div>
+                    </form>
+                </x-modal>
             </div>
-        @endif
 
-        <form action="{{ route('materi.store') }}" method="POST" enctype="multipart/form-data"
-            class="bg-white p-6 shadow rounded">
-            @csrf
+            <div class="ml-auto">
+                <form method="GET" action="{{ route('materi.index', $ekskul->slug) }}" class="flex">
+                    <input type="text" name="search" value="{{ request('search') }}" class="px-4 py-2 border rounded-l-lg bg-gray-200" placeholder="Cari materi...">
+                    <button type="submit" class="px-4 py-2 bg-ekskul2 hover:bg-indigo-700 text-white rounded-r-lg">
+                        Cari
+                    </button>
+                </form>
+            </div>
+        </div>
 
-            <table class="w-full border border-gray-300">
-                <tr class="bg-gray-100">
-                    <th class="border p-2 text-left">Pilih Ekskul</th>
-                    <td class="border p-2">
-                        <select name="id_ekskul" class="w-full border rounded p-2" required>
-                            <option value="" disabled selected>Pilih ekskul</option>
-                            @foreach ($ekskulList as $ekskul)
-                                <option value="{{ $ekskul->id_ekskul }}">{{ $ekskul->nama_ekskul }}</option>
-                            @endforeach
-                        </select>
-                    </td>
-                </tr>
+        <!-- Daftar Materi -->
+        <div class="grid gap-6 mt-8" style="grid-template-columns: auto 1fr;">
+            <!-- Card Kecil (Jumlah Anggota) -->
+            <div class="bg-ekskul rounded-lg shadow-lg hover:shadow-xl transition duration-300 p-5 flex flex-col justify-center items-center" style="height: 200px">
+                <h4 class="text-xl text-ekskul2 font-bold mb-2">Jumlah Anggota</h4>
+                <p class="text-gray-700 text-bold">
+                    <span class="text-xl font-bold text-indigo-900">{{ $ekskul->jml_anggota }}</span>
+                    anggota tergabung dalam ekskul ini.
+                </p>
+            </div>
 
-                <tr>
-                    <th class="border p-2 text-left">Isi Materi</th>
-                    <td class="border p-2">
-                        <textarea name="isi_materi" rows="3" class="w-full border rounded p-2" required></textarea>
-                    </td>
-                </tr>
+            <!-- Card Besar (Daftar Materi) -->
+            <div class="bg-indigo-900 rounded-lg shadow-lg hover:shadow-xl transition duration-300 p-5">
+                @if ($materi->count() > 0)
+                    @foreach ($materi as $item)
+                        <div class="shadow-lg rounded-lg p-4 flex justify-between items-center bg-white mb-3">
+                            <h3 class="text-indigo-900 font-bold">{{ $item->isi_materi }}</h3>
+                            @if ($item->lampiran_materi)
+                                <a href="{{ asset('storage/' . $item->lampiran_materi) }}" target="_blank" class="text-blue-500 underline">Lihat Lampiran</a>
+                            @endif
+                        </div>
+                    @endforeach
 
-                <tr>
-                    <th class="border p-2 text-left">Lampiran (Folder)</th>
-                    <td class="border p-2">
-                        <input type="file" name="lampiran_materi[]" class="w-full border p-2">
-                        <small class="text-gray-500">Pilih folder untuk mengunggah semua file di dalamnya.</small>
-                    </td>
-                </tr>
-
-                <tr>
-                    <td colspan="2" class="border p-2 text-right">
-                        <button type="submit" class="bg-blue-600 text-blue px-4 py-2 rounded">
-                            Kirim Materi
-                        </button>
-                    </td>
-                </tr>
-            </table>
-        </form>
+                    <!-- Pagination Links -->
+                    <div class="mt-6">
+                        {{ $materi->appends(['search' => request('search')])->links('pagination::tailwind') }}
+                    </div>
+                @else
+                    <h1 class="text-white font-semibold mb-2">Tidak ada materi tersedia untuk ekskul ini.</h1>
+                @endif
+            </div>
+        </div>
     </div>
 </x-layout>

@@ -95,8 +95,9 @@ Route::get('/coba', function () {
 
 
 //materi
-Route::get('/materi', [MateriController::class, 'index'])->name('materi.index');
+Route::get('/materi/{slug}', [MateriController::class, 'index'])->name('materi.index');
 Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
+
 
 
 //Absensi
