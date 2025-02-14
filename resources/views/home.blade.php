@@ -20,6 +20,4 @@
 
       @include('gallery')
 
-
-      </section>
   </x-layout>

@@ -1,4 +1,4 @@
-<section id="gallery" class="container mx-auto px-6 py-12">
+<section id="gallery" class="container mx-auto px-6 py-12" x-data="{ modalOpen: false, selectedEkskul: null }">
     <div class="relative flex justify-center">
         <a href="#" class="relative inline-flex items-center px-6 py-3 text-white bg-indigo-900 font-semibold text-lg rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
             Galeri
@@ -17,11 +17,85 @@
                 <div class="p-5">
                     <h4 class="text-xl font-semibold mb-2">{{ $ekskul->nama_ekskul }}</h4>
                     <p class="text-gray-300 text-sm">{{ $ekskul->deskripsi }}</p>
-                    <button class="mt-3 bg-amber-400 text-indigo-900 px-4 py-2 rounded-lg shadow-md hover:bg-amber-500 transition">
+                    <button @click="modalOpen = true; selectedEkskul = { 
+                        nama: '{{ $ekskul->nama_ekskul }}',
+                        deskripsi: '{{ $ekskul->deskripsi }}',
+                        pembina: '{{ $ekskul->pembina ?? '-' }}',
+                        ketua: '{{ $ekskul->ketua ?? '-' }}',
+                        jumlah_anggota: '{{ $ekskul->jumlah_anggota ?? '0' }}',
+                        gambar: '{{ asset('storage/' . $ekskul->gambar) }}'
+                    }" class="mt-3 bg-amber-400 text-indigo-900 px-4 py-2 rounded-lg shadow-md hover:bg-amber-500 transition">
                         Lihat Detail →
                     </button>
                 </div>
             </div>
         @endforeach
     </div>
+
+    <!-- Modal Detail (Diletakkan di luar grid) -->
+    <div x-show="modalOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+         @click.away="modalOpen = false" x-transition>
+        <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
+            <button @click="modalOpen = false" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">✖</button>
+            <h2 class="text-xl font-bold mb-4 text-gray-900" x-text="selectedEkskul?.nama"></h2>
+            <img class="w-full h-48 object-cover rounded-md mb-4" :src="selectedEkskul?.gambar" alt="Gambar Ekskul">
+            
+            <p class="text-gray-700 mb-2"><strong>Deskripsi:</strong> <span x-text="selectedEkskul?.deskripsi"></span></p>
+            <p class="text-gray-700"><strong>Pembina:</strong> <span x-text="selectedEkskul?.pembina"></span></p>
+            <p class="text-gray-700"><strong>Ketua:</strong> <span x-text="selectedEkskul?.ketua"></span></p>
+            <p class="text-gray-700"><strong>Jumlah Anggota:</strong> <span x-text="selectedEkskul?.jumlah_anggota"></span></p>
+
+            <!-- button daftar -->
+          <div class="flex justify-center mt-8" x-data="{ openConfirm: false, openModal: false }">
+    @if(auth()->check())
+        <button @click="openConfirm = true"
+                class="relative inline-flex items-center px-6 py-3 bg-amber-400 text-indigo-900 font-semibold text-lg rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
+            Daftar Sekarang!
+            <span class="absolute -bottom-1 -right-1 bg-orange-500 h-full w-full rounded-2xl -z-10"></span>
+        </button>
+    @else
+        <a href="{{ route('login') }}"
+           class="relative inline-flex items-center px-6 py-3 bg-amber-400 text-indigo-900 font-semibold text-lg rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
+            Daftar Sekarang!
+            <span class="absolute -bottom-1 -right-1 bg-orange-500 h-full w-full rounded-2xl -z-10"></span>
+        </a>
+    @endif
+
+    <!-- Modal Konfirmasi -->
+    <div x-show="openConfirm" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+         @click.away="openConfirm = false" x-transition>
+        <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
+            <h2 class="text-xl font-bold mb-4 text-gray-900 text-center">Yakin mau masuk?</h2>
+            <div class="flex justify-center gap-4 mt-4">
+                <button @click="openConfirm = false"
+                        class="bg-danger text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-400 transition">
+                    Tidak
+                </button>
+                <button @click="openConfirm = false; openModal = true"
+                        class="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition">
+                    Ya
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tunggu ACC -->
+    <div x-show="openModal"
+         class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+         @click.away="openModal = false" x-transition>
+        <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
+            <button @click="openModal = false"
+                    class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">✖
+            </button>
+            <h1 class="text-xl text-center font-bold mb-4 text-gray-900">Tunggu ya sabar gess</h1>
+            <h1 class="text-center font-bold">Tunggu ketua ACC</h1>
+        </div>
+    </div>
+</div>
+
+
+        </div>
+    </div>
 </section>
+
+    

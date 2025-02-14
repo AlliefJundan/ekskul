@@ -2,39 +2,63 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Materi;
 use App\Models\Ekskul;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MateriController extends Controller
 {
-    public function index()
+    /**
+     * Menampilkan daftar materi berdasarkan ekskul.
+     */
+    public function index(Request $request, $slug)
     {
-        $ekskulList = Ekskul::all();
-        return view('materi', compact('ekskulList'));
+        // Ambil data ekskul berdasarkan slug
+        $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
+        $search = $request->input('search');
+
+        // Ambil data materi berdasarkan ekskul dan pencarian
+        $materi = Materi::where('id_ekskul', $ekskul->id_ekskul)
+            ->when($search, function ($query, $search) {
+                return $query->where('isi_materi', 'like', "%$search%");
+            })
+            ->orderBy('id_materi', 'desc')
+            ->paginate(10);
+
+        return view('materi', compact('ekskul', 'materi', 'search'));
     }
 
+    /**
+     * Menyimpan materi baru ke dalam database.
+     */
     public function store(Request $request)
     {
+        // Validasi input
         $request->validate([
-            'id_ekskul' => 'required|exists:ekskul,id_ekskul',
             'isi_materi' => 'required|string',
-            'lampiran_materi.*' => 'nullable|file|max:2048'
+            'lampiran_materi' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx|max:2048',
+            'id_ekskul' => 'required|exists:ekskul,id_ekskul'
         ]);
-
-        $lampiranPaths = [];
+    
+        // Cek ekskul berdasarkan ID
+        $ekskul = Ekskul::findOrFail($request->id_ekskul);
+    
+        // Simpan file jika ada
+        $filePath = null;
         if ($request->hasFile('lampiran_materi')) {
-            foreach ($request->file('lampiran_materi') as $file) {
-                $lampiranPaths[] = $file->store('materi_lampiran', 'public');
-            }
+            $filePath = $request->file('lampiran_materi')->store('materi_files', 'public');
         }
-
+    
+        // Simpan data ke database
         Materi::create([
-            'id_ekskul' => $request->id_ekskul,
             'isi_materi' => $request->isi_materi,
-            'lampiran_materi' => json_encode($lampiranPaths)
+            'lampiran_materi' => $filePath,
+            'id_ekskul' => $request->id_ekskul,
         ]);
-
-        return redirect()->back()->with('success', 'Materi berhasil dikirim!');
+    
+        // Redirect ke halaman materi dengan slug ekskul yang benar
+        return redirect()->route('materi.index', ['slug' => $ekskul->slug])
+            ->with('success', 'Materi berhasil ditambahkan.');
     }
 }

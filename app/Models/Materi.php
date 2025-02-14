@@ -7,11 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Materi extends Model
 {
-
     use HasFactory;
+    
     protected $table = 'materi';
     protected $fillable = ['id_ekskul', 'isi_materi', 'lampiran_materi'];
-
 
     public function ekskul()
     {

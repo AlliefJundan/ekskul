@@ -4,6 +4,14 @@
         <h1 class="text-4xl font-bold text-center mb-8" style="font-bold"> {{ $ekskul->nama_ekskul }}</h1>
 
         <!-- "Materi Hari Ini" Card -->
+        <div class="bg-ekskul2 text-white flex justify-end rounded-lg shadow-lg p-6 mb-8">
+            <a href="{{ route('materi.index', $ekskul->slug) }}"
+                class="inline-block px-4 py-2 bg-ekskul hover:bg-orange-600 text-black font-semibold rounded-lg shadow-md">
+                Lihat Materi
+            </a>
+
+        </div>
+        
         <div class="bg-ekskul text-white flex justify-end rounded-lg shadow-lg p-6 mb-8">
             <a href="{{ route('anggota.show', $ekskul->slug) }}"
                 class="inline-block px-4 py-2 bg-ekskul2 hover:bg-orange-600 text-white font-semibold rounded-lg shadow-md">
@@ -15,6 +23,7 @@
             </a>
 
         </div>
+        
 
         <!-- Smaller Content Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

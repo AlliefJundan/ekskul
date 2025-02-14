@@ -37,7 +37,6 @@ class EkskulController extends Controller
             'nama_ekskul' => 'required|string|max:255',
             'image' => 'required|image|mimes:png,jpg,jpeg',
             'deskripsi' => 'nullable|string',
-
         ]);
 
         // Simpan ekskul ke database
