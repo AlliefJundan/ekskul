@@ -41,12 +41,10 @@
                             <input type="text" name="nama_ekskul"
                                 class="w-full border border-gray-300 rounded-md p-2">
                         </div>
-
                         <div class="form-group mb-4">
                             <label class="font-weight-bold">Gambar</label>
                             <input type="file" class="form-control @error('image') is-invalid @enderror"
                                 name="image">
-
                             <!-- error message untuk title -->
                             @error('image')
                                 <div class="alert alert-danger mt-2">
@@ -57,7 +55,7 @@
 
                         <div class="form-group">
                             <label class="font-weight-bold">Deskripsi</label>
-                            <textarea class="form-control @error('content') is-invalid @enderror" name="deskripsi" rows="5"
+                            <textarea class="form-control @error('deskripsi') is-invalid @enderror" name="deskripsi" rows="5"
                                 placeholder="Masukkan Deskripsi">{{ old('content') }}</textarea>
 
                             <!-- error message untuk content -->

@@ -13,15 +13,8 @@ return new class extends Migration
     {
         Schema::create('jabatan', function (Blueprint $table) {
             $table->id("id_jabatan"); // Primary Key
-            $table->string("kode_jabatan", 6)->unique();
             $table->string("nama_jabatan", 255);
-            $table->unsignedBigInteger('id_ekskul')->nullable(); // Foreign Key
-            $table->unsignedBigInteger('id_user')->nullable(); // Foreign Key
             $table->string("slug", 255)->unique();
-
-            // Menambahkan foreign key constraint
-            $table->foreign('id_ekskul')->references('id_ekskul')->on('ekskul')->onDelete('cascade');
-            $table->foreign('id_user')->references('id_user')->on('users')->onDelete('cascade');
         });
     }
 

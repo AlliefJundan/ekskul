@@ -24,12 +24,7 @@ class DashboardController extends Controller
 
     public function dashboard_admin()
     {
-        $ekskuls = Ekskul::with([
-            'pembina.user',
-            'ketua.user',
-            'sekertaris.user',
-            'bendahara.user'
-        ])->get();
+        $ekskuls = Ekskul::all();
 
         return view('dashboard_admin', compact('ekskuls'));
     }

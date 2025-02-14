@@ -32,8 +32,6 @@ class EkskulController extends Controller
 
     public function store(Request $request)
     {
-
-        // dd($request->all());
         // Validasi input
         $request->validate([
             'nama_ekskul' => 'required|string|max:255',
@@ -41,17 +39,13 @@ class EkskulController extends Controller
             'deskripsi' => 'nullable|string',
         ]);
 
-        // Simpan gambar
-        $image = $request->file('image'); // Pastikan nama input sesuai
-
-        // Simpan ke database
-        $ekskul = Ekskul::create([
+        // Simpan ekskul ke database
+        Ekskul::create([
             'nama_ekskul' => $request->nama_ekskul,
-            'gambar' =>
-            $request->file('image')->store('pp_ekskul', 'public'),
+            'gambar' => $request->file('image')->store('pp_ekskul', 'public'),
             'deskripsi' => $request->deskripsi,
             'slug' => Str::slug($request->nama_ekskul),
-            'jml_anggota' => '0',
+            'jml_anggota' => 0,
         ]);
 
         return redirect()->back()->with('success', 'Ekskul berhasil ditambahkan!');

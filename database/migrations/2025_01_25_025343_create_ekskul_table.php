@@ -11,30 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::disableForeignKeyConstraints();
-
         Schema::create('ekskul', function (Blueprint $table) {
-            $table->id("id_ekskul")->primary();
+            $table->id("id_ekskul");
             $table->string("nama_ekskul", 30);
             $table->string("slug", 255)->unique();
-            $table->integer("jml_anggota");
+            $table->integer("jml_anggota")->default(0);
             $table->text('deskripsi')->nullable();
             $table->string("gambar")->nullable();
-            $table->unsignedBigInteger("id_pembina")->nullable();
-            $table->unsignedBigInteger("id_ketua")->nullable();
-            $table->unsignedBigInteger("id_sekertaris")->nullable();
-            $table->unsignedBigInteger("id_bendahara")->nullable();
             $table->integer("jadwal")->nullable();
-
-            $table->foreign("id_pembina")->references("id_jabatan")->on("jabatan");
-            $table->foreign("id_ketua")->references("id_jabatan")->on("jabatan");
-            $table->foreign("id_sekertaris")->references("id_jabatan")->on("jabatan");
-            $table->foreign("id_bendahara")->references("id_jabatan")->on("jabatan");
+            $table->timestamps();
         });
-
-
-
-        Schema::enableForeignKeyConstraints();
     }
 
 

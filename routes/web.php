@@ -34,7 +34,6 @@ Route::get('/kuis/hasil/{slug}', [KuisController::class, 'hasilKuis'])->name('ku
 Route::get('/kuis/hasil/jawaban/{slug}', [HasilKuisController::class, 'hasil'])
     ->name('hasil_kuis.hasil');
 
-
 Route::get('/kuis', function () {
     return view('kuis');
 });
@@ -61,6 +60,9 @@ Route::get('/ekskul/{slug}', [EkskulController::class, 'show'])->name('ekskul.sh
 Route::get('/ekskul_user', function () {
     return view('ekskul_user');
 });
+
+//anggota ekskul
+Route::get('/ekskul/anggota/{slug}', [AkunController::class, 'anggotaShow'])->name('anggota.show');
 
 //dashboard
 Route::middleware(['auth'])->group(function () {

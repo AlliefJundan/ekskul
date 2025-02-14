@@ -14,7 +14,7 @@
         <form action="{{ url('/absensi') }}" method="POST" class="flex items-center gap-4">
             @csrf
             <button type="submit"
-                class="bg-blue-900 text-white px-6 py-2 rounded-md shadow-md text-lg font-semibold">Tambah</button>
+                class="bg-blue-900 text-black px-6 py-2 rounded-md shadow-md text-lg font-semibold">Tambah</button>
             <select name="kehadiran" class="p-2 border border-blue-900 rounded text-lg text-black">
                 <option value="hadir">Hadir</option>
                 <option value="izin">Izin</option>
@@ -26,10 +26,10 @@
             <input type="hidden" name="tanggal" value="{{ now()->toDateString() }}">
         </form>
     </div>
-    <div class="bg-blue-900 text-white p-6 mt-6 rounded-md shadow-md mx-10">
+    <div class="bg-blue-900 text-black p-6 mt-6 rounded-md shadow-md mx-10">
         <table class="w-full text-lg">
             <thead>
-                <tr class="border-b border-black">
+                <tr class="border-b border-ekskul2">
                     <th class="p-3">Tanggal</th>
                     <th class="p-3">Kehadiran</th>
                     <th class="p-3">Status</th>
@@ -37,7 +37,7 @@
             </thead>
             <tbody>
                 @foreach ($absensi as $absen)
-                    <tr class="border-b border-black ">
+                    <tr class="border-b border-ekskul2">
                         <td class="p-3">{{ $absen->tanggal }}</td>
                         <td class="p-3">{{ ucfirst($absen->kehadiran) }}</td>
                         <td class="p-3">{{ ucfirst($absen->status) }}</td>

@@ -24,14 +24,8 @@ class JabatanFactory extends Factory
     {
         $namaJabatan = $this->faker->words(3, true);
         return [
-            'kode_jabatan' => $this->faker->lexify('???') . $this->faker->numerify('###'),
             'nama_jabatan' => $namaJabatan,
             'slug' => Str::slug($namaJabatan),
-            'id_ekskul' => $this->faker->randomElement(Ekskul::pluck('id_ekskul')->toArray()),
-            'id_user' => $this->faker->randomElement(User::pluck('id_user')->toArray()),
-
-
-
         ];
     }
 }

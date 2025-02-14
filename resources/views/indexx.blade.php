@@ -1,4 +1,1 @@
-<x-layout>
 
-	
-</x-layout>
