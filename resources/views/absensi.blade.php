@@ -37,7 +37,7 @@
             </thead>
             <tbody>
                 @foreach ($absensi as $absen)
-                    <tr class="border-b border-gray-300">
+                    <tr class="border-b border-black ">
                         <td class="p-3">{{ $absen->tanggal }}</td>
                         <td class="p-3">{{ ucfirst($absen->kehadiran) }}</td>
                         <td class="p-3">{{ ucfirst($absen->status) }}</td>
