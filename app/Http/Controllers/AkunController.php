@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Kelas;
 use App\Models\Ekskul;
+use App\Models\EkskulUser;
 use App\Models\Jabatan;
 use Illuminate\Http\Request;
 
@@ -72,14 +73,10 @@ class AkunController extends Controller
 
     public function anggotaShow($slug)
     {
-        // Find ekskul by slug
         $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
-
-        // Retrieve users for the ekskul with their position (jabatan)
         $anggota = $ekskul->users()->withPivot('jabatan')->get();
-
-
-        // Return data to the view
-        return view('anggota', compact('ekskul', 'anggota'));
+        $jabatan = EkskulUser::where('jabatan')->get()
+            ->sortByDesc('jabatan');
+        return view('anggota', compact('ekskul', 'anggota', 'jabatan'));
     }
 }

@@ -49,8 +49,5 @@ class User extends Authenticatable
     }
 
     // Relasi ke Jabatan (jika diperlukan)
-    public function jabatan()
-    {
-        return $this->hasOne(Jabatan::class, 'id_user', 'id_user');
-    }
+
 }

@@ -21,9 +21,9 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel 
+## Learning Laravel
 
-allief = 238 commit
+allief = 238
 rizka = 250
 zaqiah = 295
 rizla = 150
