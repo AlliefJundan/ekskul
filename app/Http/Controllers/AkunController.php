@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Kelas;
+use App\Models\Ekskul;
+use App\Models\Jabatan;
+use Illuminate\Http\Request;
 
 class AkunController extends Controller
 {
@@ -65,5 +68,18 @@ class AkunController extends Controller
         $akun->delete();
 
         return redirect()->route('akun.index')->with('success', 'Akun berhasil dihapus!');
+    }
+
+    public function anggotaShow($slug)
+    {
+        // Find ekskul by slug
+        $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
+
+        // Retrieve users for the ekskul with their position (jabatan)
+        $anggota = $ekskul->users()->withPivot('jabatan')->get();
+
+
+        // Return data to the view
+        return view('anggota', compact('ekskul', 'anggota'));
     }
 }

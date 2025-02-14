@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -21,7 +22,6 @@ class User extends Authenticatable
         'nama',
         'id_kelas',
         'id_ekskul',
-        'id_jabatan',
         'role',
     ];
 
@@ -41,32 +41,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Kelas::class, 'id_kelas', 'id_kelas');
     }
-    public function ekskul()
+    public function ekskuls()
     {
-        return $this->hasMany(Ekskul::class, 'id_ekskul');
+        return $this->belongsToMany(Ekskul::class, 'ekskul_user', 'user_id', 'ekskul_id')
+            ->withPivot('jabatan') // Menyertakan kolom pivot seperti jabatan
+            ->withTimestamps();
     }
+
+    // Relasi ke Jabatan (jika diperlukan)
     public function jabatan()
     {
-        return $this->hasOne(Jabatan::class, 'id_user');
-    }
-
-    public function ekskul_pembina()
-    {
-        return $this->hasMany(Ekskul::class, 'id_pembina', 'id_user');
-    }
-
-    public function ekskul_ketua()
-    {
-        return $this->hasMany(Ekskul::class, 'id_ketua', 'id_user');
-    }
-
-    public function ekskul_sekertaris()
-    {
-        return $this->hasMany(Ekskul::class, 'id_sekertaris', 'id_user');
-    }
-
-    public function ekskul_bendahara()
-    {
-        return $this->hasMany(Ekskul::class, 'id_bendahara', 'id_user');
+        return $this->hasOne(Jabatan::class, 'id_user', 'id_user');
     }
 }

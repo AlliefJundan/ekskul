@@ -32,35 +32,21 @@ class EkskulController extends Controller
 
     public function store(Request $request)
     {
-
-        // dd($request->all());
         // Validasi input
         $request->validate([
             'nama_ekskul' => 'required|string|max:255',
             'image' => 'required|image|mimes:png,jpg,jpeg',
             'deskripsi' => 'nullable|string',
-            'id_pembina' => 'nullable|integer|exists:jabatan,id_jabatan',
-            'id_ketua' => 'nullable|integer|exists:jabatan,id_jabatan',
-            'id_sekertaris' => 'nullable|integer|exists:jabatan,id_jabatan',
-            'id_bendahara' => 'nullable|integer|exists:jabatan,id_jabatan',
-            'jml_anggota' => 'required|integer|min:1',
+
         ]);
 
-        // Simpan gambar
-        $image = $request->file('image'); // Pastikan nama input sesuai
-
-        // Simpan ke database
-        $ekskul = Ekskul::create([
+        // Simpan ekskul ke database
+        Ekskul::create([
             'nama_ekskul' => $request->nama_ekskul,
-            'gambar' =>
-            $request->file('image')->store('pp_ekskul', 'public'),
+            'gambar' => $request->file('image')->store('pp_ekskul', 'public'),
             'deskripsi' => $request->deskripsi,
             'slug' => Str::slug($request->nama_ekskul),
-            'id_pembina' => $request->id_pembina ?? null,
-            'id_ketua' => $request->id_ketua ?? null,
-            'id_sekertaris' => $request->id_sekertaris ?? null,
-            'id_bendahara' => $request->id_bendahara ?? null,
-            'jml_anggota' => $request->jml_anggota,
+            'jml_anggota' => 0,
         ]);
 
         return redirect()->back()->with('success', 'Ekskul berhasil ditambahkan!');

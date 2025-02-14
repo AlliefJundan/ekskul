@@ -4,8 +4,8 @@ namespace Database\Factories;
 
 use App\Models\User;
 use App\Models\Kelas;
-use App\Models\Ekskul;
 use App\Models\Jabatan;
+use App\Models\Ekskul;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
@@ -26,7 +26,6 @@ class UserFactory extends Factory
             'password' => bcrypt('password'), // Set a default password (you can change it as needed)
             'nama' => $this->faker->name,
             'id_kelas' => $this->faker->randomElement([Kelas::inRandomOrder()->first()?->id_kelas, null]), // Random Kelas ID or null
-            'id_ekskul' => $this->faker->randomElement([Ekskul::inRandomOrder()->first()?->id_ekskul, null]), // Random Ekskul ID or null
             'role' => $this->faker->randomElement(['admin', 'user']), // Randomly assign 'admin' or 'user'
         ];
     }
