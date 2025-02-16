@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="p-4 text-white rounded-lg shadow-md bg-maroon-700">
+    <div class="p-4 text-white rounded-lg shadow-md bg-ekskul2">
         <h2 class="mb-4 text-xl font-semibold">Halaman Akun</h2>
         <div class="flex items-center justify-between mb-4">
             <input type="text" id="searchInput" placeholder="Cari" onkeyup="filterTable()"
