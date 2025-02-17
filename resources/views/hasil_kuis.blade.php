@@ -3,7 +3,7 @@
     <!-- Tombol Kembali -->
     <div class="mb-4">
         <x-button1 href="{{ route('kuis.show', $ekskul->slug) }}">
-            ⬅ Kembali ke Daftar Kuis
+            Kembali
         </x-button1>
     </div>
 

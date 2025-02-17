@@ -10,6 +10,7 @@ use App\Http\Controllers\KuisController;
 use App\Http\Controllers\EkskulController;
 use App\Http\Controllers\MateriController;
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HasilKuisController;
 
@@ -62,7 +63,10 @@ Route::get('/ekskul_user', function () {
 });
 
 //anggota ekskul
-Route::get('/ekskul/anggota/{slug}', [AkunController::class, 'anggotaShow'])->name('anggota.show');
+Route::get('/ekskul/anggota/{slug}', [AnggotaController::class, 'show'])->name('anggota.show');
+Route::get('/ekskul/jabatan/{slug}', [AnggotaController::class, 'jabatanShow'])->name('jabatan.jabatanShow');
+Route::post('/ekskul/anggota/{slug}', [AnggotaController::class, 'keluar'])->name('anggota.keluar');
+
 
 //dashboard
 Route::middleware(['auth'])->group(function () {
