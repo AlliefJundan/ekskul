@@ -102,5 +102,8 @@ Route::get('/materi/download/{id}', [MateriController::class, 'download'])->name
 
 
 //Absensi
-Route::get('/absensi', [AbsensiController::class, 'index'])->middleware('auth');
-Route::post('/absensi', [AbsensiController::class, 'store'])->middleware('auth');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
+    Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
+});
+Route::get('/test-insert', [AbsensiController::class, 'testInsert']);

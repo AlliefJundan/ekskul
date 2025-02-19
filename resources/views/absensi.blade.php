@@ -11,8 +11,9 @@
         @endforeach
     </div>
     <div class="flex justify-start px-10 mt-6">
-        <form action="{{ url('/absensi') }}" method="POST" class="flex items-center gap-4">
+        <form action="{{ route('absensi.store') }}" method="POST" class="flex items-center gap-4">
             @csrf
+            <input type="hidden" name="id_user" value="{{ Auth::user()->id_user }}">
             <button type="submit"
                 class="px-6 py-2 text-lg font-semibold text-white bg-blue-900 rounded-md shadow-md">Tambah</button>
             <select name="kehadiran" class="p-2 text-lg text-black border border-blue-900 rounded">
@@ -21,9 +22,7 @@
                 <option value="sakit">Sakit</option>
                 <option value="alpa">Alfa</option>
             </select>
-            <input type="hidden" name="id_ekskul" value="{{ Auth::user()->id_ekskul }}">
-            <input type="hidden" name="status" value="belum terverifikasi">
-            <input type="hidden" name="tanggal" value="{{ now()->toDateString() }}">
+            <input type="hidden" name="id_ekskul" value="1">
         </form>
     </div>
     <div class="p-6 mx-10 mt-6 text-white bg-blue-900 rounded-md shadow-md">

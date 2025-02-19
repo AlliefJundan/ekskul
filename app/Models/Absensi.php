@@ -11,7 +11,6 @@ class Absensi extends Model
 
     protected $table = 'absensi';
     protected $primaryKey = 'id_absensi';
-    public $timestamps = false;
 
     protected $fillable = [
         'id_ekskul',
@@ -20,7 +19,6 @@ class Absensi extends Model
         'kehadiran',
         'status',
     ];
-
     public function ekskul()
     {
         return $this->belongsTo(Ekskul::class, 'id_ekskul');
