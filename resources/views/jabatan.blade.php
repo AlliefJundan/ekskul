@@ -9,8 +9,11 @@
         ];
     @endphp
 
+    <div class="flex justify-center">
+        <h1 class="text-2xl font-bold mb-4">Pejabat Ekskul {{ $ekskul->nama_ekskul }}</h1>
+    </div>
     <a href="{{ route('anggota.show', $ekskul->slug) }}"
-        class="inline-block px-4 py-2 mb-3 bg-ekskul hover:bg-orange-600 text-ekskul2 font-semibold rounded-lg shadow-md">
+        class="inline-block px-4 py-2 mb-3 mt-3 bg-ekskul hover:bg-orange-600 text-ekskul2 font-bold rounded-lg shadow-md">
         Kembali
     </a>
 
@@ -19,10 +22,10 @@
             <table class="w-full bg-white rounded-lg shadow-md border-collapse border border-gray-300">
                 <thead>
                     <tr class="bg-gray-100 text-gray-800">
-                        <th class="py-2 px-4 border">No</th>
-                        <th class="py-2 px-4 border">Jabatan</th>
-                        <th class="py-2 px-4 border">Pemegang Jabatan</th>
-                        <th class="py-2 px-4 border">Aksi</th>
+                        <th class="py-2 px-4 text-left">No</th>
+                        <th class="py-2 px-4 text-left">Jabatan</th>
+                        <th class="py-2 px-4 text-left">Pemegang Jabatan</th>
+                        <th class="py-2 px-4 text-left">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -32,12 +35,12 @@
                         @endphp
                         <tr class="hover:bg-indigo-100 transition">
 
-                            <td class="py-3 px-4 border">{{ $no++ }}</td>
-                            <td class="py-3 px-4 border font-bold">{{ $jabatanNama }}</td>
-                            <td class="py-3 px-4 border">
+                            <td class="py-3 px-4">{{ $no++ }}</td>
+                            <td class="py-3 px-4  font-bold">{{ $jabatanNama }}</td>
+                            <td class="py-3 px-4 ">
                                 {{ $pemegangJabatan->nama ?? 'Belum Ada' }}
                             </td>
-                            <td class="py-3 px-4 border">
+                            <td class="py-3 px-4 ">
                                 <div class="flex justify-start">
                                     <x-modal trigger="Ganti" title="Ganti Pemegang {{ $jabatanNama }}"
                                         buttonClass="bg-ekskul text-ekskul2 px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition">
@@ -61,7 +64,6 @@
                                                     @endif
                                                 @endforeach
                                             </select>
-
                                             <div class="flex justify-end mt-4">
                                                 <input type="submit" value="Simpan"
                                                     class="bg-ekskul text-ekskul2 px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition">
@@ -97,6 +99,4 @@
                     @endforeach
                 </tbody>
             </table>
-        </div>
-    </div>
 </x-layout>

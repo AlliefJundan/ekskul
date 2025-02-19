@@ -1,41 +1,43 @@
 <x-layout>
     <div class="container mx-auto mt-8">
-        <h1 class="text-2xl font-bold mb-4">Kuis untuk {{ $ekskul->slug }}</h1>
+        <h1 class="text-2xl font-bold mb-4">Kuis untuk {{ $ekskul->nama_ekskul }}</h1>
         <!-- Form Pencarian -->
         <div class="flex justify-between mb-4">
             <div>
                 @if (auth()->user()->role == 'admin')
                     <x-modal title="Tambah Kuis" trigger="Tambah Kuis">
-                    <form action="{{ route('kuis.store') }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
-                        <div class="mb-4">
-                            <label class="block text-white">Nama Kuis</label>
-                            <input type="text" name="nama_kuis" class="w-full border border-gray-300 rounded-md p-2"
-                                placeholder="Masukan Nama Kuis" required>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-white">Link Kuis</label>
-                            <input type="text" name="isi_kuis" class="w-full border border-gray-300 rounded-md p-2"
-                                placeholder="Masukan Link Kuis" required>
-                        </div>
-                        <div class="mt-6 flex justify-center items-end">
-                            <button type="submit"
-                                class="bg-ekskul font-bold text-ekskul2 px-4 py-2 rounded-md ml-2 hover:bg-blue-600 transition">
-                                ✔ Simpan
-                            </button>
-                        </div>
-                    </form>
-                </x-modal>
+                        <form action="{{ route('kuis.store') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
+                            <div class="mb-4">
+                                <label class="block text-white">Nama Kuis</label>
+                                <input type="text" name="nama_kuis"
+                                    class="w-full border border-gray-300 rounded-md p-2" placeholder="Masukan Nama Kuis"
+                                    required>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-white">Link Kuis</label>
+                                <input type="text" name="isi_kuis"
+                                    class="w-full border border-gray-300 rounded-md p-2" placeholder="Masukan Link Kuis"
+                                    required>
+                            </div>
+                            <div class="mt-6 flex justify-center items-end">
+                                <button type="submit"
+                                    class="bg-ekskul font-bold text-ekskul2 px-4 py-2 rounded-md ml-2 hover:bg-blue-600 transition">
+                                    ✔ Simpan
+                                </button>
+                            </div>
+                        </form>
+                    </x-modal>
                 @endif
-                
+
             </div>
             @if (auth()->user()->role == 'admin')
-            <a type="button"
-                class="bg-ekskul ml-4 text-ekskul2 px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition"
-                href="{{ route('kuis.hasilKuis', ['slug' => $ekskul->slug]) }}">Lihat Hasil</a>    
-            @endif   
-              <div class="ml-auto">
+                <a type="button"
+                    class="bg-ekskul ml-4 text-ekskul2 px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition"
+                    href="{{ route('kuis.hasilKuis', ['slug' => $ekskul->slug]) }}">Lihat Hasil</a>
+            @endif
+            <div class="ml-auto">
                 <form method="GET" action="{{ route('kuis.show', $ekskul->slug) }}" class="flex">
                     <input type="text" name="search" value="{{ request('search') }}"
                         class="px-4 py-2 border rounded-l-lg bg-gray-200" placeholder="Cari kuis...">
