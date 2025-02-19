@@ -1,11 +1,12 @@
 @php
+
     $no = 1;
     $jabatanMap = [
         1 => 'Pembina',
         2 => 'Ketua',
         3 => 'Sekretaris',
         4 => 'Bendahara',
-        5 => 'Anggota',
+        null => 'Anggota',
     ];
 @endphp
 <x-layout>
@@ -13,19 +14,25 @@
         <x-button1 href="{{ route('ekskul.show', $ekskul->slug) }}">
             Kembali
         </x-button1>
+
         <x-modal trigger="Jabatan" title="Jabatan" class="flex justify-center"
             buttonClass="bg-ekskul2 text-white px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition">
-            @foreach ($anggota as $item)
-                @if (($item->pivot->jabatan ?? null) != 5)
-                    <div class="text-white font-bold h-10">
-                        {{ $jabatanMap[$item->pivot->jabatan] ?? '-' }} = {{ $item->nama }}
-                    </div>
-                @endif
+            @php
+                $jabatanFix = [1, 2, 3, 4]; // Jabatan yang ingin ditampilkan
+            @endphp
+            @foreach ($jabatanFix as $jabatanId)
+                @php
+                    $pemegangJabatan = $anggota->firstWhere('pivot.jabatan', $jabatanId);
+                @endphp
+                <div class="text-white font-bold h-10">
+                    {{ $jabatanMap[$jabatanId] }} = {{ $pemegangJabatan->nama ?? 'Belum Ada' }}
+                </div>
             @endforeach
-            <div class="flex justify-center">
+            <div class="flex justify-center mt-4">
                 <x-button1 href="{{ route('jabatan.jabatanShow', $ekskul->slug) }}">Ubah</x-button1>
             </div>
         </x-modal>
+
     </div>
     <div class="bg-indigo-900 rounded-lg mt-4 shadow-lg hover:shadow-xl transition duration-300 p-5">
         <div class="shadow-lg rounded-lg p-4 flex justify-between items-center bg-white mb-3">
@@ -40,25 +47,18 @@
                     </tr>
                 </thead>
                 <tbody>
-
-                    @foreach ($anggota as $anggota)
+                    @foreach ($anggota as $item)
                         <tr class="hover:bg-indigo-100 transition">
                             <td class="py-2 px-4">{{ $no++ }}</td>
-                            <td class="py-2 px-4">{{ $anggota->nama }}</td>
+                            <td class="py-2 px-4">{{ $item->nama }}</td>
                             <td class="py-2 px-4">
-                                {{ $anggota->kelas->kelas ?? '-' }}
-                                {{ $anggota->kelas->jurusan ?? '-' }}
-                                {{ $anggota->kelas->nomor_kelas ?? '-' }}
+                                {{ optional($item)->kelas->kelas ?? '-' }}
+                                {{ optional($item)->kelas->jurusan ?? '-' }}
+                                {{ optional($item)->kelas->nomor_kelas ?? '-' }}
                             </td>
-                            @if (($anggota->pivot->jabatan ?? null) == 5)
-                                <td class="py-2 px-4">
-                                    {{ $jabatanMap[$anggota->pivot->jabatan] ?? '-' }}
-                                </td>
-                            @else
-                                <td class="py-2 px-4 font-bold">
-                                    {{ $jabatanMap[$anggota->pivot->jabatan] ?? '-' }}
-                                </td>
-                            @endif
+                            <td class="py-2 px-4 {{ $item->pivot->jabatan !== null ? 'font-bold' : '' }}">
+                                {{ $jabatanMap[$item->pivot->jabatan] ?? '-' }}
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

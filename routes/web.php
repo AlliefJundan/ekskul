@@ -66,6 +66,8 @@ Route::get('/ekskul_user', function () {
 Route::get('/ekskul/anggota/{slug}', [AnggotaController::class, 'show'])->name('anggota.show');
 Route::get('/ekskul/jabatan/{slug}', [AnggotaController::class, 'jabatanShow'])->name('jabatan.jabatanShow');
 Route::post('/ekskul/anggota/{slug}', [AnggotaController::class, 'keluar'])->name('anggota.keluar');
+Route::post('/ekskul/jabatan/ganti/{slug}', [AnggotaController::class, 'jabatanUpdate'])->name('jabatan.jabatanUpdate');
+Route::post('/ekskul/jabatan/lepas/{slug}', [AnggotaController::class, 'jabatanRemove'])->name('jabatan.jabatanRemove');
 
 
 //dashboard
