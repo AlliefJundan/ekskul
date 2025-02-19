@@ -35,4 +35,5 @@ class AnggotaController extends Controller
             'nama_baru' => 'required|string|min:6',
         ]);
     }
+    
 }

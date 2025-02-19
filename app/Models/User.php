@@ -49,5 +49,9 @@ class User extends Authenticatable
     }
 
     // Relasi ke Jabatan (jika diperlukan)
+    public function ekskulUser()
+    {
+        return $this->hasOne(EkskulUser::class, 'user_id');
+    }
 
 }

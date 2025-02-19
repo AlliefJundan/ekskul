@@ -5,7 +5,8 @@
         <!-- Form Pencarian -->
         <div class="flex justify-between mb-4">
             <div>
-                <x-modal title="Tambah Materi" trigger="Tambah Materi">
+                @if (auth()->user()->role == 'admin')
+                    <x-modal title="Tambah Materi" trigger="Tambah Materi">
                     <form action="{{ route('materi.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
@@ -29,6 +30,8 @@
                         </div>
                     </form>
                 </x-modal>
+                @endif
+                
             </div>
 
             <div class="ml-auto">
