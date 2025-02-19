@@ -76,16 +76,11 @@ Route::middleware(['auth'])->group(function () {
 });
 
 //akun
-Route::resource('akun', AkunController::class);
-Route::post(
-    '/ekskul/store',
-    [
-        EkskulController::class,
-        'store'
-    ]
-)->name('ekskul.store');
 
-Route::resource('akun', AkunController::class);
+Route::middleware('role:admin')->group(function () {
+    Route::resource('akun', AkunController::class);
+});
+
 Route::post('/ekskul/store', [EkskulController::class, 'store'])->name('ekskul.store');
 Route::get('/get-pembina/{id_jabatan}', [EkskulController::class, 'getPembinaByJabatan'])->name('get-pembina');
 

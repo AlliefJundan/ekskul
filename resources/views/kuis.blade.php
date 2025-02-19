@@ -4,7 +4,8 @@
         <!-- Form Pencarian -->
         <div class="flex justify-between mb-4">
             <div>
-                <x-modal title="Tambah Kuis" trigger="Tambah Kuis">
+                @if (auth()->user()->role == 'admin')
+                    <x-modal title="Tambah Kuis" trigger="Tambah Kuis">
                     <form action="{{ route('kuis.store') }}" method="POST">
                         @csrf
                         <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
@@ -26,11 +27,15 @@
                         </div>
                     </form>
                 </x-modal>
+                @endif
+                
             </div>
+            @if (auth()->user()->role == 'admin')
             <a type="button"
                 class="bg-ekskul ml-4 text-ekskul2 px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition"
-                href="{{ route('kuis.hasilKuis', ['slug' => $ekskul->slug]) }}">Lihat Hasil</a>
-            <div class="ml-auto">
+                href="{{ route('kuis.hasilKuis', ['slug' => $ekskul->slug]) }}">Lihat Hasil</a>    
+            @endif   
+              <div class="ml-auto">
                 <form method="GET" action="{{ route('kuis.show', $ekskul->slug) }}" class="flex">
                     <input type="text" name="search" value="{{ request('search') }}"
                         class="px-4 py-2 border rounded-l-lg bg-gray-200" placeholder="Cari kuis...">

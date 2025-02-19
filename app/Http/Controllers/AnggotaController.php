@@ -101,4 +101,5 @@ class AnggotaController extends Controller
         return redirect()->route('jabatan.jabatanShow', $ekskul->slug)
             ->with('success', 'Jabatan berhasil dilepas!');
     }
+    
 }

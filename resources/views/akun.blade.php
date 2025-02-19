@@ -5,7 +5,7 @@
             <input type="text" id="searchInput" placeholder="Cari" onkeyup="filterTable()"
                 class="w-auto p-2 text-black border rounded">
 
-            <button onclick="openTambahModal()" class="ml-AU px-3 py-2 text-white font-bold bg-black rounded-lg">+Tambah
+            <button onclick="openTambahModal()" class="px-3 py-2 font-bold text-white bg-black rounded-lg ml-AU">+Tambah
                 User</button>
         </div>
 
@@ -17,27 +17,27 @@
                     <th class="p-2 text-gray-800 border-gray-300">Nama</th>
                     <th class="p-2 text-gray-800 border-gray-300">Username</th>
                     <th class="p-2 text-gray-800 border-gray-300">Role</th>
-                    <th class="p-2 text-gray-800 border-gray-300 flex justify-center">Aksi</th>
+                    <th class="flex justify-center p-2 text-gray-800 border-gray-300">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($akun as $index => $user)
                     <tr class="text-center {{ $index % 2 == 0 ? 'bg-maroon-600' : 'bg-maroon-700' }}">
-                        <td class="p-2 text-gray-800 border border-gray-300 font-bold">{{ $index + 1 }}</td>
-                        <td class="p-2 text-gray-800 border border-gray-300 font-bold">{{ $user->id_user }}</td>
-                        <td class="p-2 text-gray-800 border border-gray-300 font-bold">{{ $user->nama }}</td>
-                        <td class="p-2 text-gray-800 border border-gray-300 font-bold">{{ $user->username }}</td>
-                        <td class="p-2 text-gray-800 border border-gray-300 font-bold">{{ $user->role }}</td>
+                        <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $index + 1 }}</td>
+                        <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->id_user }}</td>
+                        <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->nama }}</td>
+                        <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->username }}</td>
+                        <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->role }}</td>
                         <td class="flex justify-center gap-2 p-2 border border-gray-300">
                             <button
                                 onclick="openDetailModal('{{ $user->id_user }}', '{{ $user->username }}', '{{ $user->nama }}', '{{ $user->ekskul }}', '{{ $user->jabatan }}')"
-                                class="px-2 py-1 text-white bg-green-500 rounded font-bold">
+                                class="px-2 py-1 font-bold text-white bg-green-500 rounded">
                                 Detail
                             </button>
 
                             <button
                                 onclick="openUbahModal('{{ $user->id_user }}', '{{ $user->username }}', '{{ $user->nama }}', '{{ $user->role }}')"
-                                class="px-2 text-white bg-blue-500 rounded font-bold">
+                                class="px-2 font-bold text-white bg-blue-500 rounded">
                                 Ubah
                             </button>
 
@@ -46,7 +46,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
-                                    class="px-2 py-1 text-white bg-red-500 rounded font-bold">Hapus</button>
+                                    class="px-2 py-1 font-bold text-white bg-red-500 rounded">Hapus</button>
                             </form>
                         </td>
                     </tr>
@@ -58,32 +58,32 @@
     <!-- Modal Tambah Akun -->
     <div id="modalTambahAkun" class="fixed inset-0 z-50 hidden overflow-y-auto bg-gray-900 bg-opacity-50">
         <div class="flex items-center justify-center min-h-screen">
-            <div class="bg-blue-800 p-6 rounded-lg shadow-lg w-96 text-white relative">
-                <button onclick="closeTambahModal()" class="absolute top-2 right-3 text-white font-bold">✖</button>
+            <div class="relative p-6 text-white bg-blue-800 rounded-lg shadow-lg w-96">
+                <button onclick="closeTambahModal()" class="absolute font-bold text-white top-2 right-3">✖</button>
                 <h2 class="mb-4 text-xl font-semibold text-center">Tambah User</h2>
                 <form action="{{ route('akun.store') }}" method="POST">
                     @csrf
-                    <div class="grid grid-cols-3 gap-2 items-center mb-3">
-                        <label class="font-bold col-span-1 text-right">Nama :</label>
+                    <div class="grid items-center grid-cols-3 gap-2 mb-3">
+                        <label class="col-span-1 font-bold text-right">Nama :</label>
                         <input type="text" name="nama" placeholder="Masukan Nama"
-                            class="col-span-2 w-full p-2 rounded text-gray-800">
+                            class="w-full col-span-2 p-2 text-gray-800 rounded">
                     </div>
-                    <div class="grid grid-cols-3 gap-2 items-center mb-3">
-                        <label class="font-bold col-span-1 text-right">Username :</label>
+                    <div class="grid items-center grid-cols-3 gap-2 mb-3">
+                        <label class="col-span-1 font-bold text-right">Username :</label>
                         <input type="text" name="username" placeholder="Masukan Username"
-                            class="col-span-2 w-full p-2 rounded text-gray-800 " required>
+                            class="w-full col-span-2 p-2 text-gray-800 rounded " required>
                     </div>
-                    <div class="grid grid-cols-3 gap-2 items-center mb-3">
-                        <label class="font-bold col-span-1 text-right">Password :</label>
-                        <div class="relative col-span-2 w-full">
+                    <div class="grid items-center grid-cols-3 gap-2 mb-3">
+                        <label class="col-span-1 font-bold text-right">Password :</label>
+                        <div class="relative w-full col-span-2">
                             <input type="password" id="passwordInput" name="password" placeholder="Masukan Password"
-                                class="w-full p-2 rounded text-gray-800" required>
+                                class="w-full p-2 text-gray-800 rounded" required>
                             <button type="button" onclick="togglePassword()" class="absolute right-2 top-2">👁</button>
                         </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-2 items-center mb-3">
-                        <label class="font-bold col-span-1 text-right">Role :</label>
-                        <select name="role" class="col-span-2 w-full p-2 rounded text-gray-800">
+                    <div class="grid items-center grid-cols-3 gap-2 mb-3">
+                        <label class="col-span-1 font-bold text-right">Role :</label>
+                        <select name="role" class="w-full col-span-2 p-2 text-gray-800 rounded">
                             <option value="" disabled selected>Pilih Role</option>
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
@@ -91,8 +91,8 @@
                     </div>
                     <div class="flex justify-end gap-2 mt-4">
                         <button type="button" onclick="closeTambahModal()"
-                            class="px-4 py-2 bg-red-500 text-white rounded">Batal</button>
-                        <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded">Simpan</button>
+                            class="px-4 py-2 text-white bg-red-500 rounded">Batal</button>
+                        <button type="submit" class="px-4 py-2 text-white bg-green-500 rounded">Simpan</button>
                     </div>
                 </form>
             </div>
@@ -102,8 +102,8 @@
     <!-- Modal Detail Akun -->
     <div id="modalDetailAkun" class="fixed inset-0 z-50 hidden overflow-y-auto bg-gray-900 bg-opacity-50">
         <div class="flex items-center justify-center min-h-screen">
-            <div class="bg-blue-800 p-6 rounded-lg shadow-lg w-96 text-white relative">
-                <button onclick="closeDetailModal()" class="absolute top-2 right-3 text-white font-bold">✖</button>
+            <div class="relative p-6 text-white bg-blue-800 rounded-lg shadow-lg w-96">
+                <button onclick="closeDetailModal()" class="absolute font-bold text-white top-2 right-3">✖</button>
                 <h2 class="mb-4 text-xl font-semibold text-center">DETAIL</h2>
                 <div class="grid grid-cols-2 gap-2">
                     <span class="font-bold">User ID</span> <span>: <span id="detailId"></span></span>
@@ -119,44 +119,44 @@
     <!-- Modal Ubah Akun -->
     <div id="modalUbahAkun" class="fixed inset-0 z-50 hidden overflow-y-auto bg-gray-900 bg-opacity-50">
         <div class="flex items-center justify-center min-h-screen">
-            <div class="bg-blue-800 p-6 rounded-lg shadow-lg w-96 text-white relative">
-                <button onclick="closeUbahModal()" class="absolute top-2 right-3 text-white font-bold">✖</button>
+            <div class="relative p-6 text-white bg-blue-800 rounded-lg shadow-lg w-96">
+                <button onclick="closeUbahModal()" class="absolute font-bold text-white top-2 right-3">✖</button>
                 <h2 class="mb-4 text-xl font-semibold text-center">Ubah User</h2>
                 <form id="formUbahAkun" method="POST">
                     @csrf
                     @method('PUT')
                     <input type="hidden" id="ubahUserId" name="id_user">
 
-                    <div class="grid grid-cols-3 gap-2 items-center mb-3">
-                        <label class="font-bold col-span-1 text-right">Nama :</label>
+                    <div class="grid items-center grid-cols-3 gap-2 mb-3">
+                        <label class="col-span-1 font-bold text-right">Nama :</label>
                         <input type="text" id="ubahNama" name="nama" placeholder="Masukan Nama"
-                            class="col-span-2 w-full p-2 rounded text-gray-800">
+                            class="w-full col-span-2 p-2 text-gray-800 rounded">
                     </div>
-                    <div class="grid grid-cols-3 gap-2 items-center mb-3">
-                        <label class="font-bold col-span-1 text-right">Username :</label>
+                    <div class="grid items-center grid-cols-3 gap-2 mb-3">
+                        <label class="col-span-1 font-bold text-right">Username :</label>
                         <input type="text" id="ubahUsername" name="username" placeholder="Masukan Username"
-                            class="col-span-2 w-full p-2 rounded text-gray-800">
+                            class="w-full col-span-2 p-2 text-gray-800 rounded">
                     </div>
-                    <div class="grid grid-cols-3 gap-2 items-center mb-3">
-                        <label class="font-bold col-span-1 text-right">Password :</label>
-                        <div class="relative col-span-2 w-full">
+                    <div class="grid items-center grid-cols-3 gap-2 mb-3">
+                        <label class="col-span-1 font-bold text-right">Password :</label>
+                        <div class="relative w-full col-span-2">
                             <input type="password" id="ubahPassword" name="password" placeholder="Masukan Password"
-                                class="w-full p-2 rounded text-gray-800">
+                                class="w-full p-2 text-gray-800 rounded">
                             <button type="button" onclick="togglePasswordUbah()"
                                 class="absolute right-2 top-2">👁</button>
                         </div>
                     </div>
-                    <div class="grid grid-cols-3 gap-2 items-center mb-3">
-                        <label class="font-bold col-span-1 text-right">Role :</label>
-                        <select id="ubahRole" name="role" class="col-span-2 w-full p-2 rounded text-gray-800">
+                    <div class="grid items-center grid-cols-3 gap-2 mb-3">
+                        <label class="col-span-1 font-bold text-right">Role :</label>
+                        <select id="ubahRole" name="role" class="w-full col-span-2 p-2 text-gray-800 rounded">
                             <option value="user">User</option>
                             <option value="admin">Admin</option>
                         </select>
                     </div>
                     <div class="flex justify-end gap-2 mt-4">
                         <button type="button" onclick="closeUbahModal()"
-                            class="px-4 py-2 bg-red-500 text-white rounded">Batal</button>
-                        <button type="submit" class="px-4 py-2 bg-green-500 text-white rounded">Simpan</button>
+                            class="px-4 py-2 text-white bg-red-500 rounded">Batal</button>
+                        <button type="submit" class="px-4 py-2 text-white bg-green-500 rounded">Simpan</button>
                     </div>
                 </form>
             </div>
