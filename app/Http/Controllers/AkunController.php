@@ -51,13 +51,33 @@ class AkunController extends Controller
         return view('akun.edit', compact('akun'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id_user)
     {
-        $akun = User::findOrFail($id);
-        $akun->update($request->all());
+        $akun = User::findOrFail($id_user);
+
+        // Validasi input update
+        $request->validate([
+            'nama' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username,' . $id_user . ',id_user',
+            'password' => 'nullable|string|min:6', // Password boleh kosong (tidak diubah)
+            'role' => 'required|string',
+        ]);
+
+        // Update data
+        $akun->nama = $request->nama;
+        $akun->username = $request->username;
+        $akun->role = $request->role;
+
+        // Update password hanya jika diisi
+        if ($request->filled('password')) {
+            $akun->password = bcrypt($request->password);
+        }
+
+        $akun->save();
 
         return redirect()->route('akun.index')->with('success', 'Akun berhasil diperbarui!');
     }
+
 
     public function destroy($id)
     {
