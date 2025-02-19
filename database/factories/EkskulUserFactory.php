@@ -18,8 +18,9 @@ class EkskulUserFactory extends Factory
     {
         return [
             'user_id' => User::factory(), // Creates a new User
-            'ekskul_id' => $this->faker->randomElement([Ekskul::factory()]), // Creates a new Ekskul or sets it to null
-            'jabatan' => $this->faker->randomElement([Jabatan::factory()]), // Creates a new Jabatan or sets it to null
+            'ekskul_id' => 1, // Creates a new Ekskul or sets it to null
+            // 'ekskul_id' => $this->faker->randomElement([Ekskul::factory()]), // Creates a new Ekskul or sets it to null
+            'jabatan' => $this->faker->randomElement(Jabatan::pluck('id_jabatan')->unique()), // Creates a new Jabatan or sets it to null
         ];
     }
 }

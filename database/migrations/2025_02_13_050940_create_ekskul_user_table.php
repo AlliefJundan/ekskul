@@ -22,6 +22,9 @@ return new class extends Migration
             $table->foreign('user_id')->references('id_user')->on('users')->onDelete('cascade');
             $table->foreign('ekskul_id')->references('id_ekskul')->on('ekskul')->onDelete('cascade');
             $table->foreign('jabatan')->references('id_jabatan')->on('jabatan')->onDelete('cascade');
+
+            // Unique Constraint (ekskul_id + jabatan)
+            $table->unique(['ekskul_id', 'jabatan'], 'unique_ekskul_jabatan');
         });
     }
 
