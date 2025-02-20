@@ -6,10 +6,14 @@
         @if (Auth::check())
             <b>Haloo {{ Auth::user()->nama }}</b>
         @endif
-        <div class="text-center mt-5">
-            <h2 class="text-2xl font-bold ">AYO DAFTAR ESKUL BIAR</h2>
-            <h2 class="text-2xl font-bold ">HIDUP KAMU GA NGEBOSENIN</h2>
-        </div>
+
+       @if (!auth()->check() || (auth()->user()->role !== 'admin' && (!optional(auth()->user()->ekskulUser) || optional(auth()->user()->ekskulUser)->jabatan < 1 || optional(auth()->user()->ekskulUser)->jabatan > 4)))
+    <div class="text-center mt-5">
+        <h2 class="text-2xl font-bold">AYO DAFTAR ESKUL BIAR</h2>
+        <h2 class="text-2xl font-bold">HIDUP KAMU GA NGEBOSENIN</h2>
+    </div>
+@endif
+
 
         <!-- Tombol Tambah Ekskul -->
         <div x-data="{ modalTambah: false }">
@@ -112,10 +116,11 @@
                             ✖
                         </button>
                         <h2 class="text-xl font-bold mb-4">Detail Ekskul</h2>
-                        <p><strong>Nama Ekskul:</strong> {{ $ekskul->nama_ekskul ?? 'Belum ada' }}</p>
-                        <p><strong>Nama Pembina:</strong> {{ $ekskul->pembina->nama ?? 'Belum ada' }}</p>
-                        <p><strong>Nama Ketua:</strong> {{ $ekskul->ketua->nama ?? 'Belum ada' }}</p>
+                       <p><strong>Nama Ekskul:</strong> {{ $ekskul->nama_ekskul ?? 'Belum ada' }}</p>
+                        <p><strong>Nama Pembina:</strong> {{ $ekskul->pembina->user->nama ?? 'Belum ada' }}</p>
+                        <p><strong>Nama Ketua:</strong> {{ $ekskul->ketua->user->nama ?? 'Belum ada' }}</p>
                         <p><strong>Jumlah Anggota:</strong> {{ $ekskul->jml_anggota ?? 'Belum ada' }}</p>
+
                         <div class="mt-6 flex justify-end gap-3">
                             <a href="{{ route('ekskul.show', $ekskul->slug) }}"
                                 class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">

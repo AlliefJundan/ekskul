@@ -65,7 +65,7 @@
                     </tbody>
                 </table>
             </div>
-    </div>
+     </div>
 </x-layout>
 
 {{-- <td class="py-2 flex justify-start">
