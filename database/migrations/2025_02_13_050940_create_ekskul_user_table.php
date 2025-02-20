@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('ekskul_id');
-            $table->unsignedBigInteger('jabatan');
+            $table->unsignedBigInteger('jabatan')->nullable();
             $table->timestamps();
 
             // Foreign Key

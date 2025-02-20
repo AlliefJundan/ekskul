@@ -9,14 +9,6 @@ use Illuminate\Http\Request;
 
 class AnggotaController extends Controller
 {
-    public function sasda($slug)
-    {
-        $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
-        $anggota = EkskulUser::where('ekskul_id', $ekskul->id_ekskul)->get();
-
-        return view('anggota', compact('ekskul', 'anggota', 'jabatan'));
-    }
-
     public function show($slug)
     {
         $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
@@ -101,5 +93,50 @@ class AnggotaController extends Controller
         return redirect()->route('jabatan.jabatanShow', $ekskul->slug)
             ->with('success', 'Jabatan berhasil dilepas!');
     }
-    
+
+    public function keluarkanAnggota(Request $request)
+    {
+        $user = auth()->user();
+        // Ambil data anggota yang ingin dikeluarkan
+        $request->validate([
+            'user_id' => 'required|integer|exists:users,id_user',
+            'ekskul_id' => 'required|integer|exists:ekskul,id_ekskul',
+        ]);
+
+        $anggota = EkskulUser::where('user_id', $request->user_id)
+            ->where('ekskul_id', $request->ekskul_id) // Hanya di ekskul terkait
+            ->first();
+
+        if (!$anggota) {
+            return redirect()->back()->with('error', 'Anggota tidak ditemukan.');
+        }
+
+        // Dapatkan jabatan pengguna yang sedang login
+        $userJabatan = optional($user->ekskulUser)->jabatan;
+        $userRole = $user->role;
+
+        // Cek apakah pengguna memiliki hak untuk mengeluarkan anggota
+        $targetJabatan = $anggota->jabatan;
+        $canKick = false;
+
+        if ($userRole == 'admin') {
+            $canKick = true; // Admin bisa mengeluarkan siapa saja
+        } elseif ($userJabatan == 1 && $targetJabatan !== 1) {
+            $canKick = true; // Pembina bisa mengeluarkan Ketua dan di bawahnya, tapi tidak sesama Pembina
+        } elseif ($userJabatan == 2 && $targetJabatan !== 1 && $targetJabatan !== 2) {
+            $canKick = true; // Ketua hanya bisa mengeluarkan Sekretaris, Bendahara, dan Anggota
+        }
+
+        if (!$canKick) {
+            return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk mengeluarkan anggota ini.');
+        }
+
+        if (!$anggota) {
+            return redirect()->back()->with('error', 'Anggota tidak ditemukan di ekskul ini.');
+        }
+
+        $anggota->delete();
+
+        return redirect()->back()->with('success', 'Anggota berhasil dikeluarkan.');
+    }
 }
