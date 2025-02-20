@@ -7,22 +7,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class EkskulUser extends Model
 {
-    protected $table = 'ekskul_user';
-    protected $fillable = ['user_id', 'ekskul_id', 'jabatan'];
     use HasFactory;
 
+    protected $table = 'ekskul_user';
+    protected $fillable = ['user_id', 'ekskul_id', 'jabatan'];
+
+    // Relasi ke User
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
+    // Relasi ke Ekskul
     public function ekskul()
     {
-        return $this->belongsTo(Ekskul::class);
-    }
-
-    public function jabatan()
-    {
-        return $this->belongsTo(Jabatan::class);
+        return $this->belongsTo(Ekskul::class, 'ekskul_id');
     }
 }

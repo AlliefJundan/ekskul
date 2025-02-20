@@ -24,10 +24,13 @@ class EkskulController extends Controller
 
     public function show($slug)
     {
-        $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
+        $ekskul = Ekskul::where('slug', $slug)
+            ->with(['pembina.user', 'ketua.user']) // Load relasi pembina & ketua
+            ->firstOrFail();
 
         return view('ekskul.ekskul', compact('ekskul'));
     }
+
 
 
     public function store(Request $request)

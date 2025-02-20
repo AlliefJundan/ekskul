@@ -15,10 +15,15 @@
                             <a href="/" class="text-white font-semibold hover:text-amber-400">Home</a>
                             <a href="/materi" class="text-white font-semibold hover:text-amber-400">Materi</a>
                             <a href="" class="text-white font-semibold hover:text-amber-400">Kuis</a>
+                          
 
                             @auth
                                 <a href="{{ route('dashboard_admin') }}" class="text-white font-semibold hover:text-amber-400">Dashboard</a>
-                                
+                                 @if (auth()->user()->role == 'admin')
+                                    <a href="{{ route('akun.index') }}" class="text-white font-semibold hover:text-amber-400 flex items-center">
+                                        <span class="ml-2">Akun</span>
+                                    </a>
+                                @endif
                                 <form action="{{ route('logout') }}" method="post" class="inline">
                                     @csrf
                                     <button type="submit" class="text-white hover:text-amber-400">

@@ -105,6 +105,21 @@
                                 </td>
                             @endif
                         </tr>
+                        </thead>
+                <tbody>
+                    @foreach ($anggota as $item)
+                        <tr class="hover:bg-indigo-100 transition">
+                            <td class="py-2 px-4">{{ $no++ }}</td>
+                            <td class="py-2 px-4">{{ $item->nama }}</td>
+                            <td class="py-2 px-4">
+                                {{ optional($item)->kelas->kelas ?? '-' }}
+                                {{ optional($item)->kelas->jurusan ?? '-' }}
+                                {{ optional($item)->kelas->nomor_kelas ?? '-' }}
+                            </td>
+                            <td class="py-2 px-4 {{ $item->pivot->jabatan !== null ? 'font-bold' : '' }}">
+                                {{ $jabatanMap[$item->pivot->jabatan] ?? '-' }}
+                            </td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>

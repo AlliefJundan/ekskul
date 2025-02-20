@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -21,11 +20,27 @@ class Ekskul extends Model
     protected $primaryKey = 'id_ekskul';
     public $timestamps = false;
 
+    // Relasi untuk mendapatkan pembina (jabatan = 1)
+    public function pembina()
+    {
+        return $this->hasOne(EkskulUser::class, 'ekskul_id')
+            ->where('jabatan', 1)
+            ->with('user');
+    }
+
+    // Relasi untuk mendapatkan ketua (jabatan = 2)
+    public function ketua()
+    {
+        return $this->hasOne(EkskulUser::class, 'ekskul_id')
+            ->where('jabatan', 2)
+            ->with('user');
+    }
     // Relasi ke User melalui tabel pivot
     public function users()
     {
         return $this->belongsToMany(User::class, 'ekskul_user', 'ekskul_id', 'user_id')
-            ->withPivot('jabatan')
-            ->withTimestamps();
+        ->withPivot('jabatan')
+        ->withTimestamps();
     }
 }
+
