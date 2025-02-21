@@ -107,7 +107,7 @@
                         <p><strong>Nama Ekskul:</strong> {{ $ekskul->nama_ekskul ?? 'Belum ada' }}</p>
                         <p><strong>Nama Pembina:</strong> {{ $ekskul->pembina->user->nama ?? 'Belum ada' }}</p>
                         <p><strong>Nama Ketua:</strong> {{ $ekskul->ketua->user->nama ?? 'Belum ada' }}</p>
-                        <p><strong>Jumlah Anggota:</strong> {{ $ekskul->jml_anggota ?? 'Belum ada' }}</p>
+                       <p><strong>Jumlah Anggota:</strong> {{ $ekskul->users->count() }}</p>    
 
                         <div class="mt-6 flex justify-end gap-3">
                             <a href="{{ route('ekskul.show', $ekskul->slug) }}"
