@@ -1,6 +1,6 @@
   <x-layout>
       <section id="home"
-          class="relative w-full h-screen bg-cover bg-center bg-no-repeat flex items-center justify-center pt-20 "
+          class="relative w-full h-screen bg-cover bg-center flex items-center justify-center "
           style="background-image: url('/img/imagee.png');">
           <div class="absolute inset-0 bg-black bg-opacity-50"></div>
           <div class="relative text-center text-white px-6">

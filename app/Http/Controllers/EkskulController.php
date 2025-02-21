@@ -48,9 +48,17 @@ class EkskulController extends Controller
             'gambar' => $request->file('image')->store('pp_ekskul', 'public'),
             'deskripsi' => $request->deskripsi,
             'slug' => Str::slug($request->nama_ekskul),
-            'jml_anggota' => 0,
         ]);
 
         return redirect()->back()->with('success', 'Ekskul berhasil ditambahkan!');
     }
+    public function updateJumlahAnggota($id)
+    {
+        $ekskul = Ekskul::findOrFail($id);
+        $ekskul->jml_anggota = $ekskul->users()->count();
+        $ekskul->save();
+
+        return response()->json(['message' => 'Jumlah anggota diperbarui!']);
+    }
+
 }
