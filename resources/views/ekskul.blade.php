@@ -1,13 +1,15 @@
 <x-layout>
     <div class="container px-4 mx-auto mt-8">
-         <div class="flex items-center mb-8">
-            <a href="javascript:history.back()" class="flex items-center px-3 py-2 text-white rounded-lg shadow-md bg-yellow-500 hover:bg-blue-900">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="flex items-center mb-8">
+            <a href="javascript:history.back()"
+                class="flex items-center px-3 py-2 text-white bg-yellow-500 rounded-lg shadow-md hover:bg-blue-900">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
             </a>
         </div>
-        
+
         <!-- Header -->
         <h1 class="mb-8 text-4xl font-bold text-center" style="font-bold"> {{ $ekskul->nama_ekskul }}</h1>
 
@@ -25,7 +27,7 @@
                 class="px-4 py-2 font-semibold text-black rounded-lg shadow-md bg-ekskul hover:bg-orange-600">
                 Anggota
             </a>
-            <a href="{{ url('/absensi') }}"
+            <a href="{{ route('absensi.index', $ekskul->slug) }}"
                 class="px-4 py-2 font-semibold text-black rounded-lg shadow-md bg-ekskul hover:bg-orange-600">
                 Lihat Absensi
             </a>

@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Absensi;
+use App\Models\Ekskul;
 use Illuminate\Support\Facades\Auth;
 
 class AbsensiController extends Controller
 {
-    public function index()
+    public function index($slug)
     {
-        $absensi = Absensi::where('id_ekskul', Auth::user()->id_ekskul)
+        $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
+        $absensi = Absensi::where('id_user', Auth::user()->id_user)->where('id_ekskul', $ekskul->id_ekskul)
             ->orderBy('tanggal', 'desc')
             ->get();
 
@@ -21,7 +23,7 @@ class AbsensiController extends Controller
             'Alfa' => $absensi->where('kehadiran', 'alpa')->count(),
         ];
 
-        return view('absensi', compact('absensi', 'count'));
+        return view('absensi', compact('absensi', 'count', 'ekskul'));
     }
 
     public function store(Request $request)
@@ -32,17 +34,30 @@ class AbsensiController extends Controller
             'kehadiran' => 'required|in:hadir,izin,sakit,alpa',
         ]);
 
-        // Simpan data ke database
+        $today = now()->toDateString();
+
+        // Cek apakah user sudah absen hari ini di ekskul yang sama
+        $existingAbsensi = Absensi::where('id_user', $request->id_user)
+            ->where('id_ekskul', $request->id_ekskul)
+            ->where('tanggal', $today)
+            ->first();
+
+        if ($existingAbsensi) {
+            return redirect()->back()->with('error', 'Anda sudah melakukan absensi hari ini!');
+        }
+
+        // Simpan absensi jika belum ada
         Absensi::create([
             'id_ekskul' => $request->id_ekskul,
             'id_user' => $request->id_user,
-            'tanggal' => now()->toDateString(),
+            'tanggal' => $today,
             'kehadiran' => $request->kehadiran,
             'status' => 'belum terverifikasi',
         ]);
 
         return redirect()->back()->with('success', 'Absensi berhasil ditambahkan');
     }
+
 
 
     public function testInsert()

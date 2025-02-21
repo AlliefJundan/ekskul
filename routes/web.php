@@ -79,9 +79,9 @@ Route::middleware(['auth'])->group(function () {
 
 //akun
 
-    Route::middleware('role:admin')->group(function () {
-        Route::resource('akun', AkunController::class);
-    });
+Route::middleware('role:admin')->group(function () {
+    Route::resource('akun', AkunController::class);
+});
 
 Route::post('/ekskul/store', [EkskulController::class, 'store'])->name('ekskul.store');
 Route::get('/get-pembina/{id_jabatan}', [EkskulController::class, 'getPembinaByJabatan'])->name('get-pembina');
@@ -107,7 +107,7 @@ Route::get('/materi/download/{id}', [MateriController::class, 'download'])->name
 
 //Absensi
 Route::middleware(['auth'])->group(function () {
-    Route::get('/absensi', [AbsensiController::class, 'index'])->name('absensi.index');
+    Route::get('/ekskul/absensi/{slug}', [AbsensiController::class, 'index'])->name('absensi.index');
     Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
 });
 Route::get('/test-insert', [AbsensiController::class, 'testInsert']);
