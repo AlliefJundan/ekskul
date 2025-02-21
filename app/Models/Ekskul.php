@@ -35,12 +35,23 @@ class Ekskul extends Model
             ->where('jabatan', 2)
             ->with('user');
     }
+    public function sekertaris()
+    {
+        return $this->hasOne(EkskulUser::class, 'ekskul_id')
+            ->where('jabatan', 3)
+            ->with('user');
+    }
+    public function bendahara()
+    {
+        return $this->hasOne(EkskulUser::class, 'ekskul_id')
+            ->where('jabatan', 4)
+            ->with('user');
+    }
     // Relasi ke User melalui tabel pivot
     public function users()
     {
         return $this->belongsToMany(User::class, 'ekskul_user', 'ekskul_id', 'user_id')
-        ->withPivot('jabatan')
-        ->withTimestamps();
+            ->withPivot('jabatan')
+            ->withTimestamps();
     }
 }
-

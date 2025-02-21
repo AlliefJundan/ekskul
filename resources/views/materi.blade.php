@@ -1,19 +1,24 @@
 <x-layout>
     <div class="container mx-auto mt-8">
-          <div class="flex items-center mb-8">
-            <a href="javascript:history.back()" class="flex items-center px-3 py-2 text-white rounded-lg shadow-md bg-yellow-500 hover:bg-blue-900">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div class="flex items-center mb-8">
+            <a href="javascript:history.back()"
+                class="flex items-center px-3 py-2 text-white rounded-lg shadow-md bg-yellow-500 hover:bg-blue-900">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
             </a>
         </div>
         <!-- Header Materi (Dipindahkan ke Tengah) -->
         <div class="flex justify-between items-center mb-4">
-            @if (auth()->check() && (auth()->user()->role === 'admin' || (optional(auth()->user()->ekskulUser)->jabatan >= 1 && optional(auth()->user()->ekskulUser)->jabatan <= 4)))
+            @if (auth()->check() &&
+                    (auth()->user()->role === 'admin' ||
+                        (optional(auth()->user()->ekskulUser)->jabatan >= 1 && optional(auth()->user()->ekskulUser)->jabatan <= 4)))
                 <x-modal title="Tambah Materi" trigger="Tambah Materi">
                     <form action="{{ route('materi.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
+                        <input type="hidden" name="id_user" value="{{ Auth::user()->id_user }}">
 
                         <div class="mb-4">
                             <label class="block text-white">Isi Materi</label>

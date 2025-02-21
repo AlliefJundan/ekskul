@@ -38,7 +38,8 @@ class MateriController extends Controller
         $request->validate([
             'isi_materi' => 'required|string',
             'lampiran_materi' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx|max:2048',
-            'id_ekskul' => 'required|exists:ekskul,id_ekskul'
+            'id_ekskul' => 'required|exists:ekskul,id_ekskul',
+            'id_user' => 'required|exists:users,id_user'
         ]);
 
         // Cek ekskul berdasarkan ID
@@ -55,6 +56,7 @@ class MateriController extends Controller
             'isi_materi' => $request->isi_materi,
             'lampiran_materi' => $filePath,
             'id_ekskul' => $request->id_ekskul,
+            'id_user' => $request->id_user,
         ]);
 
         // Redirect ke halaman materi dengan slug ekskul yang benar

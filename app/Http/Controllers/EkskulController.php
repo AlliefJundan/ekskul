@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Ekskul;
+use App\Models\Materi;
 use Illuminate\Support\Str;
-use App\Models\Jabatan;
+use Illuminate\Http\Request;
 
 class EkskulController extends Controller
 {
@@ -22,13 +22,19 @@ class EkskulController extends Controller
         return view('home', compact('ekskuls')); // Mengirimkan data ke view
     }
 
-    public function show($slug)
+    public function show(Request $request, $slug)
     {
         $ekskul = Ekskul::where('slug', $slug)
-            ->with(['pembina.user', 'ketua.user']) // Load relasi pembina & ketua
+            ->with(['pembina.user', 'ketua.user', 'sekertaris.user', 'bendahara.user'])
             ->firstOrFail();
 
-        return view('ekskul.ekskul', compact('ekskul'));
+        $materi = Materi::where('id_ekskul', $ekskul->id_ekskul)
+            ->orderBy('id_materi', 'desc')
+            ->paginate(7);
+
+
+
+        return view('ekskul', compact('ekskul', 'materi'));
     }
 
 

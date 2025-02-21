@@ -1,8 +1,10 @@
 <x-layout>
     <div class="container mx-auto mt-8">
         <div class="flex items-center mb-8">
-            <a href="javascript:history.back()" class="flex items-center px-3 py-2 text-white rounded-lg shadow-md bg-yellow-500 hover:bg-blue-900">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <a href="javascript:history.back()"
+                class="flex items-center px-3 py-2 text-white rounded-lg shadow-md bg-yellow-500 hover:bg-blue-900">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                 </svg>
             </a>
@@ -10,7 +12,9 @@
         <!-- Form Pencarian -->
         <div class="flex justify-between items-center mb-4">
             <div>
-                @if (auth()->check() && (auth()->user()->role === 'admin' || (optional(auth()->user()->ekskulUser)->jabatan >= 1 && optional(auth()->user()->ekskulUser)->jabatan <= 4)))
+                @if (auth()->check() &&
+                        (auth()->user()->role === 'admin' ||
+                            (optional(auth()->user()->ekskulUser)->jabatan >= 1 && optional(auth()->user()->ekskulUser)->jabatan <= 4)))
                     <x-modal title="Tambah Kuis" trigger="Tambah Kuis">
                         <form action="{{ route('kuis.store') }}" method="POST">
                             @csrf
@@ -37,6 +41,10 @@
                     </x-modal>
                 @endif
             </div>
+            <a href="{{ route('kuis.show', $ekskul->slug) }}"
+                class="px-4 py-2 font-semibold ml-3 text-black rounded-lg shadow-md bg-ekskul hover:bg-orange-600">
+                Lihat Kuis
+            </a>
 
             <!-- Judul Kuis dipindahkan ke tengah -->
             <h1 class="text-2xl font-bold text-center flex-1">Kuis untuk {{ $ekskul->nama_ekskul }}</h1>
@@ -76,7 +84,8 @@
                                 </a>
                                 <x-modal title="Masukan Hasil Kuis" trigger="Tambah Hasil"
                                     buttonClass="bg-ekskul text-ekskul2 px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition">
-                                    <form action="{{ route('kuis.hasil') }}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('kuis.hasil') }}" method="POST"
+                                        enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" name="id_kuis" value="{{ $item->id_kuis }}">
                                         <input type="hidden" name="id_user" value="{{ Auth::user()->id_user }}">

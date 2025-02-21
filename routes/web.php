@@ -46,7 +46,7 @@ Route::get('/redirect-kuis/{id}', function ($id) {
 
 
 //dashboard admin
-Route::get('/ekskul/{ekskul:slug}', [DashboardController::class, 'show'])->name('ekskul.show');
+// Route::get('/ekskul/{ekskul:slug}', [DashboardController::class, 'show'])->name('ekskul.show');
 Route::get('/dashboard_admin/{ekskul:id_ekskul}', function (Ekskul $ekskul) {
     return view('Ekskul', ['post' => $ekskul]);
 });
@@ -58,9 +58,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 //ekskul
 Route::get('/ekskul/{slug}', [EkskulController::class, 'show'])->name('ekskul.show');
-Route::get('/ekskul_user', function () {
-    return view('ekskul_user');
-});
+
 
 //anggota ekskul
 Route::get('/ekskul/anggota/{slug}', [AnggotaController::class, 'show'])->name('anggota.show');
@@ -74,14 +72,14 @@ Route::delete('/ekskul/anggota/keluar/{slug}', [AnggotaController::class, 'kelua
 
 //dashboard
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard_admin', [DashboardController::class, 'index'])->name('dashboard_admin');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard_admin');
 });
 
 //akun
 
-    Route::middleware('role:admin')->group(function () {
-        Route::resource('akun', AkunController::class);
-    });
+Route::middleware('role:admin')->group(function () {
+    Route::resource('akun', AkunController::class);
+});
 
 Route::post('/ekskul/store', [EkskulController::class, 'store'])->name('ekskul.store');
 Route::get('/get-pembina/{id_jabatan}', [EkskulController::class, 'getPembinaByJabatan'])->name('get-pembina');

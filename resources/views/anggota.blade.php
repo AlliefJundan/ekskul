@@ -99,7 +99,6 @@
                                                 <button type="submit"
                                                     class="px-2 py-1 text-white bg-red-500 rounded font-bold">Hapus</button>
                                             </form>
-
                                         </x-modal>
                                     @endif
                                 </td>

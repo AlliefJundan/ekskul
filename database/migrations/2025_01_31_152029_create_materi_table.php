@@ -11,11 +11,13 @@ return new class extends Migration
         Schema::create('materi', function (Blueprint $table) {
             $table->id("id_materi");
             $table->unsignedBigInteger("id_ekskul");
+            $table->unsignedBigInteger("id_user");
             $table->text("isi_materi");
             $table->string("lampiran_materi")->nullable();
             $table->timestamps();
 
             $table->foreign("id_ekskul")->references("id_ekskul")->on("ekskul")->onDelete("cascade");
+            $table->foreign("id_user")->references("id_user")->on("users")->onDelete("cascade");
         });
     }
 
