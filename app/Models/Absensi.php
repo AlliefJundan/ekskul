@@ -23,9 +23,9 @@ class Absensi extends Model
     {
         return $this->belongsTo(Ekskul::class, 'id_ekskul');
     }
-
     public function user()
     {
-        return $this->belongsTo(User::class, 'id_user');
+        return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
+
 }
