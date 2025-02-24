@@ -40,11 +40,4 @@ class DashboardController extends Controller
 
         return view('dashboard', compact('ekskuls'));
     }
-
-    public function show($slug)
-    {
-        $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
-
-        return view('ekskul', compact('ekskul'));
-    }
 }

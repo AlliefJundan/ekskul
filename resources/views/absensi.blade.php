@@ -2,14 +2,8 @@
 
     <div class="container px-4 mx-auto mt-8">
         <div class="flex items-center mb-8">
-            <a href="javascript:history.back()"
-                class="flex items-center px-3 py-2 text-white bg-yellow-500 rounded-lg shadow-md hover:bg-blue-900">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-            </a>
-        </div>   
+            <x-button1 href="{{ route('ekskul.show', $ekskul->slug) }}">Kembali</x-button1>
+        </div>
 
         {{-- @dd($absensi); --}}
         <div class="my-6 text-3xl font-bold text-center">Absen</div>

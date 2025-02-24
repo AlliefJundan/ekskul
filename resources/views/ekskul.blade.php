@@ -1,34 +1,75 @@
 <x-layout>
     <div class="container px-4 mx-auto mt-8">
         <div class="flex items-center mb-8">
-            <a href="javascript:history.back()"
-                class="flex items-center px-3 py-2 text-white rounded-lg shadow-md bg-yellow-500 hover:bg-blue-900">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mr-2" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-                </svg>
-            </a>
+            <x-button1 href="{{ route('dashboard_admin') }}">Kembali</x-button1>
         </div>
 
         <!-- Header -->
         <h1 class="mb-8 text-4xl font-bold text-center">{{ $ekskul->nama_ekskul }}</h1>
 
+        <div class="p-6 bg-white rounded-lg shadow-lg">
+            <!-- Nama Ekskul (Tengah) -->
+            <h3
+                class="text-2xl font-bold text-center mb-4 flex justify-center bg-ekskul text-black px-4 py-2 rounded-lg inline-block">
+                Ekskul {{ $ekskul->nama_ekskul }}
+            </h3>
+            <!-- Bagian Konten -->
+            <div class="flex flex-col lg:flex-row items-center lg:items-start space-y-6 lg:space-y-0 lg:space-x-6">
+                <!-- Logo Ekskul (Kiri) -->
+                <div class="w-40 h-40 flex-shrink-0 shadow-lg shadow-ekskul bg-white lg:mr-6">
+                    <img src="{{ asset('storage/' . $ekskul->gambar) }}" alt="Gambar Ekskul"
+                        class="w-full h-full object-cover rounded-lg">
+                </div>
+
+                <!-- Deskripsi & Struktur Organisasi -->
+                <div class="flex-1 flex flex-col lg:flex-row w-full lg:justify-between">
+                    <!-- Bagian Deskripsi -->
+                    <div class="lg:w-1/2 w-full">
+                        <p class="font-bold text-gray-600">Deskripsi Ekskul :</p>
+                        <p class="text-gray-600">
+                            {{ $ekskul->deskripsi }}
+                        </p>
+                    </div>
+
+                    <!-- Bagian Struktur Organisasi -->
+                    <div class="lg:w-1/2 w-full">
+                        <p class="font-bold text-gray-600">Struktur Organisasi :</p>
+                        <div class="grid grid-cols-2 gap-2">
+                            <p class="text-gray-600">Pembina :</p>
+                            <p class="text-gray-600">{{ $ekskul->pembina->user->nama ?? 'Belum ada' }}</p>
+                            <p class="text-gray-600">Ketua :</p>
+                            <p class="text-gray-600">{{ $ekskul->ketua->user->nama ?? 'Belum ada' }}</p>
+                            <p class="text-gray-600">Sekretaris :</p>
+                            <p class="text-gray-600">{{ $ekskul->sekertaris->user->nama ?? 'Belum ada' }}</p>
+                            <p class="text-gray-600">Bendahara :</p>
+                            <p class="text-gray-600">{{ $ekskul->bendahara->user->nama ?? 'Belum ada' }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+
+
+
+
+
         <!-- Navigation Links in a Single Card (Responsive) -->
         <div class="flex flex-wrap justify-center gap-4 p-6 mb-8 rounded-lg shadow-lg bg-ekskul2">
             <a href="{{ route('materi.index', $ekskul->slug) }}"
-                class="w-full px-4 py-2 font-semibold text-center text-black rounded-lg shadow-md bg-ekskul hover:bg-orange-600 sm:w-auto">
+                class="items-center w-full text-center px-4 py-2 text-white bg-ekskul font-semibold rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 sm:w-auto">
                 Lihat Materi
             </a>
             <a href="{{ route('kuis.show', $ekskul->slug) }}"
-                class="w-full px-4 py-2 font-semibold text-center text-black rounded-lg shadow-md bg-ekskul hover:bg-orange-600 sm:w-auto">
+                class="items-center w-full text-center px-4 py-2 text-white bg-ekskul font-semibold rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 sm:w-auto">
                 Lihat Kuis
             </a>
             <a href="{{ route('anggota.show', $ekskul->slug) }}"
-                class="w-full px-4 py-2 font-semibold text-center text-black rounded-lg shadow-md bg-ekskul hover:bg-orange-600 sm:w-auto">
+                class="items-center w-full text-center px-4 py-2 text-white bg-ekskul font-semibold rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 sm:w-auto">
                 Anggota
             </a>
             <a href="{{ route('absensi.index', $ekskul->slug) }}"
-                class="px-4 py-2 font-semibold text-black rounded-lg shadow-md bg-ekskul hover:bg-orange-600">
+                class="items-center w-full text-center px-4 py-2 text-white bg-ekskul font-semibold rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-12 transition-transform duration-300 sm:w-auto">
                 Lihat Absensi
             </a>
         </div>
@@ -57,11 +98,12 @@
                 </div>
             </div>
 
+
             <!-- Bagian Materi (Lebar 3 Kolom di Layar Besar) -->
             <div class="grid grid-cols-1 gap-3 md:col-span-2 lg:col-span-2">
                 @if ($materi->count() > 0)
                     @foreach ($materi as $item)
-                        <div class="bg-white rounded-lg shadow-lg w-full hover:shadow-xl transition duration-300 p-5">
+                        <div class="bg-white rounded-lg shadow-lg w-full hover:shadow-2xl transition duration-300 p-5">
                             <!-- Judul Materi -->
                             <h3 class="text-indigo-900 font-bold text-lg mb-2 truncate">{{ $item->user->nama }}
                             </h3>
@@ -91,7 +133,7 @@
                     @endforeach
 
                     <!-- Pagination Links -->
-                    <div class="col-span-full mt-6 flex justify-center">
+                    <div class="col-span-full md-5 mt-6 flex justify-center">
                         {{ $materi->appends(request()->query())->links('pagination::tailwind') }}
                     </div>
                 @else
