@@ -44,6 +44,38 @@ class AbsensiController extends Controller
     }
 
 
+    public function store(Request $request)
+    {
+        $request->validate([
+            'id_user' => 'required|exists:users,id_user',
+            'id_ekskul' => 'required|exists:ekskul,id_ekskul',
+            'kehadiran' => 'required|in:hadir,izin,sakit,alpa',
+        ]);
+
+        $today = now()->toDateString();
+
+        // Cek apakah user sudah absen hari ini di ekskul yang sama
+        $existingAbsensi = Absensi::where('id_user', $request->id_user)
+            ->where('id_ekskul', $request->id_ekskul)
+            ->where('tanggal', $today)
+            ->first();
+
+        if ($existingAbsensi) {
+            return redirect()->back()->with('error', 'Anda sudah melakukan absensi hari ini!');
+        }
+
+        // Simpan absensi jika belum ada
+        Absensi::create([
+            'id_ekskul' => $request->id_ekskul,
+            'id_user' => $request->id_user,
+            'tanggal' => $today,
+            'kehadiran' => $request->kehadiran,
+            'status' => 'belum terverifikasi',
+        ]);
+
+        return redirect()->back()->with('success', 'Absensi berhasil ditambahkan');
+    }
+
 
 
     public function testInsert()
