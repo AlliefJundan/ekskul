@@ -1,32 +1,44 @@
 <x-layout>
-     <x-button1 href="{{ route('dashboard_admin') }}">
+    <div class="mx-10 my-10">
+        <h1 class="mb-8 text-4xl font-bold text-center">Halaman Akun</h1>
+    </div>
+    <div class="mx-10 my-10">
+        <x-button1 href="{{ route('dashboard_admin') }}">
             Kembali
         </x-button1>
-    <div class="p-4 mt-5 text-white rounded-lg shadow-md bg-ekskul2">
-        <h2 class="mb-4 text-xl font-semibold">Halaman Akun</h2>
-        <div class="flex items-center justify-between mb-4">
-            <input type="text" id="searchInput" placeholder="Cari" onkeyup="filterTable()"
-                class="w-auto p-2 text-black border rounded">
+    </div>
+    <div class="p-4 mx-10 my-10 mt-5 text-white rounded-lg shadow-md bg-ekskul2">
 
-            <button onclick="openTambahModal()" class="px-3 py-2 font-bold text-white bg-black rounded-lg ml-AU">+Tambah
+        <div class="flex items-center justify-between mb-4">
+            <button onclick="openTambahModal()"
+                class="px-3 py-2 font-bold text-white bg-black rounded-lg hover:bg-gray-900 ml-AU">+Tambah
                 User</button>
+
+            <form action="{{ route('akun.index') }}" method="GET" class="flex mb-4">
+                <input type="text" name="search" placeholder="Cari akun..." value="{{ request('search') }}"
+                    class="p-2 text-black border rounded">
+                <button type="submit"
+                    class="p-2 ml-2 font-bold rounded text-ekskul2 bg-ekskul hover:bg-orange-500">Cari</button>
+            </form>
+
         </div>
 
-        <table class="w-full text-white border border-collapse border-gray-300 bg-ekskul">
+        <table class="w-full text-white bg-gray-100 border border-collapse border-gray-300">
             <thead>
-                <tr class="bg-maroon-800">
-                    <th class="p-2 text-gray-800 border-gray-300">No</th>
-                    <th class="p-2 text-gray-800 border-gray-300">User ID</th>
-                    <th class="p-2 text-gray-800 border-gray-300">Nama</th>
-                    <th class="p-2 text-gray-800 border-gray-300">Username</th>
-                    <th class="p-2 text-gray-800 border-gray-300">Role</th>
+                <tr class="bg-gray-300">
+                    <th class="p-2 text-center text-gray-800 border-gray-300">No</th>
+                    <th class="p-2 text-center text-gray-800 border-gray-300">User ID</th>
+                    <th class="p-2 text-center text-gray-800 border-gray-300">Nama</th>
+                    <th class="p-2 text-center text-gray-800 border-gray-300">Username</th>
+                    <th class="p-2 text-center text-gray-800 border-gray-300">Role</th>
                     <th class="flex justify-center p-2 text-gray-800 border-gray-300">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($akun as $index => $user)
                     <tr class="text-center {{ $index % 2 == 0 ? 'bg-maroon-600' : 'bg-maroon-700' }}">
-                        <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $index + 1 }}</td>
+                        <td class="p-2 font-bold text-gray-800 border border-gray-300">
+                            {{ ($akun->currentPage() - 1) * $akun->perPage() + $index + 1 }}</td>
                         <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->id_user }}</td>
                         <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->nama }}</td>
                         <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->username }}</td>
@@ -34,28 +46,30 @@
                         <td class="flex justify-center gap-2 p-2 border border-gray-300">
                             <button
                                 onclick="openDetailModal('{{ $user->id_user }}', '{{ $user->username }}', '{{ $user->nama }}', '{{ $user->ekskul }}', '{{ $user->jabatan }}')"
-                                class="px-2 py-1 font-bold text-white bg-green-500 rounded">
+                                class="px-2 py-1 font-bold text-white bg-green-500 rounded hover:bg-green-700">
                                 Detail
                             </button>
-
                             <button
                                 onclick="openUbahModal('{{ $user->id_user }}', '{{ $user->username }}', '{{ $user->nama }}', '{{ $user->role }}')"
-                                class="px-2 font-bold text-white bg-blue-500 rounded">
+                                class="px-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
                                 Ubah
                             </button>
-
                             <form action="{{ route('akun.destroy', $user->id_user) }}" method="POST"
                                 onsubmit="return confirm('Yakin ingin menghapus?')">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
-                                    class="px-2 py-1 font-bold text-white bg-red-500 rounded">Hapus</button>
+                                    class="px-2 py-1 font-bold text-white bg-red-500 rounded hover:bg-red-700">Hapus</button>
                             </form>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+        <!-- Custom Pagination -->
+        <div class="mx-2 my-3">
+            {{ $akun->appends(request()->query())->links('pagination::tailwind') }}
+        </div>
     </div>
 
     <!-- Modal Tambah Akun -->

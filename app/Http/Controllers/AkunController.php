@@ -8,11 +8,22 @@ use Illuminate\Http\Request;
 class AkunController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $akun = User::all();
-        return view('akun', compact('akun')); // Ubah dari 'akun.index' ke 'akun'
+        $query = User::query(); // Ambil semua user
+
+        // Cek apakah ada parameter pencarian
+        if ($request->has('search')) {
+            $search = $request->input('search');
+            $query->where('nama', 'like', "%$search%")
+                ->orWhere('username', 'like', "%$search%");
+        }
+
+        $akun = $query->paginate(10)->appends($request->query()); // Pastikan paginasi tetap menyimpan query pencarian
+
+        return view('akun', compact('akun'));
     }
+
 
     public function create()
     {
