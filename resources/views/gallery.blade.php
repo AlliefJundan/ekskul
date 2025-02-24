@@ -40,10 +40,10 @@
             <h2 class="text-xl font-bold mb-4 text-gray-900" x-text="selectedEkskul?.nama"></h2>
             <img class="w-full h-48 object-cover rounded-md mb-4" :src="selectedEkskul?.gambar" alt="Gambar Ekskul">
             
-            <p><strong>Nama Ekskul:</strong> {{ $ekskul->nama_ekskul ?? 'Belum ada' }}</p>
-                        <p><strong>Nama Pembina:</strong> {{ $ekskul->pembina->user->nama ?? 'Belum ada' }}</p>
-                        <p><strong>Nama Ketua:</strong> {{ $ekskul->ketua->user->nama ?? 'Belum ada' }}</p>
-                       <p><strong>Jumlah Anggota:</strong> {{ $ekskul->users->count() }}</p>    
+            <p><strong>Nama Ekskul:</strong> <span x-text="selectedEkskul?.nama ?? 'Belum ada'"></span></p>
+<p><strong>Nama Pembina:</strong> <span x-text="selectedEkskul?.pembina ?? 'Belum ada'"></span></p>
+<p><strong>Nama Ketua:</strong> <span x-text="selectedEkskul?.ketua ?? 'Belum ada'"></span></p>
+<p><strong>Jumlah Anggota:</strong> <span x-text="selectedEkskul?.jumlah_anggota ?? '0'"></span></p>
 
 
             <!-- button daftar -->
