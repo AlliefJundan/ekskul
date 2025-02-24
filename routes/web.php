@@ -13,6 +13,10 @@ use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HasilKuisController;
+use App\Http\Controllers\VerifikasiController;
+
+
+
 
 Route::get('/', function () {
     return view('home', [EkskulController::class, 'index']);
@@ -108,4 +112,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ekskul/absensi/{slug}', [AbsensiController::class, 'index'])->name('absensi.index');
     Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
 });
+
+
+
+Route::patch('/absensi/verifikasi/{id_absensi}', [AbsensiController::class, 'verifikasi'])
+    ->name('absensi.verifikasi');
+
+
 Route::get('/test-insert', [AbsensiController::class, 'testInsert']);
