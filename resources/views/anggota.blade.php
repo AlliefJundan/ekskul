@@ -22,6 +22,10 @@
     <div class="flex justify-between items-center mt-3 mb-3">
         <x-button1 href="{{ route('ekskul.show', $ekskul->slug) }}">Kembali</x-button1>
         @if ($isAdmin || $isPembina)
+            <x-button1 href="{{ route('terimaPengajuanEkskul', $ekskul->slug) }}"
+                class="bg-ekskul2 text-white px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition">
+                Terima Ekskul
+            </x-button1>
             <x-modal trigger="Jabatan" title="Jabatan" class="flex justify-center"
                 buttonClass="bg-ekskul2 text-white px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition">
                 @php
@@ -92,8 +96,10 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <input type="hidden" name="user_id" value="{{ $item->id_user }}">
-                                                <input type="hidden" name="ekskul_id" value="{{ $ekskul->id_ekskul }}">
-                                                <button type="submit" class="px-2 py-1 text-white bg-red-500 rounded font-bold">Hapus</button>
+                                                <input type="hidden" name="ekskul_id"
+                                                    value="{{ $ekskul->id_ekskul }}">
+                                                <button type="submit"
+                                                    class="px-2 py-1 text-white bg-red-500 rounded font-bold">Hapus</button>
                                             </form>
                                         </x-modal>
                                     @endif

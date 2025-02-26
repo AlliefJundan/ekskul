@@ -54,4 +54,10 @@ class Ekskul extends Model
             ->withPivot('jabatan')
             ->withTimestamps();
     }
+    public function anggota()
+    {
+        return $this->belongsToMany(User::class, 'ekskul_user', 'ekskul_id', 'user_id')
+            ->withPivot('jabatan', 'status')
+            ->withTimestamps();
+    }
 }

@@ -14,6 +14,7 @@ use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HasilKuisController;
 use App\Http\Controllers\VerifikasiController;
+use App\Http\Controllers\TerimaPengajuanEkskulController;
 
 
 
@@ -72,8 +73,6 @@ Route::post('/ekskul/jabatan/ganti/{slug}', [AnggotaController::class, 'jabatanU
 Route::post('/ekskul/jabatan/lepas/{slug}', [AnggotaController::class, 'jabatanRemove'])->name('jabatan.jabatanRemove');
 Route::delete('/ekskul/anggota/keluar/{slug}', [AnggotaController::class, 'keluarkanAnggota'])->name('anggota.keluar');
 
-
-
 //dashboard
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard_admin');
@@ -120,3 +119,8 @@ Route::patch('/absensi/verifikasi/{id_absensi}', [AbsensiController::class, 'ver
 
 
 Route::get('/test-insert', [AbsensiController::class, 'testInsert']);
+
+//terimaEkskul
+Route::get('/terima_pengajuan_ekskul', [TerimaPengajuanEkskulController::class, 'index'])->name('terimaPengajuanEkskul');
+Route::post('/terima_pengajuan_ekskul/{userId}/{ekskulId}/terima', [TerimaPengajuanEkskulController::class, 'terima'])->name('terimaPengajuanEkskul.terima');
+Route::post('/terima_pengajuan_ekskul/{userId}/{ekskulId}/tolak', [TerimaPengajuanEkskulController::class, 'tolak'])->name('terimaPengajuanEkskul.tolak');

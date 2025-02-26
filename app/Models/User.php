@@ -54,4 +54,9 @@ class User extends Authenticatable
         return $this->hasOne(EkskulUser::class, 'user_id');
     }
 
+    public function pengajuanEkskul()
+    {
+        return $this->hasMany(PengajuanEkskul::class, 'user_id', 'id_user');
+    }
+    
 }

@@ -12,4 +12,9 @@ class Kelas extends Model
     protected $fillable = ['kelas', 'jurusan', 'nomor_kelas'];
     protected $primaryKey = 'id_kelas';
     public $timestamps = false;
+
+    public function pengajuanEkskul()
+    {
+        return $this->hasMany(PengajuanEkskul::class, 'ekskul_id', 'id_ekskul');
+    }
 }
