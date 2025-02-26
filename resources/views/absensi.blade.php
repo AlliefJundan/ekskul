@@ -22,15 +22,46 @@
             </div>
         @endif
 
-        <div class="flex justify-center gap-6 px-10 mt-6">
-            @foreach (['Hadir', 'Izin', 'Sakit', 'Alfa'] as $status)
-                <div
-                    class="flex flex-col items-center justify-center w-56 p-10 text-lg font-semibold text-center text-white border-8 border-blue-900 rounded-lg shadow-lg bg-ekskul2 h-36">
-                    <span>{{ $status }}</span>
-                    <span class="text-2xl font-bold">{{ $count[$status] }} Hari</span>
+    <div class="flex flex-col md:flex-row gap-5 justify-center mt-5">
+    <!-- Card Absensi -->
+    <div class="bg-blue-900 rounded-lg shadow-lg p-6 w-full md:w-1/2 max-w-lg">
+        <h2 class="text-lg font-bold mb-4 text-white">Absensi</h2>
+
+        <div class="flex flex-col gap-2 text-white">
+            @foreach (['Hadir' => 'text-green-500', 'Sakit' => 'text-blue-500', 'Izin' => 'text-orange-500', 'Alfa' => 'text-red-500'] as $status => $color)
+                <div class="flex justify-between items-center">
+                    <span class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full {{ $color }}"></span> 
+                        <span class="font-medium">{{ $status }}</span>
+                    </span>
+                    <span class="font-semibold {{ $color }}">
+                        {{ $count[$status] ?? 0 }} Hari 
+                        ({{ number_format(($count[$status] ?? 0) ) }})
+                    </span>
                 </div>
             @endforeach
         </div>
+    </div>
+
+    <!-- Card Kegiatan dengan Tombol Rekap -->
+        @if (auth()->user()->role === 'admin' || in_array(optional(auth()->user()->ekskulUser)->jabatan, [1, 2, 3]))
+            <div class="bg-blue-900 rounded-lg shadow-lg p-6 w-full md:w-1/2 max-w-lg">
+                <h2 class="text-lg font-bold mb-4 text-white">Informasi Kegiatan</h2>
+
+                <div class="flex justify-center items-center text-white">
+                    <div class="text-center">
+                        <span class="text-blue-400 text-4xl font-bold">{{ $jumlahKegiatan }}</span>
+                        <p class="text-gray-300 text-sm">Jumlah Kegiatan</p>
+                        <button onclick="showRekap()"
+                            class="mt-4 px-4 py-2 text-lg font-semibold text-white bg-green-600 rounded-md shadow-md hover:bg-green-800">
+                            Rekap Absensi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
+    </div>
+
 
         <div class="flex justify-start px-10 mt-6">
             <form action="{{ route('absensi.store') }}" method="POST" class="flex items-center gap-4">
@@ -56,7 +87,11 @@
                         <th class="p-3">Nama User</th>
                         <th class="p-3">Kehadiran</th>
                         <th class="p-3">Status</th>
-                        <th class="p-3">Aksi</th>
+                        @if (auth()->check() &&
+                            (auth()->user()->role === 'admin' || (optional(auth()->user()->ekskulUser)->jabatan == 2)))
+                         <th class="p-3">Aksi</th>     
+                        @endif
+                       
                     </tr>
                 </thead>
                 <tbody>
@@ -87,6 +122,46 @@
                 </tbody>
             </table>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function showRekap() {
+        Swal.fire({
+            title: 'Rekap Absensi',
+            html: `
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse border border-gray-300 text-black">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="p-2 border border-gray-300">Nama</th>
+                                <th class="p-2 border border-gray-300">Hadir</th>
+                                <th class="p-2 border border-gray-300">Izin</th>
+                                <th class="p-2 border border-gray-300">Sakit</th>
+                                 <th class="p-2 border border-gray-300">Alfa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($rekapAbsen as $user)
+                                <tr>
+                                    <td class="p-2 border border-gray-300">{{ $user->nama }}</td>
+                                    <td class="p-2 border border-gray-300">{{ $user->hadir }}</td>
+                                    <td class="p-2 border border-gray-300">{{ $user->izin }}</td>
+                                    <td class="p-2 border border-gray-300">{{ $user->sakit }}</td>
+                                    <td class="p-2 border border-gray-300">{{ $user->tidak_hadir }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            `,
+            width: '600px',
+            confirmButtonText: 'Tutup',
+            confirmButtonColor: '#3085d6',
+        });
+    }
+</script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 @if (session('error'))
@@ -108,5 +183,7 @@
         });
     </script>
 @endif
+
+
 
 </x-layout>

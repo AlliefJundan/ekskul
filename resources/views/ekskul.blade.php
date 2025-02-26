@@ -68,10 +68,18 @@
                 class="items-center w-full text-center px-4 py-2 text-white bg-ekskul font-semibold rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 sm:w-auto">
                 Anggota
             </a>
-            <a href="{{ route('absensi.index', $ekskul->slug) }}"
-                class="items-center w-full text-center px-4 py-2 text-white bg-ekskul font-semibold rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-12 transition-transform duration-300 sm:w-auto">
-                Lihat Absensi
-            </a>
+         @if(auth()->user()->role === 'admin' || in_array(optional(auth()->user()->ekskulUser)->jabatan, [1,2,3]))
+    <button onclick="cekKegiatan('{{ route('kegiatan.konfirmasi', $ekskul->slug) }}')"
+        class="items-center w-full text-center px-4 py-2 text-white bg-ekskul font-semibold rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-12 transition-transform duration-300 sm:w-auto">
+        Lihat Absensi
+    </button>
+@else
+    <a href="{{ route('absensi.index', $ekskul->slug) }}"
+        class="items-center w-full text-center px-4 py-2 text-white bg-ekskul font-semibold rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-12 transition-transform duration-300 sm:w-auto">
+        Lihat Absensi
+    </a>
+@endif
+
         </div>
 
         <!-- Smaller Content Cards -->
@@ -144,4 +152,43 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function cekKegiatan(url) {
+        Swal.fire({
+            title: "Apakah ada kegiatan hari ini?",
+            showDenyButton: true,
+            showCancelButton: false,
+            confirmButtonText: "Ya",
+            denyButtonText: "Tidak"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    title: "Masukkan Waktu Kegiatan",
+                    html: `
+                        <input type="time" id="mulai" class="swal2-input" placeholder="Mulai">
+                        <input type="time" id="berakhir" class="swal2-input" placeholder="Berakhir">
+                    `,
+                    focusConfirm: false,
+                    preConfirm: () => {
+                        const mulai = document.getElementById('mulai').value;
+                        const berakhir = document.getElementById('berakhir').value;
+                        if (!mulai || !berakhir) {
+                            Swal.showValidationMessage('Harap isi semua kolom waktu');
+                        }
+                        return { mulai, berakhir };
+                    }
+                }).then((timeResult) => {
+                    if (timeResult.isConfirmed) {
+                        window.location.href = `${url}?mulai=${timeResult.value.mulai}&berakhir=${timeResult.value.berakhir}`;
+                    }
+                });
+            } else {
+                window.location.href = url;
+            }
+        });
+    }
+</script>
+
 </x-layout>
+

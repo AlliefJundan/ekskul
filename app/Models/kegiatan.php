@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class kegiatan extends Model
+class Kegiatan extends Model
 {
     protected $table = 'kegiatan';
-    protected $fillable = ['id_kegiatan', 'id_ekskul', 'hari', 'waktu_mulai', 'waktu_berakhir'];
     protected $primaryKey = 'id_kegiatan';
-    protected $timestamps = false;
+    public $timestamps = false;
+
+    protected $fillable = ['id_ekskul', 'hari', 'waktu_mulai', 'waktu_berakhir'];
 
     public function ekskul()
     {

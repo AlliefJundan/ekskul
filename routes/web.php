@@ -13,7 +13,10 @@ use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HasilKuisController;
+use App\Http\Controllers\KegiatanControler;
 use App\Http\Controllers\VerifikasiController;
+use App\Http\Controllers\KegiatanController;
+
 
 
 
@@ -120,3 +123,11 @@ Route::patch('/absensi/verifikasi/{id_absensi}', [AbsensiController::class, 'ver
 
 
 Route::get('/test-insert', [AbsensiController::class, 'testInsert']);
+
+
+
+// Route::get('/cek-kegiatan', [KegiatanController::class, 'cekKegiatan'])->name('cek.kegiatan');
+Route::get('/kegiatan/konfirmasi/{slug}', [AbsensiController::class, 'konfirmasiKegiatan'])->name('kegiatan.konfirmasi');
+
+
+

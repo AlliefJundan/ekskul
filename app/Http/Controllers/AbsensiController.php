@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Absensi;
 use App\Models\Ekskul;
+use App\Models\User;
+use App\Models\Kegiatan;
 use Illuminate\Support\Facades\Auth;
 
 class AbsensiController extends Controller
@@ -13,18 +15,20 @@ class AbsensiController extends Controller
     {
         $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
         $user = Auth::user();
-        $tanggal = $request->input('tanggal', now()->toDateString()); // Ambil tanggal dari input, default ke hari ini
+        $tanggal = $request->input('tanggal', now()->toDateString()); // Default ke hari ini
 
-        // Jika admin atau user dengan jabatan 2, bisa melihat semua absensi di ekskul dengan filter tanggal
+        // Cek apakah ada kegiatan yang dibuat hari ini
+        $kegiatanHariIni = Kegiatan::where('id_ekskul', $ekskul->id_ekskul)
+            ->whereDate('hari', today())
+            ->exists();
+
         if ($user->role === 'admin' || optional($user->ekskulUser)->jabatan == 2) {
             $absensi = Absensi::where('id_ekskul', $ekskul->id_ekskul)
                 ->whereDate('tanggal', $tanggal)
                 ->with('user')
                 ->orderBy('tanggal', 'desc')
                 ->get();
-        }
-        // Jika user biasa, hanya bisa melihat absensinya sendiri
-        else {
+        } else {
             $absensi = Absensi::where('id_user', $user->id_user)
                 ->where('id_ekskul', $ekskul->id_ekskul)
                 ->whereDate('tanggal', $tanggal)
@@ -40,7 +44,26 @@ class AbsensiController extends Controller
             'Alfa' => $absensi->where('kehadiran', 'alpa')->count(),
         ];
 
-        return view('absensi', compact('absensi', 'count', 'ekskul'));
+        $jumlahKegiatan = Kegiatan::where('id_ekskul', $ekskul->id_ekskul)->count();
+
+        $rekapAbsen = User::whereHas('absensi', function ($query) use ($ekskul) {
+            $query->where('id_ekskul', $ekskul->id_ekskul);
+        })->withCount([
+            'absensi as hadir' => function ($query) use ($ekskul) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)->where('kehadiran', 'hadir');
+            },
+            'absensi as izin' => function ($query) use ($ekskul) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)->where('kehadiran', 'izin');
+            },
+            'absensi as sakit' => function ($query) use ($ekskul) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)->where('kehadiran', 'sakit');
+            },
+            'absensi as tidak_hadir' => function ($query) use ($ekskul) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)->where('kehadiran', 'alpa');
+            },
+        ])->get();
+
+        return view('absensi', compact('absensi', 'count', 'ekskul', 'jumlahKegiatan', 'rekapAbsen', 'kegiatanHariIni'));
     }
 
 
@@ -54,7 +77,15 @@ class AbsensiController extends Controller
 
         $today = now()->toDateString();
 
-        // Cek apakah user sudah absen hari ini di ekskul yang sama
+        // Cek apakah ada kegiatan hari ini
+        $kegiatanHariIni = Kegiatan::where('id_ekskul', $request->id_ekskul)
+            ->whereDate('hari', today())
+            ->exists();
+
+        if (!$kegiatanHariIni) {
+            return redirect()->back()->with('error', 'Tidak ada kegiatan yang dibuat hari ini! Absensi tidak dapat dilakukan.');
+        }
+
         $existingAbsensi = Absensi::where('id_user', $request->id_user)
             ->where('id_ekskul', $request->id_ekskul)
             ->where('tanggal', $today)
@@ -64,7 +95,6 @@ class AbsensiController extends Controller
             return redirect()->back()->with('error', 'Anda sudah melakukan absensi hari ini!');
         }
 
-        // Simpan absensi jika belum ada
         Absensi::create([
             'id_ekskul' => $request->id_ekskul,
             'id_user' => $request->id_user,
@@ -77,44 +107,36 @@ class AbsensiController extends Controller
     }
 
 
+  public function konfirmasiKegiatan(Request $request, $slug)
+{
+    $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
+    $user = Auth::user();
 
-    public function testInsert()
-    {
-        // Buat data dummy dan simpan ke database
-        $absensi = Absensi::create([
-            'id_ekskul' => 1, // Sesuaikan dengan ekskul yang ada
-            'id_user' => 1, // Sesuaikan dengan user yang ada
-            'tanggal' => now()->toDateString(),
-            'kehadiran' => 'hadir',
-            'status' => 'belum terverifikasi',
+    if (!($user->role === 'admin' || in_array(optional($user->ekskulUser)->jabatan, [1, 2, 3]))) {
+        return redirect()->route('absensi.index', $slug)->with('error', 'Anda tidak memiliki akses untuk konfirmasi kegiatan.');
+    }
+
+    // Cek apakah sudah ada kegiatan yang dibuat hari ini
+    $kegiatanHariIni = Kegiatan::where('id_ekskul', $ekskul->id_ekskul)
+        ->whereDate('hari', today())
+        ->exists();
+
+    if ($kegiatanHariIni) {
+        return redirect()->route('absensi.index', $slug)->with('error', 'Kegiatan sudah dibuat hari ini, tidak bisa menambahkan lagi.');
+    }
+
+    if ($request->has('mulai') && $request->has('berakhir')) {
+        Kegiatan::create([
+            'id_ekskul' => $ekskul->id_ekskul,
+            'hari' => today(),
+            'waktu_mulai' => $request->mulai,
+            'waktu_berakhir' => $request->berakhir,
         ]);
 
-        // Cek apakah data berhasil masuk ke database
-        if ($absensi) {
-            return response()->json([
-                'message' => 'Data berhasil dimasukkan!',
-                'data' => $absensi
-            ], 200);
-        } else {
-            return response()->json([
-                'message' => 'Gagal memasukkan data!'
-            ], 500);
-        }
+        return redirect()->route('absensi.index', $slug)->with('success', 'Kegiatan berhasil ditambahkan.');
     }
-    public function verifikasi($id_absensi)
-    {
-        $absensi = Absensi::findOrFail($id_absensi);
-        $user = Auth::user();
 
-        // Pastikan hanya admin atau user dengan jabatan 2 di ekskul tersebut yang bisa verifikasi
-        if ($user->role !== 'admin' && optional($user->ekskulUser)->jabatan != 2) {
-            return redirect()->back()->with('error', 'Anda tidak memiliki izin untuk verifikasi absensi.');
-        }
-
-        $absensi->status = 'terverifikasi';
-        $absensi->save();
-
-        return redirect()->back()->with('success', 'Absensi berhasil diverifikasi.');
-    }
+    return redirect()->route('absensi.index', $slug);
+}
 
 }
