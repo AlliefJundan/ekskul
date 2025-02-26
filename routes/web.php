@@ -15,8 +15,12 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HasilKuisController;
 use App\Http\Controllers\KegiatanControler;
 use App\Http\Controllers\VerifikasiController;
+<<<<<<< HEAD
 use App\Http\Controllers\KegiatanController;
 
+=======
+use App\Http\Controllers\TerimaPengajuanEkskulController;
+>>>>>>> 8c08268f699bf26479e3d4880affad0880638ca7
 
 
 
@@ -75,8 +79,6 @@ Route::post('/ekskul/jabatan/ganti/{slug}', [AnggotaController::class, 'jabatanU
 Route::post('/ekskul/jabatan/lepas/{slug}', [AnggotaController::class, 'jabatanRemove'])->name('jabatan.jabatanRemove');
 Route::delete('/ekskul/anggota/keluar/{slug}', [AnggotaController::class, 'keluarkanAnggota'])->name('anggota.keluar');
 
-
-
 //dashboard
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard_admin');
@@ -124,6 +126,7 @@ Route::patch('/absensi/verifikasi/{id_absensi}', [AbsensiController::class, 'ver
 
 Route::get('/test-insert', [AbsensiController::class, 'testInsert']);
 
+<<<<<<< HEAD
 
 
 // Route::get('/cek-kegiatan', [KegiatanController::class, 'cekKegiatan'])->name('cek.kegiatan');
@@ -131,3 +134,9 @@ Route::get('/kegiatan/konfirmasi/{slug}', [AbsensiController::class, 'konfirmasi
 
 
 
+=======
+//terimaEkskul
+Route::get('/terima_pengajuan_ekskul', [TerimaPengajuanEkskulController::class, 'index'])->name('terimaPengajuanEkskul');
+Route::post('/terima_pengajuan_ekskul/{userId}/{ekskulId}/terima', [TerimaPengajuanEkskulController::class, 'terima'])->name('terimaPengajuanEkskul.terima');
+Route::post('/terima_pengajuan_ekskul/{userId}/{ekskulId}/tolak', [TerimaPengajuanEkskulController::class, 'tolak'])->name('terimaPengajuanEkskul.tolak');
+>>>>>>> 8c08268f699bf26479e3d4880affad0880638ca7
