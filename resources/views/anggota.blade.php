@@ -18,17 +18,17 @@
 <x-layout>
     <div class="container px-4 mx-auto mt-8">
         <x-button1 href="{{ route('ekskul.show', $ekskul->slug) }}">Kembali</x-button1>
+        <h1 class="text-4xl font-bold text-center mb-4">Anggota Ekskul {{ $ekskul->nama_ekskul }}</h1>
+
         @if ($isAdmin || $isPembina)
-            <x-button1 href="{{ route('terimaPengajuanEkskul', $ekskul->slug) }}"
-                class="bg-ekskul2 text-white px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition">
-                Terima Ekskul
-            </x-button1>
-            <x-modal trigger="Jabatan" title="Jabatan" class="flex justify-center"
-                buttonClass="bg-ekskul2 text-white px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition">
-                @php
-                    $jabatanFix = [1, 2, 3, 4];
-                @endphp
-                @foreach ($jabatanFix as $jabatanId)
+            <div class="flex justify-between">
+                <x-button1 href="{{ route('terimaPengajuanEkskul', $ekskul->slug) }}"
+                    class="bg-ekskul2 text-white px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition">
+                    Terima Anggota
+                </x-button1>
+
+                <x-modal trigger="Jabatan" title="Jabatan" class="flex justify-center"
+                    buttonClass="bg-ekskul2 text-white px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition">
                     @php
                         $jabatanFix = [1, 2, 3, 4];
                     @endphp
@@ -44,8 +44,9 @@
                         <x-button1 href="{{ route('jabatan.jabatanShow', $ekskul->slug) }}">Ubah</x-button1>
                     </div>
                 </x-modal>
-            @endif
-        </div>
+            </div>
+        @endif
+
         <div class="bg-indigo-900 rounded-lg mt-4 shadow-lg hover:shadow-xl transition duration-300 p-5">
             <div class="shadow-lg rounded-lg p-4 bg-white mb-3 overflow-x-auto">
                 <table class="w-full bg-white rounded-lg shadow-md border-collapse border border-gray-300">
@@ -57,18 +58,24 @@
                             <th class="py-2 px-4 text-left">Jabatan</th>
                             @if ($canManage)
                                 <td class="py-2 flex justify-start">
-                                    @php
-                                        $targetJabatan = $item->pivot->jabatan;
-                                        $canKick = false;
+                                    @foreach ($anggota as $item)
+                                        @php
+                                            $targetJabatan = $item->pivot->jabatan;
+                                            $canKick = false;
 
-                                        if ($isAdmin) {
-                                            $canKick = true;
-                                        } elseif ($isPembina && $targetJabatan != 1) {
-                                            $canKick = true;
-                                        } elseif ($userJabatan == 2 && $targetJabatan !== 1 && $targetJabatan !== 2) {
-                                            $canKick = true;
-                                        }
-                                    @endphp
+                                            if ($isAdmin) {
+                                                $canKick = true;
+                                            } elseif ($isPembina && $targetJabatan != 1) {
+                                                $canKick = true;
+                                            } elseif (
+                                                $userJabatan == 2 &&
+                                                $targetJabatan !== 1 &&
+                                                $targetJabatan !== 2
+                                            ) {
+                                                $canKick = true;
+                                            }
+                                        @endphp
+                                    @endforeach
                                     @if ($canKick)
                                         <x-modal title="Yakin ingin mengeluarkan {{ $item->nama }}?"
                                             trigger="Keluarkan"
