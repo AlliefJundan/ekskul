@@ -59,13 +59,61 @@ class MateriController extends Controller
             'id_user' => $request->id_user,
         ]);
 
-        // Redirect ke halaman materi dengan slug ekskul yang benar
         return redirect()->route('materi.index', ['slug' => $ekskul->slug])
             ->with('success', 'Materi berhasil ditambahkan.');
     }
+
+    /**
+     * Mengupdate materi yang sudah ada.
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'isi_materi' => 'required|string',
+            'lampiran_materi' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,pdf,doc,docx|max:2048',
+        ]);
+
+        $materi = Materi::findOrFail($id);
+        $materi->isi_materi = $request->isi_materi;
+
+        // Jika ada file baru, hapus file lama lalu simpan yang baru
+        if ($request->hasFile('lampiran_materi')) {
+            if ($materi->lampiran_materi) {
+                Storage::delete('public/' . $materi->lampiran_materi);
+            }
+
+            $filePath = $request->file('lampiran_materi')->store('materi_files', 'public');
+            $materi->lampiran_materi = $filePath;
+        }
+
+        $materi->save();
+
+        return redirect()->back()->with('success', 'Materi berhasil diperbarui.');
+    }
+
+    /**
+     * Menghapus materi dari database.
+     */
+    public function destroy($id)
+    {
+        $materi = Materi::findOrFail($id);
+
+        // Hapus file lampiran jika ada
+        if ($materi->lampiran_materi) {
+            Storage::delete('public/' . $materi->lampiran_materi);
+        }
+
+        // Hapus data dari database
+        $materi->delete();
+
+        return redirect()->back()->with('success', 'Materi berhasil dihapus.');
+    }
+
+    /**
+     * Mengunduh lampiran materi.
+     */
     public function download($id)
     {
-        // Gunakan id_materi karena kolom primary key-nya mungkin bukan 'id'
         $materi = Materi::where('id_materi', $id)->firstOrFail();
 
         if (!$materi->lampiran_materi) {

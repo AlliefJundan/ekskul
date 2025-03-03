@@ -15,12 +15,12 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HasilKuisController;
 use App\Http\Controllers\KegiatanControler;
 use App\Http\Controllers\VerifikasiController;
-<<<<<<< HEAD
+
 use App\Http\Controllers\KegiatanController;
 
-=======
+
 use App\Http\Controllers\TerimaPengajuanEkskulController;
->>>>>>> 8c08268f699bf26479e3d4880affad0880638ca7
+
 
 
 
@@ -110,6 +110,9 @@ Route::get('/coba', function () {
 Route::get('/materi/{slug}', [MateriController::class, 'index'])->name('materi.index');
 Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
 Route::get('/materi/download/{id}', [MateriController::class, 'download'])->name('materi.download');
+Route::put('/materi/{id}', [MateriController::class, 'update'])->name('materi.update');
+Route::delete('/materi/{id}', [MateriController::class, 'destroy'])->name('materi.destroy');
+
 
 
 //Absensi
@@ -126,7 +129,7 @@ Route::patch('/absensi/verifikasi/{id_absensi}', [AbsensiController::class, 'ver
 
 Route::get('/test-insert', [AbsensiController::class, 'testInsert']);
 
-<<<<<<< HEAD
+
 
 
 // Route::get('/cek-kegiatan', [KegiatanController::class, 'cekKegiatan'])->name('cek.kegiatan');
@@ -134,9 +137,9 @@ Route::get('/kegiatan/konfirmasi/{slug}', [AbsensiController::class, 'konfirmasi
 
 
 
-=======
+
 //terimaEkskul
 Route::get('/terima_pengajuan_ekskul', [TerimaPengajuanEkskulController::class, 'index'])->name('terimaPengajuanEkskul');
 Route::post('/terima_pengajuan_ekskul/{userId}/{ekskulId}/terima', [TerimaPengajuanEkskulController::class, 'terima'])->name('terimaPengajuanEkskul.terima');
 Route::post('/terima_pengajuan_ekskul/{userId}/{ekskulId}/tolak', [TerimaPengajuanEkskulController::class, 'tolak'])->name('terimaPengajuanEkskul.tolak');
->>>>>>> 8c08268f699bf26479e3d4880affad0880638ca7
+
