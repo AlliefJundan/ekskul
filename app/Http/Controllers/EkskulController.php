@@ -15,11 +15,17 @@ class EkskulController extends Controller
 
         return view('dashboard_admin', compact('ekskuls'));
     }
+    public function galleri()
+    {
+        $ekskuls = Ekskul::with(['pembina.user', 'ketua.user', 'sekertaris.user', 'bendahara.user'])->get();
+
+        return view('galleri', compact('ekskuls'));
+    }
 
     public function index()
     {
-        $ekskuls = Ekskul::all(); // Mengambil semua data ekskul dari database
-        return view('home', compact('ekskuls')); // Mengirimkan data ke view
+        $ekskuls = Ekskul::all();
+        return view('home', compact('ekskuls'));
     }
 
     public function show(Request $request, $slug)
@@ -66,5 +72,4 @@ class EkskulController extends Controller
 
         return response()->json(['message' => 'Jumlah anggota diperbarui!']);
     }
-
 }

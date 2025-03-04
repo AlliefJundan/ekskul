@@ -58,5 +58,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(PengajuanEkskul::class, 'user_id', 'id_user');
     }
-    
+    public function pendaftaran()
+    {
+        return $this->hasMany(Pendaftaran::class, 'id_ekskul', 'id_ekskul');
+    }
 }
