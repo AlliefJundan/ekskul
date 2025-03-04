@@ -43,7 +43,16 @@
             <button @click="modalOpen = false"
                 class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">✖</button>
             <h2 class="text-xl font-bold mb-4 text-gray-900" x-text="selectedEkskul?.nama"></h2>
+<<<<<<< HEAD
             <img class="w-full h-60 object-cover rounded-md mb-4" :src="selectedEkskul?.gambar" alt="Gambar Ekskul">
+=======
+            <img class="w-full h-48 object-cover rounded-md mb-4" :src="selectedEkskul?.gambar" alt="Gambar Ekskul">
+
+            <p><strong>Nama Ekskul:</strong> <span x-text="selectedEkskul?.nama ?? 'Belum ada'"></span></p>
+            <p><strong>Nama Pembina:</strong> <span x-text="selectedEkskul?.pembina ?? 'Belum ada'"></span></p>
+            <p><strong>Nama Ketua:</strong> <span x-text="selectedEkskul?.ketua ?? 'Belum ada'"></span></p>
+            <p><strong>Jumlah Anggota:</strong> <span x-text="selectedEkskul?.jumlah_anggota ?? '0'"></span></p>
+>>>>>>> 1db534ea073811588263634b98960e8a9c0d6583
 
             <p><strong>Nama Ekskul:</strong> <span x-text="selectedEkskul?.nama ?? 'Belum ada'"></span></p>
             <p><strong>Nama Pembina:</strong> <span x-text="selectedEkskul?.pembina ?? 'Belum ada'"></span></p>
@@ -72,6 +81,7 @@
                     @click.away="openConfirm = false" x-transition>
                     <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
                         <h2 class="text-xl font-bold mb-4 text-gray-900 text-center">Yakin mau masuk?</h2>
+<<<<<<< HEAD
                         @if (auth()->check())
                             <form method="POST" action="/pendaftaran/store">
                                 @csrf
@@ -111,5 +121,36 @@
             </div>
         </div>
     </div>
+=======
+                        <div class="flex justify-center gap-4 mt-4">
+                            <button @click="openConfirm = false"
+                                class="bg-danger text-white px-4 py-2 rounded-lg shadow-md hover:bg-gray-400 transition">
+                                Tidak
+                            </button>
+                            <button @click="openConfirm = false; openModal = true"
+                                class="bg-green-500 text-white px-4 py-2 rounded-lg shadow-md hover:bg-green-600 transition">
+                                Ya
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Tunggu ACC -->
+                <div x-show="openModal"
+                    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+                    @click.away="openModal = false" x-transition>
+                    <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
+                        <button @click="openModal = false"
+                            class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">✖
+                        </button>
+                        <h1 class="text-xl text-center font-bold mb-4 text-gray-900">Tunggu ya sabar gess</h1>
+                        <h1 class="text-center font-bold">Tunggu ketua ACC</h1>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+>>>>>>> 1db534ea073811588263634b98960e8a9c0d6583
     </div>
 </section>
