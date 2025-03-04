@@ -127,8 +127,10 @@ Route::middleware(['auth'])->group(function () {
 Route::patch('/absensi/verifikasi/{id_absensi}', [AbsensiController::class, 'verifikasi'])
     ->name('absensi.verifikasi');
 
+//Pendaftaran
 Route::post('/pendaftaran/store', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
-
+Route::get('/pendaftaran/{slug}', [PendaftaranController::class, 'show'])->name('pendaftaran.show');
+Route::post('/pendaftaran/terima', [PendaftaranController::class, 'terima'])->name('pendaftaran.terima');
 
 
 
