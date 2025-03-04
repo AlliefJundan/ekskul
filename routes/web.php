@@ -108,11 +108,18 @@ Route::get('/coba', function () {
 
 
 //materi
-Route::get('/materi/{slug}', [MateriController::class, 'index'])->name('materi.index');
-Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
-Route::get('/materi/download/{id}', [MateriController::class, 'download'])->name('materi.download');
-Route::put('/materi/{id}', [MateriController::class, 'update'])->name('materi.update');
-Route::delete('/materi/{id}', [MateriController::class, 'destroy'])->name('materi.destroy');
+// Semua anggota ekskul (termasuk yang tidak punya jabatan) bisa melihat dan mengunduh materi
+Route::middleware(['auth'])->group(function () {
+    Route::get('/materi/{slug}', [MateriController::class, 'index'])->name('materi.index');
+    Route::get('/materi/download/{id}', [MateriController::class, 'download'])->name('materi.download');
+});
+
+// Hanya admin atau user dengan jabatan tertentu yang bisa menambah, mengedit, dan menghapus materi
+Route::middleware(['role:admin,jabatan:1,jabatan:2'])->group(function () {
+    Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
+    Route::put('/materi/{id}', [MateriController::class, 'update'])->name('materi.update');
+    Route::delete('/materi/{id}', [MateriController::class, 'destroy'])->name('materi.destroy');
+});
 
 
 
