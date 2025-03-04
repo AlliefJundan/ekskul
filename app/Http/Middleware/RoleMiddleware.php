@@ -15,11 +15,35 @@ class RoleMiddleware
             return redirect('/login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        // Cek apakah role user termasuk dalam daftar yang diperbolehkan
-        if (!in_array(auth()->user()->role, $roles)) {
-            return redirect('/dashboard_admin')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        $user = auth()->user();
+        $allowedJabatan = [];
+
+        // Pisahkan antara role dan jabatan
+        foreach ($roles as $key => $role) {
+            if (str_starts_with($role, 'jabatan:')) {
+                $allowedJabatan[] = intval(str_replace('jabatan:', '', $role));
+                unset($roles[$key]);
+            }
         }
 
-        return $next($request);
+        // Cek apakah user memiliki role yang diperbolehkan
+        if (in_array($user->role, $roles)) {
+            return $next($request);
+        }
+
+        // Cek apakah user memiliki jabatan dalam ekskul_user
+        $jabatanUser = $user->ekskulUser()->pluck('jabatan')->toArray();
+
+        // Jika user tidak memiliki jabatan sama sekali, maka ditolak
+        if (empty($jabatanUser)) {
+            return redirect('/dashboard_admin')->with('error', 'Anda belum memiliki jabatan di ekskul.');
+        }
+
+        // Cek apakah user memiliki jabatan yang diperbolehkan
+        if (!empty($allowedJabatan) && array_intersect($jabatanUser, $allowedJabatan)) {
+            return $next($request);
+        }
+
+        return redirect('/dashboard_admin')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
     }
 }
