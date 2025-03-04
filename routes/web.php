@@ -13,6 +13,7 @@ use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HasilKuisController;
+use App\Http\Controllers\PendaftaranController;
 use App\Http\Controllers\KegiatanControler;
 use App\Http\Controllers\VerifikasiController;
 
@@ -133,8 +134,7 @@ Route::middleware(['auth'])->group(function () {
 Route::patch('/absensi/verifikasi/{id_absensi}', [AbsensiController::class, 'verifikasi'])
     ->name('absensi.verifikasi');
 
-
-Route::get('/test-insert', [AbsensiController::class, 'testInsert']);
+Route::post('/pendaftaran/store', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
 
 
 

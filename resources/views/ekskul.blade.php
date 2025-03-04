@@ -50,10 +50,6 @@
         </div>
         <br>
 
-
-
-
-
         <!-- Navigation Links in a Single Card (Responsive) -->
         <div class="flex flex-wrap justify-center gap-4 p-6 mb-8 rounded-lg shadow-lg bg-ekskul2">
             <a href="{{ route('materi.index', $ekskul->slug) }}"

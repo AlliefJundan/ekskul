@@ -60,4 +60,8 @@ class Ekskul extends Model
             ->withPivot('jabatan', 'status')
             ->withTimestamps();
     }
+    public function pendaftaran()
+    {
+        return $this->hasMany(Pendaftaran::class, 'id_ekskul', 'id_ekskul');
+    }
 }

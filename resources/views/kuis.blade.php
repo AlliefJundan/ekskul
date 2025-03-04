@@ -3,6 +3,8 @@
         <div class="flex items-center mb-8">
             <x-button1 href="{{ route('ekskul.show', $ekskul->slug) }}">Kembali</x-button>
         </div>
+        <h1 class="text-4xl font-bold text-center mb-4">Kuis untuk {{ $ekskul->nama_ekskul }}</h1>
+
 
         <!-- Header & Form Pencarian -->
         <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
@@ -40,7 +42,7 @@
                 Lihat Hasil Kuis
             </a>
 
-            <h1 class="text-2xl font-bold text-center md:flex-1">Kuis untuk {{ $ekskul->nama_ekskul }}</h1>
+            <h1 class="text-2xl font-bold text-center md:flex-1"></h1>
 
             <form method="GET" action="{{ route('kuis.show', $ekskul->slug) }}" class="w-full md:w-auto flex">
                 <input type="text" name="search" value="{{ request('search') }}"
