@@ -40,4 +40,29 @@ class PendaftaranController extends Controller
 
         return redirect()->back()->with('success', 'Permintaanmu sedang diproses');
     }
+
+    public function show($slug)
+    {
+        $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
+        $pendaftaran = Pendaftaran::where('id_ekskul', $ekskul->id_ekskul)
+            ->where('status', 'pending')
+            ->with('user')
+            ->get();
+
+        return view('pendaftaran', compact('ekskul', 'pendaftaran'));
+    }
+
+    public function terima(Request $request)
+    {
+        $request->validate([
+            'id_pendaftaran' => 'required|integer|exists:pendaftaran,id_pendaftaran',
+        ]);
+
+        $pendaftaran = Pendaftaran::findOrFail($request->id_pendaftaran);
+        $pendaftaran->status = 'diterima';
+        $pendaftaran->save();
+
+
+        return redirect()->back()->with('success', 'Pendaftaran berhasil diterima');
+    }
 }
