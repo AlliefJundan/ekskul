@@ -20,7 +20,7 @@ class AbsensiController extends Controller
         // Cek apakah ada kegiatan yang dibuat hari ini
         $kegiatanHariIni = Kegiatan::where('id_ekskul', $ekskul->id_ekskul)
             ->whereDate('hari', today())
-            ->exists();
+            ->first();
 
         if ($user->role === 'admin' || optional($user->ekskulUser)->jabatan == 2) {
             $absensi = Absensi::where('id_ekskul', $ekskul->id_ekskul)
@@ -76,14 +76,20 @@ class AbsensiController extends Controller
         ]);
 
         $today = now()->toDateString();
+        $currentTime = now()->toTimeString(); // Waktu saat ini
 
         // Cek apakah ada kegiatan hari ini
         $kegiatanHariIni = Kegiatan::where('id_ekskul', $request->id_ekskul)
             ->whereDate('hari', today())
-            ->exists();
+            ->first();
 
         if (!$kegiatanHariIni) {
             return redirect()->back()->with('error', 'Tidak ada kegiatan yang dibuat hari ini! Absensi tidak dapat dilakukan.');
+        }
+
+        // Cek apakah waktu saat ini sudah melewati waktu terakhir kegiatan
+        if ($currentTime > $kegiatanHariIni->waktu_berakhir) {
+            return redirect()->back()->with('error', 'Waktu absensi sudah berakhir. Anda tidak dapat melakukan absensi.');
         }
 
         $existingAbsensi = Absensi::where('id_user', $request->id_user)
@@ -107,36 +113,75 @@ class AbsensiController extends Controller
     }
 
 
-  public function konfirmasiKegiatan(Request $request, $slug)
-{
-    $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
-    $user = Auth::user();
 
-    if (!($user->role === 'admin' || in_array(optional($user->ekskulUser)->jabatan, [1, 2, 3]))) {
-        return redirect()->route('absensi.index', $slug)->with('error', 'Anda tidak memiliki akses untuk konfirmasi kegiatan.');
+        public function konfirmasiKegiatan(Request $request, $slug)
+    {
+        $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
+        $user = Auth::user();
+
+        if (!($user->role === 'admin' || in_array(optional($user->ekskulUser)->jabatan, [1, 2, 3]))) {
+            return redirect()->route('absensi.index', $slug)->with('error', 'Anda tidak memiliki akses untuk konfirmasi kegiatan.');
+        }
+
+        // Cek apakah sudah ada kegiatan yang dibuat hari ini
+        $kegiatanHariIni = Kegiatan::where('id_ekskul', $ekskul->id_ekskul)
+            ->whereDate('hari', today())
+            ->exists();
+
+        if ($kegiatanHariIni) {
+            return redirect()->route('absensi.index', $slug)->with('error', 'Kegiatan sudah dibuat hari ini, tidak bisa menambahkan lagi.');
+        }
+
+        if ($request->has('mulai') && $request->has('berakhir')) {
+            Kegiatan::create([
+                'id_ekskul' => $ekskul->id_ekskul,
+                'hari' => today(),
+                'waktu_mulai' => $request->mulai,
+                'waktu_berakhir' => $request->berakhir,
+            ]);
+
+            return redirect()->route('absensi.index', $slug)->with('success', 'Kegiatan berhasil ditambahkan.');
+        }
+
+        return redirect()->route('absensi.index', $slug);
+    }
+    public function rekap($slug)
+    {
+        $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
+
+        $rekapAbsen = User::whereHas('absensi', function ($query) use ($ekskul) {
+            $query->where('id_ekskul', $ekskul->id_ekskul);
+        })->withCount([
+            'absensi as konfirmasi' => function ($query) use ($ekskul) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)->where('status', 'belum terverifikasi');
+            },
+            'absensi as hadir' => function ($query) use ($ekskul) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)->where('kehadiran', 'hadir')->where('status', 'terverifikasi');
+            },
+            'absensi as izin' => function ($query) use ($ekskul) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)->where('kehadiran', 'izin')->where('status', 'terverifikasi');
+            },
+            'absensi as sakit' => function ($query) use ($ekskul) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)->where('kehadiran', 'sakit')->where('status', 'terverifikasi');
+            },
+            'absensi as tidak_hadir' => function ($query) use ($ekskul) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)->where('kehadiran', 'alpa')->where('status', 'terverifikasi');
+            },
+        ])->get();
+
+        return view('rekap_absensi', compact('rekapAbsen', 'ekskul'));
     }
 
-    // Cek apakah sudah ada kegiatan yang dibuat hari ini
-    $kegiatanHariIni = Kegiatan::where('id_ekskul', $ekskul->id_ekskul)
-        ->whereDate('hari', today())
-        ->exists();
+    public function verifikasi($id_absensi)
+    {
+        // Cari absensi berdasarkan ID
+        $absensi = Absensi::findOrFail($id_absensi);
 
-    if ($kegiatanHariIni) {
-        return redirect()->route('absensi.index', $slug)->with('error', 'Kegiatan sudah dibuat hari ini, tidak bisa menambahkan lagi.');
-    }
-
-    if ($request->has('mulai') && $request->has('berakhir')) {
-        Kegiatan::create([
-            'id_ekskul' => $ekskul->id_ekskul,
-            'hari' => today(),
-            'waktu_mulai' => $request->mulai,
-            'waktu_berakhir' => $request->berakhir,
+        // Update status menjadi 'terverifikasi'
+        $absensi->update([
+            'status' => 'terverifikasi',
         ]);
 
-        return redirect()->route('absensi.index', $slug)->with('success', 'Kegiatan berhasil ditambahkan.');
+        return redirect()->back()->with('success', 'Absensi berhasil diverifikasi.');
     }
-
-    return redirect()->route('absensi.index', $slug);
-}
-
 }
