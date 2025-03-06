@@ -52,10 +52,11 @@
                     <div class="text-center">
                         <span class="text-blue-400 text-4xl font-bold">{{ $jumlahKegiatan }}</span>
                         <p class="text-gray-300 text-sm">Jumlah Kegiatan</p>
-                        <button onclick="showRekap()"
-                            class="mt-4 px-4 py-2 text-lg font-semibold text-white bg-green-600 rounded-md shadow-md hover:bg-green-800">
-                            Rekap Absensi
-                        </button>
+                       <button onclick="window.location.href='{{ route('rekap.absensi', $ekskul->slug) }}'"
+    class="mt-4 px-4 py-2 text-lg font-semibold text-white bg-green-600 rounded-md shadow-md hover:bg-green-800">
+    Rekap Absensi
+</button>
+
                     </div>
                 </div>
             </div>
@@ -67,8 +68,10 @@
             <form action="{{ route('absensi.store') }}" method="POST" class="flex items-center gap-4">
                 @csrf
                 <input type="hidden" name="id_user" value="{{ Auth::user()->id_user }}">
-                <button type="submit"
-                    class="px-6 py-2 text-lg font-semibold text-white bg-blue-900 rounded-md shadow-md">Tambah</button>
+               <button type="submit" id="btnTambah"
+            class="px-6 py-2 text-lg font-semibold text-white bg-blue-900 rounded-md shadow-md">
+            Tambah
+        </button>
                 <select name="kehadiran" class="p-2 text-lg text-black border border-blue-900 rounded">
                     <option value="hadir">Hadir</option>
                     <option value="izin">Izin</option>
@@ -87,8 +90,7 @@
                         <th class="p-3">Nama User</th>
                         <th class="p-3">Kehadiran</th>
                         <th class="p-3">Status</th>
-                        @if (auth()->check() &&
-                            (auth()->user()->role === 'admin' || (optional(auth()->user()->ekskulUser)->jabatan == 2)))
+                        @if (auth()->user()->role === 'admin' || in_array(optional(auth()->user()->ekskulUser)->jabatan, [1, 2]))
                          <th class="p-3">Aksi</th>     
                         @endif
                        
@@ -102,8 +104,7 @@
                             <td class="p-3">{{ ucfirst($absen->kehadiran) }}</td>
                             <td class="p-3">{{ ucfirst($absen->status) }}</td>
                             <td class="p-3">
-                                @if (auth()->check() &&
-                                    (auth()->user()->role === 'admin' || (optional(auth()->user()->ekskulUser)->jabatan == 2)))
+                                @if (auth()->user()->role === 'admin' || in_array(optional(auth()->user()->ekskulUser)->jabatan, [1, 2]))
                                     @if ($absen->status === 'belum terverifikasi')
                                         <form action="{{ route('absensi.verifikasi', $absen->id_absensi) }}" method="POST">
                                             @csrf
@@ -123,43 +124,28 @@
             </table>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    function showRekap() {
-        Swal.fire({
-            title: 'Rekap Absensi',
-            html: `
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse border border-gray-300 text-black">
-                        <thead>
-                            <tr class="bg-gray-200">
-                                <th class="p-2 border border-gray-300">Nama</th>
-                                <th class="p-2 border border-gray-300">Hadir</th>
-                                <th class="p-2 border border-gray-300">Izin</th>
-                                <th class="p-2 border border-gray-300">Sakit</th>
-                                 <th class="p-2 border border-gray-300">Alfa</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($rekapAbsen as $user)
-                                <tr>
-                                    <td class="p-2 border border-gray-300">{{ $user->nama }}</td>
-                                    <td class="p-2 border border-gray-300">{{ $user->hadir }}</td>
-                                    <td class="p-2 border border-gray-300">{{ $user->izin }}</td>
-                                    <td class="p-2 border border-gray-300">{{ $user->sakit }}</td>
-                                    <td class="p-2 border border-gray-300">{{ $user->tidak_hadir }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            `,
-            width: '600px',
-            confirmButtonText: 'Tutup',
-            confirmButtonColor: '#3085d6',
-        });
-    }
+        <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let waktuBerakhir = "{{ $kegiatanHariIni->waktu_berakhir ?? '' }}"; // Ambil waktu berakhir dari backend
+        let btnTambah = document.getElementById("btnTambah");
+
+        if (waktuBerakhir) {
+            let sekarang = new Date();
+            let waktuBerakhirDate = new Date();
+            let [jam, menit, detik] = waktuBerakhir.split(':');
+
+            waktuBerakhirDate.setHours(jam, menit, detik);
+
+            // Jika waktu sekarang sudah lebih dari waktu berakhir, disable tombol
+            if (sekarang > waktuBerakhirDate) {
+                btnTambah.disabled = true;
+                btnTambah.classList.add("bg-gray-500", "cursor-not-allowed");
+                btnTambah.classList.remove("bg-blue-900");
+            }
+        }
+    });
 </script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
         
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

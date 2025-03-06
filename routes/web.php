@@ -149,3 +149,5 @@ Route::get('/kegiatan/konfirmasi/{slug}', [AbsensiController::class, 'konfirmasi
 Route::get('/terima_pengajuan_ekskul', [TerimaPengajuanEkskulController::class, 'index'])->name('terimaPengajuanEkskul');
 Route::post('/terima_pengajuan_ekskul/{userId}/{ekskulId}/terima', [TerimaPengajuanEkskulController::class, 'terima'])->name('terimaPengajuanEkskul.terima');
 Route::post('/terima_pengajuan_ekskul/{userId}/{ekskulId}/tolak', [TerimaPengajuanEkskulController::class, 'tolak'])->name('terimaPengajuanEkskul.tolak');
+
+Route::get('/rekap-absensi/{slug}', [AbsensiController::class, 'rekap'])->name('rekap.absensi');
