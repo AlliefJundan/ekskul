@@ -47,6 +47,21 @@
                                                 </div>
                                             </form>
                                         </x-modal>
+                                        <x-modal trigger="Tolak" title="Terima {{ $item->user->nama }} untuk masuk">
+                                            <form method="POST" action="{{ route('pendaftaran.tolak') }}">
+                                                @csrf
+                                                <input type="hidden" name="id_pendaftaran" id="id_pendaftaran"
+                                                    value="{{ $item->id_pendaftaran }}">
+                                                <div class="flex justify-center gap-2 p-1">
+                                                    <button @click="open = false"
+                                                        class="px-2 py-1 font-bold text-white text-xl bg-red-500 rounded hover:bg-red-700">Batal</button>
+                                                    <button type="submit"
+                                                        class="bg-ekskul font-bold text-ekskul2 px-4 py-2 rounded-md hover:bg-blue-600 transition">
+                                                        ✘ Tolak
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </x-modal>
                                     </td>
                             @endforeach
                         </tbody>

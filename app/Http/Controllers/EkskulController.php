@@ -9,23 +9,18 @@ use Illuminate\Http\Request;
 
 class EkskulController extends Controller
 {
-    public function dashboard_admin()
-    {
-        $ekskuls = Ekskul::with(['pembina.user', 'ketua.user', 'sekertaris.user', 'bendahara.user'])->get();
 
-        return view('dashboard_admin', compact('ekskuls'));
-    }
-    public function galleri()
-    {
-        $ekskuls = Ekskul::with(['pembina.user', 'ketua.user', 'sekertaris.user', 'bendahara.user'])->get();
-
-        return view('galleri', compact('ekskuls'));
-    }
 
     public function index()
     {
         $ekskuls = Ekskul::all();
         return view('home', compact('ekskuls'));
+    }
+
+    public function galeri()
+    {
+        $ekskuls = Ekskul::all();
+        return view('ekskuls', compact('ekskuls'));
     }
 
     public function show(Request $request, $slug)

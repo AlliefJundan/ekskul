@@ -3,6 +3,10 @@
 
 
     <div class="container mx-auto mt-8">
+        <div class="text-center">
+            <h1 class="text-4xl font-bold">Sistem Informasi Ekstrakurikuler</h1>
+            <p class="mt-4 text-lg font-semibold">SMK Bakti Nusantara 666</p>
+        </div>
         @if (Auth::check())
             <b>Haloo {{ Auth::user()->nama }}</b>
         @endif
@@ -65,13 +69,11 @@
                                 class="bg-blue-500 text-white px-4 py-2 rounded-md ml-2 hover:bg-blue-600 transition">
                                 ✔ Simpan
                             </button>
-
                         </div>
                     </form>
                 </x-modal>
             @endif
         </div>
-
     </div>
 
     <!-- Grid Ekskul -->
@@ -104,10 +106,12 @@
                             ✖
                         </button>
                         <h2 class="text-xl font-bold mb-4">Detail Ekskul</h2>
-                        <p><strong>Nama Ekskul:</strong> {{ $ekskul->nama_ekskul ?? 'Belum ada' }}</p>
+                        <img src="{{ asset('storage/' . $ekskul->gambar) }}" alt="Gambar Ekskul"
+                            class="w-full h-60 object-cover">
+                        <p class="mt-4"><strong>Nama Ekskul:</strong> {{ $ekskul->nama_ekskul ?? 'Belum ada' }}</p>
                         <p><strong>Nama Pembina:</strong> {{ $ekskul->pembina->user->nama ?? 'Belum ada' }}</p>
                         <p><strong>Nama Ketua:</strong> {{ $ekskul->ketua->user->nama ?? 'Belum ada' }}</p>
-                       <p><strong>Jumlah Anggota:</strong> {{ $ekskul->users->count() }}</p>    
+                        <p><strong>Jumlah Anggota:</strong> {{ $ekskul->users->count() }}</p>
 
                         <div class="mt-6 flex justify-end gap-3">
                             <a href="{{ route('ekskul.show', $ekskul->slug) }}"
@@ -119,6 +123,5 @@
                 </div>
             </div>
         @endforeach
-    </div>
     </div>
 </x-layout>

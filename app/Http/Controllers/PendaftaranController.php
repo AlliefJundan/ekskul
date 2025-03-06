@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ekskul;
+use App\Models\EkskulUser;
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
 
@@ -57,12 +58,34 @@ class PendaftaranController extends Controller
         $request->validate([
             'id_pendaftaran' => 'required|integer|exists:pendaftaran,id_pendaftaran',
         ]);
-
         $pendaftaran = Pendaftaran::findOrFail($request->id_pendaftaran);
         $pendaftaran->status = 'diterima';
         $pendaftaran->save();
 
+        $user = Pendaftaran::findOrFail($request->id_pendaftaran)->id_user;
+        $ekskul = Pendaftaran::findOrFail($request->id_pendaftaran)->id_ekskul;
+
+        $ekskul = EkskulUser::create([
+            'user_id' => $user,
+            'ekskul_id' => $ekskul,
+            'jabatan' => null,
+        ]);
+
+
 
         return redirect()->back()->with('success', 'Pendaftaran berhasil diterima');
+    }
+    public function tolak(Request $request)
+    {
+        $request->validate([
+            'id_pendaftaran' => 'required|integer|exists:pendaftaran,id_pendaftaran',
+        ]);
+
+        $pendaftaran = Pendaftaran::findOrFail($request->id_pendaftaran);
+        $pendaftaran->status = 'ditolak';
+        $pendaftaran->save();
+
+
+        return redirect()->back()->with('success', 'Pendaftaran berhasil ditolak');
     }
 }

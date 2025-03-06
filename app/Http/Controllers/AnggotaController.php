@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Ekskul;
 use App\Models\EkskulUser;
+use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
 
 class AnggotaController extends Controller
@@ -107,6 +108,11 @@ class AnggotaController extends Controller
             ->where('ekskul_id', $request->ekskul_id) // Hanya di ekskul terkait
             ->first();
 
+        $keluar = Pendaftaran::where('id_user', $request->user_id)
+            ->where('id_ekskul', $request->ekskul_id)
+            ->where('status', 'diterima')
+            ->first();
+
         if (!$anggota) {
             return redirect()->back()->with('error', 'Anggota tidak ditemukan.');
         }
@@ -136,6 +142,8 @@ class AnggotaController extends Controller
         }
 
         $anggota->delete();
+        $keluar->status = 'dikeluarkan';
+        $keluar->save();
 
         return redirect()->back()->with('success', 'Anggota berhasil dikeluarkan.');
     }

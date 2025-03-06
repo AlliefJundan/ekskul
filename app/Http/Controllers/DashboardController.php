@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Ekskul;
+use App\Models\EkskulUser;
 use Illuminate\Routing\Controller;
 
 class DashboardController extends Controller
@@ -24,10 +25,23 @@ class DashboardController extends Controller
 
     public function dashboard_admin()
     {
-        $ekskuls = Ekskul::all();
+        $user = auth()->user();
+
+        if ($user->role == 'admin') {
+            // Admin melihat semua ekskul
+            $ekskuls = Ekskul::all();
+        } else {
+
+            $ekskulUser = EkskulUser::where('user_id', $user->id_user)->pluck('ekskul_id');
+
+            $ekskuls = Ekskul::whereIn('id_ekskul', $ekskulUser)->get();
+        }
 
         return view('dashboard_admin', compact('ekskuls'));
     }
+
+
+
 
     public function dashboard_user()
     {

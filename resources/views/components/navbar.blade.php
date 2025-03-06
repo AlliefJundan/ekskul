@@ -22,7 +22,7 @@
                 @if (Request::is('kuis*') || Request::is('materi*') || Request::is('ekskul*'))
                     <a href="/"
                         class="text-white font-semibold hover:text-amber-400 block md:inline-block">Home</a>
-                    <a href="/materi"
+                    <a href="/materi"d
                         class="text-white font-semibold hover:text-amber-400 block md:inline-block">Materi</a>
                     <a href=""
                         class="text-white font-semibold hover:text-amber-400 block md:inline-block">Kuis</a>
@@ -50,8 +50,8 @@
                 @else
                     <a href="/"
                         class="text-white font-semibold hover:text-amber-400 block md:inline-block">Home</a>
-                    <a href="#gallery"
-                        class="text-white font-semibold hover:text-amber-400 block md:inline-block">Galeri</a>
+                    <a href="ekskul"
+                        class="text-white font-semibold hover:text-amber-400 block md:inline-block">Ekskul</a>
                     <a href="#about"
                         class="text-white font-semibold hover:text-amber-400 block md:inline-block">About</a>
 

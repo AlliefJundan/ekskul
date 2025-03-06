@@ -14,27 +14,15 @@ use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HasilKuisController;
 use App\Http\Controllers\PendaftaranController;
-use App\Http\Controllers\KegiatanControler;
-use App\Http\Controllers\VerifikasiController;
-
-use App\Http\Controllers\KegiatanController;
-
-
-use App\Http\Controllers\TerimaPengajuanEkskulController;
-
-
-
-
 
 Route::get('/', function () {
     return view('home', [EkskulController::class, 'index']);
 });
+Route::get('/ekskul',  [EkskulController::class, 'galeri'])->name('ekskul.galeri');
 
 Route::get('/', [EkskulController::class, 'index'])->name('galeri');
 
-Route::get('/ekskul', function () {
-    return view('ekskul');
-});
+
 
 //kuis
 
@@ -138,16 +126,7 @@ Route::patch('/absensi/verifikasi/{id_absensi}', [AbsensiController::class, 'ver
 Route::post('/pendaftaran/store', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
 Route::get('/pendaftaran/{slug}', [PendaftaranController::class, 'show'])->name('pendaftaran.show');
 Route::post('/pendaftaran/terima', [PendaftaranController::class, 'terima'])->name('pendaftaran.terima');
-
-
+Route::post('/pendaftaran/tolak', [PendaftaranController::class, 'tolak'])->name('pendaftaran.tolak');
 
 // Route::get('/cek-kegiatan', [KegiatanController::class, 'cekKegiatan'])->name('cek.kegiatan');
 Route::get('/kegiatan/konfirmasi/{slug}', [AbsensiController::class, 'konfirmasiKegiatan'])->name('kegiatan.konfirmasi');
-
-
-
-
-//terimaEkskul
-Route::get('/terima_pengajuan_ekskul', [TerimaPengajuanEkskulController::class, 'index'])->name('terimaPengajuanEkskul');
-Route::post('/terima_pengajuan_ekskul/{userId}/{ekskulId}/terima', [TerimaPengajuanEkskulController::class, 'terima'])->name('terimaPengajuanEkskul.terima');
-Route::post('/terima_pengajuan_ekskul/{userId}/{ekskulId}/tolak', [TerimaPengajuanEkskulController::class, 'tolak'])->name('terimaPengajuanEkskul.tolak');
