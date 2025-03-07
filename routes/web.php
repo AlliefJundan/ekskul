@@ -76,4 +76,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/pendaftaran/tolak', [PendaftaranController::class, 'tolak'])->name('pendaftaran.tolak');
 
     Route::get('/kegiatan/konfirmasi/{slug}', [AbsensiController::class, 'konfirmasiKegiatan'])->name('kegiatan.konfirmasi');
+
+    Route::get('/kegiatan/konfirmasi/{slug}', [AbsensiController::class, 'konfirmasiKegiatan'])->name('kegiatan.konfirmasi');
+    Route::get('/rekap-absensi/{slug}', [AbsensiController::class, 'rekap'])->name('rekap.absensi');
+    Route::patch('/absensi/verifikasi/{id_absensi}', [AbsensiController::class, 'verifikasi'])
+        ->name('absensi.verifikasi');
+    Route::get('/ekskul/absensi/{slug}', [AbsensiController::class, 'index'])->name('absensi.index');
+    Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
 });

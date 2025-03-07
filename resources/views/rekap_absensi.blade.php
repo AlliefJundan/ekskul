@@ -15,7 +15,7 @@
                         <thead>
                             <tr class="bg-blue-900 text-white">
                                 <th class="border border-gray-300 px-4 py-2">No</th>
-                                <th class="border border-gray-300 px-4 py-2">Nama</th>
+                                <th class="borde r border-gray-300 px-4 py-2">Nama</th>
                                 <th class="border border-gray-300 px-4 py-2">Konfirmasi</th>
                                 <th class="border border-gray-300 px-4 py-2">Hadir</th>
                                 <th class="border border-gray-300 px-4 py-2">Izin</th>

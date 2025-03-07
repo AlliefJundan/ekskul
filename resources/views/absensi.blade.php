@@ -27,19 +27,20 @@
             <div class="bg-blue-900 rounded-lg shadow-lg p-6 w-full md:w-1/2 max-w-lg">
                 <h2 class="text-lg font-bold mb-4 text-white">Absensi</h2>
 
-                <div class="flex flex-col gap-2 text-white">
-                    @foreach (['Hadir' => 'text-green-500', 'Sakit' => 'text-blue-500', 'Izin' => 'text-orange-500', 'Alfa' => 'text-red-500'] as $status => $color)
-                        <div class="flex justify-between items-center">
-                            <span class="flex items-center gap-2">
-                                <span class="w-3 h-3 rounded-full {{ $color }}"></span>
-                                <span class="font-medium">{{ $status }}</span>
-                            </span>
-                            <span class="font-semibold {{ $color }}">
-                                {{ $count[$status] ?? 0 }} Hari
-                                ({{ number_format($count[$status] ?? 0) }})
-                            </span>
-                        </div>
-                    @endforeach
+                <div class="flex justify-center items-center text-white">
+                    <div class="text-center">
+                        <span class="text-blue-400 text-4xl font-bold">{{ $jumlahKegiatan }}</span>
+                        <p class="text-gray-300 text-sm">Jumlah Kegiatan</p>
+                        {{-- <button onclick="window.location.href='{{ route('rekap.absensi', $ekskul->slug) }}'"
+                            class="mt-4 px-4 py-2 text-lg font-semibold text-white bg-green-600 rounded-md shadow-md hover:bg-green-800">
+                            Rekap Absensi
+                        </button> --}}
+                        <a href="{{ route('rekap.absensi', ['slug' => $ekskul->slug]) }}"
+                            class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-300 inline-block">
+                            Lihat Rekap
+                        </a>
+
+                    </div>
                 </div>
             </div>
 
@@ -129,7 +130,7 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 let waktuBerakhir =
-                "{{ $kegiatanHariIni->waktu_berakhir ?? '' }}"; // Ambil waktu berakhir dari backend
+                    "{{ $kegiatanHariIni->waktu_berakhir ?? '' }}"; // Ambil waktu berakhir dari backend
                 let btnTambah = document.getElementById("btnTambah");
 
                 if (waktuBerakhir) {
