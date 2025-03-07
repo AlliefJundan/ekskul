@@ -130,3 +130,5 @@ Route::post('/pendaftaran/tolak', [PendaftaranController::class, 'tolak'])->name
 
 // Route::get('/cek-kegiatan', [KegiatanController::class, 'cekKegiatan'])->name('cek.kegiatan');
 Route::get('/kegiatan/konfirmasi/{slug}', [AbsensiController::class, 'konfirmasiKegiatan'])->name('kegiatan.konfirmasi');
+Route::get('/rekap-absensi/{slug}', [AbsensiController::class, 'rekap'])->name('rekap.absensi');
+    

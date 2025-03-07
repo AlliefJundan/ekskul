@@ -52,10 +52,14 @@
                     <div class="text-center">
                         <span class="text-blue-400 text-4xl font-bold">{{ $jumlahKegiatan }}</span>
                         <p class="text-gray-300 text-sm">Jumlah Kegiatan</p>
-                       <button onclick="window.location.href='{{ route('rekap.absensi', $ekskul->slug) }}'"
+                       {{-- <button onclick="window.location.href='{{ route('rekap.absensi', $ekskul->slug) }}'"
     class="mt-4 px-4 py-2 text-lg font-semibold text-white bg-green-600 rounded-md shadow-md hover:bg-green-800">
     Rekap Absensi
-</button>
+</button> --}}
+   <a href="{{ route('rekap.absensi', ['slug' => $ekskul->slug]) }}" 
+       class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-300 inline-block">
+        Lihat Rekap
+    </a>
 
                     </div>
                 </div>
