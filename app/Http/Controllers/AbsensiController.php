@@ -8,7 +8,7 @@ use App\Models\Ekskul;
 use App\Models\User;
 use App\Models\Kegiatan;
 use Illuminate\Support\Facades\Auth;
-
+use Mpdf\Mpdf;
 class AbsensiController extends Controller
 {
     public function index(Request $request, $slug)
@@ -145,31 +145,41 @@ class AbsensiController extends Controller
 
         return redirect()->route('absensi.index', $slug);
     }
-    public function rekap($slug)
+    public function rekap($slug, Request $request)
     {
+        $bulan = $request->query('bulan'); // Ambil bulan dari query parameter
         $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
 
-        $rekapAbsen = User::whereHas('absensi', function ($query) use ($ekskul) {
-            $query->where('id_ekskul', $ekskul->id_ekskul);
+        $rekapAbsen = User::whereHas('absensi', function ($query) use ($ekskul, $bulan) {
+            $query->where('id_ekskul', $ekskul->id_ekskul)
+                ->whereMonth('tanggal', $bulan); // Filter berdasarkan bulan
         })->withCount([
             'absensi as konfirmasi' => function ($query) use ($ekskul) {
                 $query->where('id_ekskul', $ekskul->id_ekskul)->where('status', 'belum terverifikasi');
             },
-            'absensi as hadir' => function ($query) use ($ekskul) {
-                $query->where('id_ekskul', $ekskul->id_ekskul)->where('kehadiran', 'hadir')->where('status', 'terverifikasi');
+            'absensi as hadir' => function ($query) use ($ekskul, $bulan) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)
+                    ->whereMonth('tanggal', $bulan)
+                    ->where('kehadiran', 'hadir');
             },
-            'absensi as izin' => function ($query) use ($ekskul) {
-                $query->where('id_ekskul', $ekskul->id_ekskul)->where('kehadiran', 'izin')->where('status', 'terverifikasi');
+            'absensi as izin' => function ($query) use ($ekskul, $bulan) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)
+                    ->whereMonth('tanggal', $bulan)
+                    ->where('kehadiran', 'izin');
             },
-            'absensi as sakit' => function ($query) use ($ekskul) {
-                $query->where('id_ekskul', $ekskul->id_ekskul)->where('kehadiran', 'sakit')->where('status', 'terverifikasi');
+            'absensi as sakit' => function ($query) use ($ekskul, $bulan) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)
+                    ->whereMonth('tanggal', $bulan)
+                    ->where('kehadiran', 'sakit');
             },
-            'absensi as tidak_hadir' => function ($query) use ($ekskul) {
-                $query->where('id_ekskul', $ekskul->id_ekskul)->where('kehadiran', 'alpa')->where('status', 'terverifikasi');
+            'absensi as alpa' => function ($query) use ($ekskul, $bulan) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)
+                    ->whereMonth('tanggal', $bulan)
+                    ->where('kehadiran', 'alpa');
             },
         ])->get();
 
-        return view('rekap_absensi', compact('rekapAbsen', 'ekskul'));
+        return view('rekap_absensi', compact('rekapAbsen', 'ekskul', 'bulan'));
     }
 
     public function verifikasi($id_absensi)
@@ -183,5 +193,57 @@ class AbsensiController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Absensi berhasil diverifikasi.');
+    }
+
+
+    public function view_pdf(Request $request, $slug)
+    {
+        $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
+        $bulan = $request->query('bulan', date('m')); // Ambil bulan dari query atau default bulan ini
+
+        $rekapAbsen = User::whereHas('absensi', function ($query) use ($ekskul, $bulan) {
+            $query->where('id_ekskul', $ekskul->id_ekskul)
+                ->whereMonth('tanggal', $bulan);
+        })->withCount([
+            'absensi as konfirmasi' => function ($query) use ($ekskul, $bulan) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)
+                    ->whereMonth('tanggal', $bulan)
+                    ->where('status', 'belum terverifikasi');
+            },
+            'absensi as hadir' => function ($query) use ($ekskul, $bulan) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)
+                    ->whereMonth('tanggal', $bulan)
+                    ->where('kehadiran', 'hadir')
+                    ->where('status', 'terverifikasi');
+            },
+            'absensi as izin' => function ($query) use ($ekskul, $bulan) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)
+                    ->whereMonth('tanggal', $bulan)
+                    ->where('kehadiran', 'izin')
+                    ->where('status', 'terverifikasi');
+            },
+            'absensi as sakit' => function ($query) use ($ekskul, $bulan) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)
+                    ->whereMonth('tanggal', $bulan)
+                    ->where('kehadiran', 'sakit')
+                    ->where('status', 'terverifikasi');
+            },
+            'absensi as tidak_hadir' => function ($query) use ($ekskul, $bulan) {
+                $query->where('id_ekskul', $ekskul->id_ekskul)
+                    ->whereMonth('tanggal', $bulan)
+                    ->where('kehadiran', 'alpa')
+                    ->where('status', 'terverifikasi');
+            },
+        ])->get();
+
+        // Render tampilan ke dalam HTML
+        $html = view('rekap_absensi_pdf', compact('rekapAbsen', 'ekskul', 'bulan'))->render();
+
+        // Inisialisasi MPDF
+        $mpdf = new Mpdf();
+        $mpdf->WriteHTML($html);
+
+        // Simpan atau langsung tampilkan
+        return response($mpdf->Output('Rekap_Absensi.pdf', 'I'))->header('Content-Type', 'application/pdf');
     }
 }

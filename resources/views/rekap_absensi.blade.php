@@ -1,10 +1,18 @@
 <x-layout>
     <div class="container mx-auto mt-6">
         <h2 class="text-3xl font-bold text-center text-black">Rekap Absensi - {{ $ekskul->nama_ekskul }}</h2>
+          <p class="text-gray-600 font-bold">Bulan: {{ DateTime::createFromFormat('!m', $bulan) ? DateTime::createFromFormat('!m', $bulan)->format('F') : 'Tidak Valid' }}</p>
 
-        <div class="flex justify-between mt-6">
-            <x-button1 href="{{ route('ekskul.show', $ekskul->slug) }}">Kembali</x-button1>
-        </div>
+       <div class="flex justify-between items-center mt-6">
+    <!-- Tombol Kembali di Kiri -->
+    <x-button1 href="{{ route('ekskul.show', $ekskul->slug) }}">Kembali</x-button1>
+
+    <!-- Tombol Download di Kanan -->
+    <a href="{{ route('rekap.absensi.pdf', ['slug' => $ekskul->slug, 'bulan' => $bulan]) }}"
+       class="px-6 py-2 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition">
+        Download
+    </a>
+</div>
 
         <div class="mt-6 bg-blue-900 p-6 shadow-md rounded-lg">
             <div class="bg-white p-4 rounded-lg shadow-lg overflow-x-auto">
