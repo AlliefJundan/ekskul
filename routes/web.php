@@ -79,11 +79,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/kegiatan/konfirmasi/{slug}', [AbsensiController::class, 'konfirmasiKegiatan'])->name('kegiatan.konfirmasi');
     Route::get('/rekap-absensi/{slug}', [AbsensiController::class, 'rekap'])->name('rekap.absensi');
-    Route::get('/rekap-absensi/{slug}/view/pdf', [AbsensiController::class, 'view_pdf']);
+    Route::get('/rekap-absensi/{slug}/view/pdf', [AbsensiController::class, 'view_pdf'])->name('rekap.absensi.pdf');
     Route::patch('/absensi/verifikasi/{id_absensi}', [AbsensiController::class, 'verifikasi'])
         ->name('absensi.verifikasi');
     Route::get('/ekskul/absensi/{slug}', [AbsensiController::class, 'index'])->name('absensi.index');
     Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
-
-
+    Route::patch('/absensi/verifikasi/{id_absensi}', [AbsensiController::class, 'verifikasi'])->name('absensi.verifikasi');
 });

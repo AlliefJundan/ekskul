@@ -9,9 +9,10 @@
 
     <!-- Tombol Download di Kanan -->
     <a href="{{ route('rekap.absensi.pdf', ['slug' => $ekskul->slug, 'bulan' => $bulan]) }}"
-       class="px-6 py-2 bg-red-500 text-white font-semibold rounded-lg hover:bg-red-600 transition">
-        Download
-    </a>
+   class="px-6 py-2 bg-danger text-white font-semibold rounded-lg hover:bg-red-600 transition">
+   Download 
+</a>
+
 </div>
 
         <div class="mt-6 bg-blue-900 p-6 shadow-md rounded-lg">
