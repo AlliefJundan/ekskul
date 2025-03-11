@@ -138,8 +138,8 @@
         </div>
         <!-- Modal Edit -->
         <div id="editModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-[400px]">
-                <h2 class="text-xl font-bold mb-4">Edit Materi</h2>
+            <div class="bg-ekskul2 p-6 rounded-lg shadow-lg w-[400px]">
+                <h2 class="text-center text-white text-xl font-bold mb-4">Edit Materi</h2>
 
                 <form id="editForm" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -147,30 +147,30 @@
 
                     <!-- Isi Materi -->
                     <div class="mb-4">
-                        <label class="block font-bold">Isi Materi</label>
+                        <label class="text-white block">Isi Materi</label>
                         <textarea id="editIsiMateri" name="isi_materi" class="w-full border rounded p-2" rows="4" required></textarea>
                     </div>
 
                     <!-- Lampiran (Opsional) -->
                     <div class="mb-4">
-                        <label class="block font-bold">Lampiran</label>
-                        <input type="file" name="lampiran_materi" class="w-full border p-2">
+                        <label class="text-white block">Lampiran</label>
+                        <input type="file" name="lampiran_materi" class="text-white w-full border p-2">
 
                         <!-- Tampilkan Lampiran Saat Ini -->
-                        <p class="text-sm mt-2">Lampiran saat ini:
-                            <a id="editLampiranLink" href="#" target="_blank" class="text-blue-600">Lihat
+                        <p class="text-white text-sm mt-2">Lampiran saat ini:
+                            <a id="editLampiranLink" href="#" target="_blank" class="text-ekskul">Lihat
                                 Lampiran</a>
-                            <span id="editLampiranNama" class="text-gray-700"></span>
+                            <span id="editLampiranNama" class="text-yellow-500"></span>
                         </p>
                     </div>
 
                     <!-- Tombol Simpan & Batal -->
                     <div class="flex justify-end gap-3">
                         <button type="button" onclick="closeModal()"
-                            class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500">
+                            class="bg-red-500 text-ekskul2 font-bold px-4 py-2 rounded hover:bg-red-600">
                             Batal
                         </button>
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                        <button type="submit" class="bg-ekskul text-ekskul2 font-bold px-4 py-2 rounded hover:bg-indigo-500">
                             Simpan Perubahan
                         </button>
                     </div>
@@ -182,8 +182,28 @@
 <!-- JavaScript Konfirmasi -->
 <script>
     function confirmDelete(id) {
-        if (confirm("Apakah Anda yakin ingin menghapus materi ini?")) {
-            document.getElementById('delete-form-' + id).submit();
+        if (confirm('Yakin ingin menghapus materi ini?')) {
+            fetch(`/materi/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Materi berhasil dihapus!');
+                    location.reload(); // Reload halaman
+                } else {
+                    alert('Gagal menghapus materi. Coba lagi.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Terjadi kesalahan. Coba lagi.');
+            });
         }
     }
 </script>

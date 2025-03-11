@@ -22,7 +22,7 @@
                 @if (Request::is('kuis*') || Request::is('materi*') || Request::is('ekskul*'))
                     <a href="/"
                         class="text-white font-semibold hover:text-amber-400 block md:inline-block">Home</a>
-                    <a href="/materi"d
+                    <a href=""
                         class="text-white font-semibold hover:text-amber-400 block md:inline-block">Materi</a>
                     <a href=""
                         class="text-white font-semibold hover:text-amber-400 block md:inline-block">Kuis</a>

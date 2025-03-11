@@ -67,6 +67,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Materi
     Route::get('/materi/{slug}', [MateriController::class, 'index'])->name('materi.index');
+    Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
+    Route::put('/materi/{id}', [MateriController::class, 'update'])->name('materi.update');
+    Route::delete('/materi/{id}', [MateriController::class, 'destroy'])->name('materi.destroy');
     Route::get('/materi/download/{id}', [MateriController::class, 'download'])->name('materi.download');
 
     // Pendaftaran
