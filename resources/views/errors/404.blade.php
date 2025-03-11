@@ -38,7 +38,7 @@
 <body>
     <h1>404</h1>
     <p>Oops! Halaman yang kamu cari tidak ditemukan.</p>
-    <a href="{{ route('dashboard_admin') }}">Kembali ke Beranda</a>
+    <a href="{{ route('dashboard_admin') }}">Kembali ke Dashboard</a>
 </body>
 
 </html>

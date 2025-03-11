@@ -34,9 +34,14 @@
                                     <td class="flex justify-left gap-2 p-2">
                                         <x-modal trigger="Terima" title="Terima {{ $item->user->nama }} untuk masuk">
                                             <form method="POST" action="{{ route('pendaftaran.terima') }}">
+
                                                 @csrf
                                                 <input type="hidden" name="id_pendaftaran" id="id_pendaftaran"
                                                     value="{{ $item->id_pendaftaran }}">
+                                                <input type="hidden" name="id_ekskul" id="id_ekskul"
+                                                    value="{{ $ekskul->id_ekskul }}">
+                                                <input type="hidden" name="id_user" id="id_user"
+                                                    value="{{ $item->id_user }}">
                                                 <div class="flex justify-center gap-2 p-1">
                                                     <button @click="open = false"
                                                         class="px-2 py-1 font-bold text-white text-xl bg-red-500 rounded hover:bg-red-700">Batal</button>
@@ -52,6 +57,10 @@
                                                 @csrf
                                                 <input type="hidden" name="id_pendaftaran" id="id_pendaftaran"
                                                     value="{{ $item->id_pendaftaran }}">
+                                                <input type="hidden" name="id_ekskul" id="id_ekskul"
+                                                    value="{{ $ekskul->id_ekskul }}">
+                                                <input type="hidden" name="id_user" id="id_user"
+                                                    value="{{ $item->id_user }}">
                                                 <div class="flex justify-center gap-2 p-1">
                                                     <button @click="open = false"
                                                         class="px-2 py-1 font-bold text-white text-xl bg-red-500 rounded hover:bg-red-700">Batal</button>

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Ekskul;
 use App\Models\EkskulUser;
+use App\Models\Notifikasi;
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
+use App\Models\NotifikasiTarget;
 
 class PendaftaranController extends Controller
 {
@@ -28,7 +30,12 @@ class PendaftaranController extends Controller
             ->where('status', 'pending')
             ->first();
 
-        if ($existing) {
+        $existing2 = EkskulUser::where('user_id', $request->id_user)
+            ->where('ekskul_id', $request->id_ekskul)
+            ->first();
+
+
+        if ($existing || $existing2) {
             return redirect()->back()->with('error', 'Kamu sudah mendaftar ekskul ini!');
         }
 
@@ -38,6 +45,25 @@ class PendaftaranController extends Controller
             'id_user' => $request->id_user,
             'status' => 'pending',
         ]);
+
+        Notifikasi::create([
+            'title' => 'Pendaftaran anggota baru',
+            'category' => 'Pendaftaran',
+            'id_ekskul' => $request->id_ekskul,
+            'description' => 'Materi baru telah ditambahkan',
+        ]);
+
+        $users = EkskulUser::where('ekskul_id', $request->id_ekskul)
+            ->whereIn('jabatan', [1, 2]) // Memfilter id_jabatan 1 atau 2
+            ->pluck('user_id');
+        $id_notifikasi = Notifikasi::orderByDesc('id_notifikasi')->first()->id_notifikasi;
+
+        foreach ($users as $user_id) {
+            $baru =   NotifikasiTarget::create([
+                'id_notifikasi' => $id_notifikasi,
+                'id_user' => $user_id,
+            ]);
+        }
 
         return redirect()->back()->with('success', 'Permintaanmu sedang diproses');
     }
@@ -57,6 +83,8 @@ class PendaftaranController extends Controller
     {
         $request->validate([
             'id_pendaftaran' => 'required|integer|exists:pendaftaran,id_pendaftaran',
+            'id_ekskul' => 'required|integer|exists:ekskul,id_ekskul',
+            'id_user' => 'required|integer|exists:users,id_user',
         ]);
         $pendaftaran = Pendaftaran::findOrFail($request->id_pendaftaran);
         $pendaftaran->status = 'diterima';
@@ -71,19 +99,50 @@ class PendaftaranController extends Controller
             'jabatan' => null,
         ]);
 
+        Notifikasi::create([
+            'title' => 'Pendaftaran diterima',
+            'category' => 'Pendaftaran',
+            'id_ekskul' => $request->id_ekskul,
+            'id_user' => $request->id_user,
+            'description' => 'Permohonan daftar anda diterima',
+        ]);
 
+        $id_notifikasi = Notifikasi::orderByDesc('id_notifikasi')->first()->id_notifikasi;
+
+        NotifikasiTarget::create([
+            'id_notifikasi' => $id_notifikasi,
+            'id_user' => $request->id_user,
+        ]);
 
         return redirect()->back()->with('success', 'Pendaftaran berhasil diterima');
     }
+
     public function tolak(Request $request)
     {
         $request->validate([
             'id_pendaftaran' => 'required|integer|exists:pendaftaran,id_pendaftaran',
+            'id_ekskul' => 'required|integer|exists:ekskul,id_ekskul',
+            'id_user' => 'required|integer|exists:users,id_user',
         ]);
 
         $pendaftaran = Pendaftaran::findOrFail($request->id_pendaftaran);
         $pendaftaran->status = 'ditolak';
         $pendaftaran->save();
+
+        Notifikasi::create([
+            'title' => 'Pendaftaran ditolak',
+            'category' => 'Pendaftaran',
+            'id_ekskul' => $request->id_ekskul,
+            'id_user' => $request->id_user,
+            'description' => 'Permohonan daftar anda ditolak',
+        ]);
+
+        $id_notifikasi = Notifikasi::orderByDesc('id_notifikasi')->first()->id_notifikasi;
+
+        NotifikasiTarget::create([
+            'id_notifikasi' => $id_notifikasi,
+            'id_user' => $request->id_user,
+        ]);
 
 
         return redirect()->back()->with('success', 'Pendaftaran berhasil ditolak');

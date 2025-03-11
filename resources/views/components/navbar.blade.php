@@ -27,6 +27,7 @@
                     <a href=""
                         class="text-white font-semibold hover:text-amber-400 block md:inline-block">Kuis</a>
 
+
                     @auth
                         <a href="{{ route('dashboard_admin') }}"
                             class="text-white font-semibold hover:text-amber-400 block md:inline-block">Dashboard</a>
@@ -34,15 +35,14 @@
                             <a href="{{ route('akun.index') }}"
                                 class="text-white font-semibold hover:text-amber-400 block md:inline-block">Akun</a>
                         @endif
+                        <a href="/notifikasi" class="text-white font-semibold hover:text-amber-400 block md:inline-block"><i
+                                class="fa fa-bell" aria-hidden="true"></i></a>
+
                         <form action="{{ route('logout') }}" method="post" class="inline">
                             @csrf
                             <button type="submit"
-                                class="text-white hover:text-amber-400 block md:inline-block flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-7.5A2.25 2.25 0 003.75 5.25v13.5A2.25 2.25 0 006 21h7.5a2.25 2.25 0 002.25-2.25V15m4.5-3h-13.5m0 0l3-3m-3 3l3 3" />
-                                </svg>
+                                class="text-white hover:text-amber-400  block md:inline-block flex items-center">
+                                <i class="fa fa-sign-out" aria-hidden="true">Logout</i>
 
                             </button>
                         </form>
@@ -63,15 +63,12 @@
                     @auth
                         <a href="{{ route('dashboard_admin') }}"
                             class="text-white font-semibold hover:text-amber-400 block md:inline-block">Dashboard</a>
+                        <a href="notifikasi" class="text-white font-semibold hover:text-amber-400 block md:inline-block">
+                            <i class="fa fa-bell" aria-hidden="true"></i></a>
                         <form action="{{ route('logout') }}" method="post" class="inline">
                             @csrf
-                            <button type="submit"
-                                class="text-white hover:text-amber-400 block md:inline-block flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-7.5A2.25 2.25 0 003.75 5.25v13.5A2.25 2.25 0 006 21h7.5a2.25 2.25 0 002.25-2.25V15m4.5-3h-13.5m0 0l3-3m-3 3l3 3" />
-                                </svg>
+                            <button type="submit" class="text-white  hover:text-amber-400 block md:inline-block ">
+                                <i class="fa fa-sign-out" aria-hidden="true">Logout</i>
 
                             </button>
                         </form>

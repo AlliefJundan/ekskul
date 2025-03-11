@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Materi;
 use App\Models\Ekskul;
+use App\Models\Materi;
+use Mockery\Matcher\Not;
+use App\Models\EkskulUser;
+use App\Models\Notifikasi;
 use Illuminate\Http\Request;
+use App\Models\NotifikasiTarget;
 use Illuminate\Support\Facades\Storage;
 
 class MateriController extends Controller
@@ -58,6 +62,24 @@ class MateriController extends Controller
             'id_ekskul' => $request->id_ekskul,
             'id_user' => $request->id_user,
         ]);
+
+        Notifikasi::create([
+            'title' => 'Materi Baru',
+            'category' => 'Materi',
+            'id_ekskul' => $request->id_ekskul,
+            'description' => 'Materi baru telah ditambahkan',
+        ]);
+
+        $users = EkskulUser::where('ekskul_id', $request->id_ekskul)->pluck('user_id');
+        $id_notifikasi = Notifikasi::orderByDesc('id_notifikasi')->first()->id_notifikasi;
+
+
+        foreach ($users as $user_id) {
+            NotifikasiTarget::create([
+                'id_notifikasi' => $id_notifikasi,
+                'id_user' => $user_id,
+            ]);
+        }
 
         return redirect()->route('materi.index', ['slug' => $ekskul->slug])
             ->with('success', 'Materi berhasil ditambahkan.');

@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Kuis;
 use App\Models\Ekskul;
 use App\Models\HasilKuis;
+use App\Models\EkskulUser;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\Notifikasi;
+use App\Models\NotifikasiTarget;
 
 class KuisController extends Controller
 {
@@ -30,9 +33,6 @@ class KuisController extends Controller
     }
 
 
-
-
-
     public function store(Request $request)
     {
         $request->validate([
@@ -49,6 +49,23 @@ class KuisController extends Controller
             'isi_kuis' => $request->isi_kuis,
             'id_ekskul' => $request->id_ekskul,
         ]);
+
+        Notifikasi::create([
+            'title' => 'Kuis Baru',
+            'category' => 'Kuis',
+            'id_ekskul' => $request->id_ekskul,
+            'description' => 'Kuis baru telah ditambahkan',
+        ]);
+
+        $ekskul = EkskulUser::where('ekskul_id', $request->id_ekskul)->pluck('user_id');
+        $id_notifikasi = Notifikasi::latest()->first()->id_notifikasi;
+
+        foreach ($ekskul as $user_id) {
+            NotifikasiTarget::create([
+                'id_notifikasi' => $id_notifikasi,
+                'id_user' => $user_id,
+            ]);
+        }
 
         return redirect()->route('kuis.show', Ekskul::find($request->id_ekskul)->slug)
             ->with('success', 'Kuis berhasil ditambahkan.');
