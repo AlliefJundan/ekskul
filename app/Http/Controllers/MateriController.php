@@ -117,19 +117,21 @@ class MateriController extends Controller
      * Menghapus materi dari database.
      */
     public function destroy($id)
-    {
-        $materi = Materi::findOrFail($id);
+{
+    $materi = Materi::findOrFail($id);
 
-        // Hapus file lampiran jika ada
-        if ($materi->lampiran_materi) {
-            Storage::delete('public/' . $materi->lampiran_materi);
-        }
-
-        // Hapus data dari database
-        $materi->delete();
-
-        return redirect()->back()->with('success', 'Materi berhasil dihapus.');
+    // Hapus file lampiran jika ada dan file tersebut memang ada di storage
+    if ($materi->lampiran_materi && Storage::exists('public/' . $materi->lampiran_materi)) {
+        Storage::delete('public/' . $materi->lampiran_materi);
     }
+
+    // Hapus data dari database
+    $materi->delete();
+
+    // Untuk AJAX Response
+    return response()->json(['success' => true]);
+}
+
 
     /**
      * Mengunduh lampiran materi.

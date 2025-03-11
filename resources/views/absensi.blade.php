@@ -11,8 +11,12 @@
         {{-- Form untuk memilih tanggal (Hanya untuk admin, ketua, atau sekretaris) --}}
         @if (auth()->user()->role === 'admin' || optional(auth()->user()->ekskulUser)->jabatan == 2)
             <div class="flex justify-center mt-6">
-                <form action="{{ route('absensi.index', $ekskul->slug) }}" method="GET" class="flex items-center gap-4">
-                    <input type="date" name="tanggal" value="{{ request('tanggal', now()->toDateString()) }}"
+                <form action="{{ route('absensi.index', $ekskul->slug) }}"
+                    method="GET"
+                    class="flex items-center gap-4">
+                    <input type="date"
+                        name="tanggal"
+                        value="{{ request('tanggal', now()->toDateString()) }}"
                         class="p-2 text-lg text-black border border-blue-900 rounded">
                     <button type="submit"
                         class="px-6 py-2 text-lg font-semibold text-white bg-blue-900 rounded-md shadow-md">Filter</button>
@@ -27,20 +31,19 @@
             <div class="bg-blue-900 rounded-lg shadow-lg p-6 w-full md:w-1/2 max-w-lg">
                 <h2 class="text-lg font-bold mb-4 text-white">Absensi</h2>
 
-                <div class="flex justify-center items-center text-white">
-                    <div class="text-center">
-                        <span class="text-blue-400 text-4xl font-bold">{{ $jumlahKegiatan }}</span>
-                        <p class="text-gray-300 text-sm">Jumlah Kegiatan</p>
-                        {{-- <button onclick="window.location.href='{{ route('rekap.absensi', $ekskul->slug) }}'"
-                            class="mt-4 px-4 py-2 text-lg font-semibold text-white bg-green-600 rounded-md shadow-md hover:bg-green-800">
-                            Rekap Absensi
-                        </button> --}}
-                        <a href="{{ route('rekap.absensi', ['slug' => $ekskul->slug]) }}"
-                            class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-300 inline-block">
-                            Lihat Rekap
-                        </a>
-
-                    </div>
+                <div class="flex flex-col gap-2 text-white">
+                    @foreach (['Hadir' => 'text-green-500', 'Sakit' => 'text-blue-500', 'Izin' => 'text-orange-500', 'Alfa' => 'text-red-500'] as $status => $color)
+                        <div class="flex justify-between items-center">
+                            <span class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full {{ $color }}"></span>
+                                <span class="font-medium">{{ $status }}</span>
+                            </span>
+                            <span class="font-semibold {{ $color }}">
+                                {{ $count[$status] ?? 0 }} Hari
+                                ({{ number_format($count[$status] ?? 0) }})
+                            </span>
+                        </div>
+                    @endforeach
                 </div>
             </div>
 
@@ -53,10 +56,45 @@
                         <div class="text-center">
                             <span class="text-blue-400 text-4xl font-bold">{{ $jumlahKegiatan }}</span>
                             <p class="text-gray-300 text-sm">Jumlah Kegiatan</p>
-                            <button onclick="window.location.href='{{ route('', $ekskul->slug) }}'"
+                            {{-- <button onclick="window.location.href='{{ route('', $ekskul->slug) }}'"
                                 class="mt-4 px-4 py-2 text-lg font-semibold text-white bg-green-600 rounded-md shadow-md hover:bg-green-800">
                                 Rekap Absensi
-                            </button>
+                            </button> --}}
+                           <!-- Tombol untuk membuka modal -->
+                        <button onclick="openModal()" 
+                            class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-300 inline-block">
+                            Lihat Rekap
+                        </button>
+
+                        <!-- Modal Pilih Bulan -->
+                        <div id="modal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+                            <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                                <h2 class="text-lg font-semibold mb-4">Pilih Bulan</h2>
+                                
+                                <!-- Dropdown Pilih Bulan -->
+                                <select id="bulan" class="text-black w-full px-4 py-2 border rounded-lg mb-4">
+                                    <option value="" disabled selected>Pilih Bulan</option>
+                                    @for ($i = 1; $i <= 12; $i++)
+                                        <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}">
+                                            {{ DateTime::createFromFormat('!m', $i)->format('F') }}
+                                        </option>
+                                    @endfor
+                                </select>
+
+                                <!-- Tombol Lanjut -->
+                                <button onclick="redirectToRekap('{{ route('rekap.absensi', ['slug' => $ekskul->slug]) }}')" 
+                                    class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+                                    Lihat Rekap
+                                </button>
+
+                                <!-- Tombol Tutup -->
+                                <button onclick="closeModal()" 
+                                    class="w-full bg-gray-300 text-gray-700 px-4 py-2 mt-2 rounded-lg hover:bg-gray-400 transition">
+                                    Batal
+                                </button>
+                            </div>
+                        </div>
+
 
                         </div>
                     </div>
@@ -66,20 +104,28 @@
 
 
         <div class="flex justify-start px-10 mt-6">
-            <form action="{{ route('absensi.store') }}" method="POST" class="flex items-center gap-4">
+            <form action="{{ route('absensi.store') }}"
+                method="POST"
+                class="flex items-center gap-4">
                 @csrf
-                <input type="hidden" name="id_user" value="{{ Auth::user()->id_user }}">
-                <button type="submit" id="btnTambah"
+                <input type="hidden"
+                    name="id_user"
+                    value="{{ Auth::user()->id_user }}">
+                <button type="submit"
+                    id="btnTambah"
                     class="px-6 py-2 text-lg font-semibold text-white bg-blue-900 rounded-md shadow-md">
                     Tambah
                 </button>
-                <select name="kehadiran" class="p-2 text-lg text-black border border-blue-900 rounded">
+                <select name="kehadiran"
+                    class="p-2 text-lg text-black border border-blue-900 rounded">
                     <option value="hadir">Hadir</option>
                     <option value="izin">Izin</option>
                     <option value="sakit">Sakit</option>
                     <option value="alpa">Alfa</option>
                 </select>
-                <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
+                <input type="hidden"
+                    name="id_ekskul"
+                    value="{{ $ekskul->id_ekskul }}">
             </form>
         </div>
 
@@ -126,6 +172,26 @@
                 </tbody>
             </table>
         </div>
+                    
+            <!-- Script untuk Modal -->
+            <script>
+                function openModal() {
+                    document.getElementById("modal").classList.remove("hidden");
+                }
+
+                function closeModal() {
+                    document.getElementById("modal").classList.add("hidden");
+                }
+
+                function redirectToRekap(baseUrl) {
+                    let bulan = document.getElementById("bulan").value;
+                    if (bulan) {
+                        window.location.href = baseUrl + "?bulan=" + bulan;
+                    } else {
+                        alert("Pilih bulan terlebih dahulu!");
+                    }
+                }
+            </script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {

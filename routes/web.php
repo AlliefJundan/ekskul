@@ -84,16 +84,25 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/notifikasi/read', [NotifikasiController::class, 'read'])->name('notifikasi.read');
 
     // Materi
-
-    Route::middleware(['role:admin,jabatan:1,jabatan:2'])->group(function () {
-        Route::post('/materi/store', [MateriController::class, 'store'])->name('materi.store');
-        Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
-        Route::put('/materi/{id}', [MateriController::class, 'update'])->name('materi.update');
-        Route::delete('/materi/{id}', [MateriController::class, 'destroy'])->name('materi.destroy');
-    });
+    Route::get('/materi/{slug}', [MateriController::class, 'index'])->name('materi.index');
+    Route::post('/materi', [MateriController::class, 'store'])->name('materi.store');
+    Route::put('/materi/{id}', [MateriController::class, 'update'])->name('materi.update');
+    Route::delete('/materi/{id}', [MateriController::class, 'destroy'])->name('materi.destroy');
+    Route::get('/materi/download/{id}', [MateriController::class, 'download'])->name('materi.download');
 
     // Pendaftaran
     Route::post('/pendaftaran/store', [PendaftaranController::class, 'store'])->name('pendaftaran.store');
     Route::post('/pendaftaran/terima', [PendaftaranController::class, 'terima'])->name('pendaftaran.terima');
     Route::post('/pendaftaran/tolak', [PendaftaranController::class, 'tolak'])->name('pendaftaran.tolak');
+
+    Route::get('/kegiatan/konfirmasi/{slug}', [AbsensiController::class, 'konfirmasiKegiatan'])->name('kegiatan.konfirmasi');
+
+    Route::get('/kegiatan/konfirmasi/{slug}', [AbsensiController::class, 'konfirmasiKegiatan'])->name('kegiatan.konfirmasi');
+    Route::get('/rekap-absensi/{slug}', [AbsensiController::class, 'rekap'])->name('rekap.absensi');
+    Route::get('/rekap-absensi/{slug}/view/pdf', [AbsensiController::class, 'view_pdf'])->name('rekap.absensi.pdf');
+    Route::patch('/absensi/verifikasi/{id_absensi}', [AbsensiController::class, 'verifikasi'])
+        ->name('absensi.verifikasi');
+    Route::get('/ekskul/absensi/{slug}', [AbsensiController::class, 'index'])->name('absensi.index');
+    Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
+    Route::patch('/absensi/verifikasi/{id_absensi}', [AbsensiController::class, 'verifikasi'])->name('absensi.verifikasi');
 });
