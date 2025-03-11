@@ -64,4 +64,8 @@ class Ekskul extends Model
     {
         return $this->hasMany(Pendaftaran::class, 'id_ekskul', 'id_ekskul');
     }
+    public function gambarList()
+    {
+        return $this->hasMany(GambarEkskul::class, 'ekskul_id', 'id_ekskul');
+    }
 }
