@@ -79,28 +79,66 @@
 
         </div>
         <!-- Smaller Content Cards -->
-        <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
-            <!-- Kartu Ekskul (Lebar 1 Kolom di Layar Besar) -->
-            <div class="p-3 bg-white rounded-lg shadow-lg lg:col-span-1" style="height: 580px">
-                <img src="{{ asset('storage/' . $ekskul->gambar) }}" alt="Gambar Ekskul"
-                    class="w-full h-60 object-cover rounded-lg">
-                <h3 class="mb-2 text-xl font-bold mt-4">Ekskul {{ $ekskul->nama_ekskul }}</h3>
-                <p class="font-bold text-gray-600">Deskripsi Ekskul :</p>
-                <p class="mb-4 text-gray-600">
-                    {{ $ekskul->deskripsi }}
-                </p>
-                <p class="font-bold py-2 text-gray-600">Struktur Organisasi :</p>
-                <div class="grid grid-cols-2 gap-2">
-                    <p class="text-gray-600">Pembina :</p>
-                    <p class="text-gray-600">{{ $ekskul->pembina->user->nama ?? 'Belum ada' }}</p>
-                    <p class="text-gray-600">Ketua :</p>
-                    <p class="text-gray-600">{{ $ekskul->ketua->user->nama ?? 'Belum ada' }}</p>
-                    <p class="text-gray-600">Sekretaris :</p>
-                    <p class="text-gray-600">{{ $ekskul->sekertaris->user->nama ?? 'Belum ada' }}</p>
-                    <p class="text-gray-600">Bendahara :</p>
-                    <p class="text-gray-600">{{ $ekskul->bendahara->user->nama ?? 'Belum ada' }}</p>
-                </div>
+            <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
+    <!-- Kartu Ekskul dengan Carousel -->
+    <div class="p-3 bg-white rounded-lg shadow-lg lg:col-span-1" style="height: 580px">
+        <!-- Carousel Bootstrap -->
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        @foreach($ekskul->gambarList as $index => $gambar)
+            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                <img src="{{ asset('storage/' . $gambar->gambar) }}" class="d-block w-100" alt="Gambar Ekskul">
             </div>
+        @endforeach
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
+
+        <!-- Konten Ekskul -->
+        <h3 class="mb-2 text-xl font-bold mt-4">Ekskul {{ $ekskul->nama_ekskul }}</h3>
+        <p class="font-bold text-gray-600">Deskripsi Ekskul :</p>
+        <p class="mb-4 text-gray-600">
+            {{ $ekskul->deskripsi }}
+        </p>
+
+      <!-- Tombol untuk membuka modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahGambar">
+    Tambah Gambar
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="modalTambahGambar" tabindex="-1" aria-labelledby="modalTambahGambarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTambahGambarLabel">Tambah Gambar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ route('ekskul.tambahGambar', ['id' => $ekskul->id_ekskul]) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Pilih Gambar</label>
+                        <input type="file" class="form-control" name="image" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Upload</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    </div>
+</div>
 
 
             <!-- Bagian Materi (Lebar 3 Kolom di Layar Besar) -->

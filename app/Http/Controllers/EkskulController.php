@@ -6,7 +6,7 @@ use App\Models\Ekskul;
 use App\Models\Materi;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-
+use App\Models\GambarEkskul;
 class EkskulController extends Controller
 {
 
@@ -66,5 +66,21 @@ class EkskulController extends Controller
         $ekskul->save();
 
         return response()->json(['message' => 'Jumlah anggota diperbarui!']);
+    }
+    public function tambahGambar(Request $request, $id)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $ekskul = Ekskul::findOrFail($id);
+        $path = $request->file('image')->store('ekskul_images', 'public');
+
+        GambarEkskul::create([
+            'ekskul_id' => $ekskul->id_ekskul,
+            'gambar' => $path,
+        ]);
+
+        return redirect()->back()->with('success', 'Gambar berhasil ditambahkan!');
     }
 }

@@ -105,4 +105,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ekskul/absensi/{slug}', [AbsensiController::class, 'index'])->name('absensi.index');
     Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
     Route::patch('/absensi/verifikasi/{id_absensi}', [AbsensiController::class, 'verifikasi'])->name('absensi.verifikasi');
+    Route::post('/ekskul/{id}/tambah-gambar', [EkskulController::class, 'tambahGambar'])->name('ekskul.tambahGambar');
 });
