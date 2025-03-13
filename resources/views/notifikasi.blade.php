@@ -3,25 +3,37 @@
         <div></div>
 
         <div class="md:col-span-6">
-            @if ($notifikasi->count() < 1)
+            @if ($notifikasi->count() > 0)
+                <form method="POST" action="{{ route('notifikasi.readAll') }}">
+                    @csrf
+                    <div class="flex justify-end md-2 underline text-red-600">
+                        <button type="submit" role="button">Tandai sudah dilihat
+                            semua</button>
+                    </div>
+                </form>
+
+                @foreach ($notifikasi as $item)
+                    <a href="{{ $item->notifikasi->url }}"
+                        class="notifikasi-link shadow-md rounded-md p-2 md:p-3 bg-white mb-2 mt-2 w-full md:w-4/4 mx-auto block text-left
+                    {{ $item->is_read ? 'bg-gray-200' : 'bg-white' }}"
+                        data-id="{{ $item->id_notifikasi }}">
+                        <div class="flex justify-between">
+                            <h3
+                                class="font-bold text-sm md:text-base  {{ $item->is_read ? 'text-gray-600' : 'text-indigo-900' }}">
+                                {{ $item->notifikasi->title }}
+                            </h3>
+
+                            <p class="text-gray-500 text-sm">{{ $item->created_at->diffForHumans() }}</p>
+                        </div>
+                        <h3 class="text-gray-700 text-xs md:text-sm">
+                            {{ $item->notifikasi->description }} di ekskul
+                            {{ $item->notifikasi->ekskul->nama_ekskul }}
+                        </h3>
+                    </a>
+                @endforeach
+            @else
                 <p class="text-center text-gray-500">Tidak ada notifikasi.</p>
             @endif
-            <div class="flex justify-end md-2 underline text-red-600">
-                <a href = ''>Tandai sudah dilihat semua</a>
-            </div>
-
-            @foreach ($notifikasi as $item)
-                <a href="{{ $item->notifikasi->url }}"
-                    class="notifikasi-link shadow-md rounded-md p-2 md:p-3 bg-white mb-2 mt-2 w-full md:w-4/4 mx-auto block text-left
-                    {{ $item->is_read ? 'bg-gray-200' : 'bg-white' }}"
-                    data-id="{{ $item->id_notifikasi }}">
-
-                    <h3 class="text-indigo-900 font-bold text-sm md:text-base">{{ $item->notifikasi->title }}</h3>
-                    <h3 class="text-gray-700 text-xs md:text-sm">
-                        {{ $item->notifikasi->description }} di ekskul {{ $item->notifikasi->ekskul->nama_ekskul }}
-                    </h3>
-                </a>
-            @endforeach
         </div>
     </div>
 </x-layout>

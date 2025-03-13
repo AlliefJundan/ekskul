@@ -82,6 +82,7 @@ Route::middleware(['auth'])->group(function () {
     // Notifikasi
     Route::get('/notifikasi', [NotifikasiController::class, 'index'])->name('notifikasi.index');
     Route::post('/notifikasi/read', [NotifikasiController::class, 'read'])->name('notifikasi.read');
+    Route::post('/notifikasi/readAll', [NotifikasiController::class, 'readAll'])->name('notifikasi.readAll');
 
     // Materi
     Route::get('/materi/{slug}', [MateriController::class, 'index'])->name('materi.index');

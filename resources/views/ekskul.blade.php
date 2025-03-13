@@ -79,82 +79,86 @@
 
         </div>
         <!-- Smaller Content Cards -->
-            <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
-    <!-- Kartu Ekskul dengan Carousel -->
-    <div class="p-3 bg-white rounded-lg shadow-lg lg:col-span-1" style="height: 580px">
-        <!-- Carousel Bootstrap -->
-        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-        @foreach($ekskul->gambarList as $index => $gambar)
-            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
-                <img src="{{ asset('storage/' . $gambar->gambar) }}" class="d-block w-100" alt="Gambar Ekskul">
-            </div>
-        @endforeach
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div>
-
-
-        <!-- Konten Ekskul -->
-        <h3 class="mb-2 text-xl font-bold mt-4">Ekskul {{ $ekskul->nama_ekskul }}</h3>
-        <p class="font-bold text-gray-600">Deskripsi Ekskul :</p>
-        <p class="mb-4 text-gray-600">
-            {{ $ekskul->deskripsi }}
-        </p>
-
-      <!-- Tombol untuk membuka modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahGambar">
-    Tambah Gambar
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="modalTambahGambar" tabindex="-1" aria-labelledby="modalTambahGambarLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTambahGambarLabel">Tambah Gambar</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('ekskul.tambahGambar', ['id' => $ekskul->id_ekskul]) }}" method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="image" class="form-label">Pilih Gambar</label>
-                        <input type="file" class="form-control" name="image" required>
+        <div class="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            <!-- Kartu Ekskul dengan Carousel -->
+            <div class="p-3 bg-white rounded-lg shadow-lg lg:col-span-1" style="height: 580px">
+                <!-- Carousel Bootstrap -->
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        @foreach ($ekskul->gambarList as $index => $gambar)
+                            <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
+                                <img src="{{ asset('storage/' . $gambar->gambar) }}" class="d-block w-100"
+                                    alt="Gambar Ekskul">
+                            </div>
+                        @endforeach
                     </div>
-                    <button type="submit" class="btn btn-success">Upload</button>
-                </form>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+
+                <!-- Konten Ekskul -->
+                <h3 class="mb-2 text-xl font-bold mt-4">Ekskul {{ $ekskul->nama_ekskul }}</h3>
+                <p class="font-bold text-gray-600">Deskripsi Ekskul :</p>
+                <p class="mb-4 text-gray-600">
+                    {{ $ekskul->deskripsi }}
+                </p>
+
+                <!-- Tombol untuk membuka modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#modalTambahGambar">
+                    Tambah Gambar
+                </button>
+
+                <!-- Modal -->
+                <div class="modal fade" id="modalTambahGambar" tabindex="-1" aria-labelledby="modalTambahGambarLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTambahGambarLabel">Tambah Gambar</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('ekskul.tambahGambar', ['id' => $ekskul->id_ekskul]) }}"
+                                    method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Pilih Gambar</label>
+                                        <input type="file" class="form-control" name="image" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Upload</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
-
-
-    </div>
-</div>
-
-
             <!-- Bagian Materi (Lebar 3 Kolom di Layar Besar) -->
-            <div class="grid grid-cols-1 gap-3 md:col-span-2 lg:col-span-2">
+            <div class="grid col-span-2 gap-2">
                 @if ($materi->count() > 0)
                     @foreach ($materi as $item)
-                        <div class="bg-white rounded-lg shadow-lg w-full hover:shadow-2xl transition duration-300 p-5">
+                        <div
+                            class="bg-white rounded-lg shadow-lg w-full hover:shadow-2xl transition duration-300 p-5 h-auto pb-2">
                             <!-- Judul Materi -->
-                            <h3 class="text-indigo-900 font-bold text-lg mb-2 truncate">{{ $item->user->nama }}
-                            </h3>
+                            <h3 class="text-indigo-900 font-bold text-lg mb-2 truncate">{{ $item->user->nama }}</h3>
                             <p class="text-gray-500 text-sm">{{ $item->created_at->diffForHumans() }}</p>
-                            <!-- Tambahkan Waktu -->
                             <hr>
-                            <h3 class="text-indigo-900 font-bold mt-3 text-lg mb-2 truncate">
+
+                            <!-- Isi Materi -->
+                            <h3 class="text-indigo-900 font-bold mt-3 text-lg mb-2">
                                 {{ $item->isi_materi }}
                             </h3>
+
                             <!-- Tombol Lampiran & Download -->
                             @if ($item->lampiran_materi)
                                 <div class="flex justify-between items-center mt-3">
@@ -184,7 +188,9 @@
                     </div>
                 @endif
             </div>
+
         </div>
+    </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>

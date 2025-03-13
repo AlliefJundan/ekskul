@@ -50,7 +50,7 @@ class PendaftaranController extends Controller
             'title' => 'Pendaftaran anggota baru',
             'category' => 'Pendaftaran',
             'id_ekskul' => $request->id_ekskul,
-            'description' => 'Materi baru telah ditambahkan',
+            'description' => 'Seseorang mendaftar ',
         ]);
 
         $users = EkskulUser::where('ekskul_id', $request->id_ekskul)
@@ -86,6 +86,8 @@ class PendaftaranController extends Controller
             'id_ekskul' => 'required|integer|exists:ekskul,id_ekskul',
             'id_user' => 'required|integer|exists:users,id_user',
         ]);
+
+        // @dd($request->all());
         $pendaftaran = Pendaftaran::findOrFail($request->id_pendaftaran);
         $pendaftaran->status = 'diterima';
         $pendaftaran->save();
@@ -101,9 +103,8 @@ class PendaftaranController extends Controller
 
         Notifikasi::create([
             'title' => 'Pendaftaran diterima',
-            'category' => 'Pendaftaran',
+            'category' => 'diterima',
             'id_ekskul' => $request->id_ekskul,
-            'id_user' => $request->id_user,
             'description' => 'Permohonan daftar anda diterima',
         ]);
 
@@ -131,9 +132,8 @@ class PendaftaranController extends Controller
 
         Notifikasi::create([
             'title' => 'Pendaftaran ditolak',
-            'category' => 'Pendaftaran',
+            'category' => 'ditolak',
             'id_ekskul' => $request->id_ekskul,
-            'id_user' => $request->id_user,
             'description' => 'Permohonan daftar anda ditolak',
         ]);
 

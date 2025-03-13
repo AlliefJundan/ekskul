@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\NotifikasiTarget;
 use Illuminate\Http\Request;
+use PhpParser\Node\Expr\FuncCall;
 
 class NotifikasiController extends Controller
 {
@@ -12,7 +13,6 @@ class NotifikasiController extends Controller
     {
         $user = auth()->user();
         $notifikasi = NotifikasiTarget::where('id_user', $user->id_user)
-            ->where('is_read', false)
             ->with(['notifikasi.ekskul'])
             ->get();
 
@@ -38,5 +38,16 @@ class NotifikasiController extends Controller
         }
 
         return response()->json(['success' => false], 404);
+    }
+
+    public function readAll()
+    {
+        $user = auth()->user();
+
+        $notifikasi = NotifikasiTarget::where('id_user', $user->id_user)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+
+        return response()->json(['success' => true]);
     }
 }
