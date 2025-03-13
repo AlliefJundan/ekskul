@@ -106,4 +106,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/absensi', [AbsensiController::class, 'store'])->name('absensi.store');
     Route::patch('/absensi/verifikasi/{id_absensi}', [AbsensiController::class, 'verifikasi'])->name('absensi.verifikasi');
     Route::post('/ekskul/{id}/tambah-gambar', [EkskulController::class, 'tambahGambar'])->name('ekskul.tambahGambar');
+
+    Route::put('/ekskul/{id}', [EkskulController::class, 'update'])->name('ekskul.update');
+    Route::delete('/ekskul/{id}', [EkskulController::class, 'destroy'])->name('ekskul.destroy');
 });

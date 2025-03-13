@@ -59,6 +59,33 @@ class EkskulController extends Controller
 
         return redirect()->back()->with('success', 'Ekskul berhasil ditambahkan!');
     }
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama_ekskul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
+        ]);
+
+        $ekskul = Ekskul::findOrFail($id);
+        $ekskul->nama_ekskul = $request->nama_ekskul;
+        $ekskul->deskripsi = $request->deskripsi;
+
+        if ($request->hasFile('gambar')) {
+            $path = $request->file('gambar')->store('pp_ekskul ', 'public');
+            $ekskul->gambar = $path;
+        }
+
+        $ekskul->save();
+        return redirect()->back()->with('success', 'Ekskul berhasil diperbarui!');
+    }
+
+    public function destroy($id)
+    {
+        Ekskul::findOrFail($id)->delete();
+        return redirect()->back()->with('success', 'Ekskul berhasil dihapus!');
+    }
+
     public function updateJumlahAnggota($id)
     {
         $ekskul = Ekskul::findOrFail($id);
