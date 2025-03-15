@@ -7,6 +7,17 @@
         <!-- Header -->
         <h1 class="mb-8 text-4xl font-bold text-center">{{ $ekskul->nama_ekskul }}</h1>
 
+
+        @if ($tanpaJabatan)
+            <form method="POST" action="{{ route('anggota.keluar') }}">
+                @csrf
+                <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
+                <div class="flex justify-end">
+                    <button type="submit" class="btn btn-danger">Keluar</button>
+                </div>
+            </form>
+        @endif
+
         <div class="p-6 bg-white rounded-lg shadow-lg">
             <!-- Nama Ekskul (Tengah) -->
             <h3

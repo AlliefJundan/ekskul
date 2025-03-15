@@ -52,9 +52,6 @@
                         class="text-white font-semibold hover:text-amber-400 block md:inline-block">Home</a>
                     <a href="ekskul"
                         class="text-white font-semibold hover:text-amber-400 block md:inline-block">Ekskul</a>
-                    <a href="#about"
-                        class="text-white font-semibold hover:text-amber-400 block md:inline-block">About</a>
-
                     @guest
                         <a href="/login"
                             class="text-white font-semibold hover:text-amber-400 block md:inline-block">Login</a>

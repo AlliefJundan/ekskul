@@ -17,6 +17,7 @@ class KuisController extends Controller
     {
         $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
         $search = $request->input('search');
+        $user = auth()->user();
 
         $kuis = Kuis::where('id_ekskul', $ekskul->id_ekskul)
             ->when($search, function ($query, $search) {
@@ -25,11 +26,12 @@ class KuisController extends Controller
             ->orderBy('id_kuis', 'desc')
             ->paginate(10);
 
-        // Cek apakah user sudah mengirim hasil untuk setiap kuis
-        $userId = auth()->id();
-        $hasil_kuis_user = HasilKuis::where('id_user', $userId)->pluck('id_kuis')->toArray();
+        // Ambil daftar hasil kuis yang sudah dikirim oleh user
+        $hasilKuis = HasilKuis::where('id_user', $user->id_user)
+            ->pluck('id_kuis')
+            ->toArray();
 
-        return view('kuis', compact('ekskul', 'kuis', 'search', 'hasil_kuis_user'));
+        return view('kuis', compact('ekskul', 'user', 'kuis', 'search', 'hasilKuis'));
     }
 
 

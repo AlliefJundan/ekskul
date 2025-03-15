@@ -170,7 +170,8 @@
                             class="bg-red-500 text-ekskul2 font-bold px-4 py-2 rounded hover:bg-red-600">
                             Batal
                         </button>
-                        <button type="submit" class="bg-ekskul text-ekskul2 font-bold px-4 py-2 rounded hover:bg-indigo-500">
+                        <button type="submit"
+                            class="bg-ekskul text-ekskul2 font-bold px-4 py-2 rounded hover:bg-indigo-500">
                             Simpan Perubahan
                         </button>
                     </div>
@@ -184,26 +185,26 @@
     function confirmDelete(id) {
         if (confirm('Yakin ingin menghapus materi ini?')) {
             fetch(`/materi/${id}`, {
-                method: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Materi berhasil dihapus!');
-                    location.reload(); // Reload halaman
-                } else {
-                    alert('Gagal menghapus materi. Coba lagi.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Terjadi kesalahan. Coba lagi.');
-            });
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Materi berhasil dihapus!');
+                        location.reload(); // Reload halaman
+                    } else {
+                        alert('Gagal menghapus materi. Coba lagi.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan. Coba lagi.');
+                });
         }
     }
 </script>

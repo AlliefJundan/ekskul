@@ -37,6 +37,8 @@ class Notifikasi extends Model
                 return route('pendaftaran.show', ['slug' => $ekskul->slug]);
             case 'diterima':
                 return route('ekskul.show', ['slug' => $ekskul->slug]);
+            case 'kegiatan':
+                return route('ekskul.show', ['slug' => $ekskul->slug]);
             case 'Pendaftaran':
                 return route('dashboard_admin');
             default:

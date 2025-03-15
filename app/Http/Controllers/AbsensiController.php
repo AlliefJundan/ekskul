@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Absensi;
-use App\Models\Ekskul;
-use App\Models\User;
-use App\Models\Kegiatan;
-use Illuminate\Support\Facades\Auth;
 use Mpdf\Mpdf;
+use App\Models\User;
+use App\Models\Ekskul;
+use App\Models\Absensi;
+use App\Models\Kegiatan;
+use App\Models\EkskulUser;
+use App\Models\Notifikasi;
+use Illuminate\Http\Request;
+use App\Models\NotifikasiTarget;
+use Illuminate\Support\Facades\Auth;
+
 class AbsensiController extends Controller
 {
     public function index(Request $request, $slug)
@@ -128,7 +132,7 @@ class AbsensiController extends Controller
 
 
 
-        public function konfirmasiKegiatan(Request $request, $slug)
+    public function konfirmasiKegiatan(Request $request, $slug)
     {
         $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
         $user = Auth::user();
@@ -154,11 +158,30 @@ class AbsensiController extends Controller
                 'waktu_berakhir' => $request->berakhir,
             ]);
 
+            Notifikasi::create([
+                'title' => 'Kegiatan Baru',
+                'category' => 'kegiatan',
+                'id_ekskul' => $ekskul->id_ekskul,
+                'description' => 'hari ini ada kegiatan dari jam ' . $request->mulai . ' hingga ' . $request->berakhir,
+            ]);
+
+            $users = EkskulUser::where('ekskul_id', $ekskul->id_ekskul)->pluck('user_id');
+            $id_notifikasi = Notifikasi::orderByDesc('id_notifikasi')->first()->id_notifikasi;
+
+
+            foreach ($users as $user_id) {
+                NotifikasiTarget::create([
+                    'id_notifikasi' => $id_notifikasi,
+                    'id_user' => $user_id,
+                ]);
+            }
+
             return redirect()->route('absensi.index', $slug)->with('success', 'Kegiatan berhasil ditambahkan.');
         }
 
         return redirect()->route('absensi.index', $slug);
     }
+
     public function view_pdf($slug, Request $request)
     {
         $bulan = $request->query('bulan', date('m')); // Default bulan ini
