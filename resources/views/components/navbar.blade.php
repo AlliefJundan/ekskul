@@ -22,12 +22,6 @@
                 @if (Request::is('kuis*') || Request::is('materi*') || Request::is('ekskul*'))
                     <a href="/"
                         class="text-white font-semibold hover:text-amber-400 block md:inline-block">Home</a>
-                    <a href=""
-                        class="text-white font-semibold hover:text-amber-400 block md:inline-block">Materi</a>
-                    <a href=""
-                        class="text-white font-semibold hover:text-amber-400 block md:inline-block">Kuis</a>
-
-
                     @auth
                         <a href="{{ route('dashboard_admin') }}"
                             class="text-white font-semibold hover:text-amber-400 block md:inline-block">Dashboard</a>
@@ -52,8 +46,6 @@
                         class="text-white font-semibold hover:text-amber-400 block md:inline-block">Home</a>
                     <a href="ekskul"
                         class="text-white font-semibold hover:text-amber-400 block md:inline-block">Ekskul</a>
-                    <a href="#about"
-                        class="text-white font-semibold hover:text-amber-400 block md:inline-block">About</a>
 
                     @guest
                         <a href="/login"

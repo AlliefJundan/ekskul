@@ -72,7 +72,7 @@ class EkskulController extends Controller
         $ekskul->deskripsi = $request->deskripsi;
 
         if ($request->hasFile('gambar')) {
-            $path = $request->file('gambar')->store('pp_ekskul ', 'public');
+            $path = $request->file('gambar')->store('ekskul_images', 'public');
             $ekskul->gambar = $path;
         }
 
