@@ -44,11 +44,61 @@
                         <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->username }}</td>
                         <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->role }}</td>
                         <td class="flex justify-center gap-2 p-2 border border-gray-300">
-                            <button
-                                onclick="openDetailModal('{{ $user->id_user }}', '{{ $user->username }}', '{{ $user->nama }}', '{{ $user->ekskul }}', '{{ $user->jabatan }}')"
-                                class="px-2 py-1 font-bold text-white bg-green-500 rounded hover:bg-green-700">
-                                Detail
-                            </button>
+                        <button data-modal-target="#detailModal-{{ $user->id_user }}" class="px-2 py-1 font-bold text-white bg-green-500 rounded hover:bg-green-700">
+                            Detail
+                        </button>
+                        <!-- Modal -->
+                        <div id="detailModal-{{ $user->id_user }}" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                            <div class="bg-ekskul2 rounded-lg p-6 w-1/3 text-left relative">
+                                <!-- Tombol Tutup (Pojok Kanan Atas) -->
+                                <button onclick="closeDetailModal('{{ $user->id_user }}')" class="absolute font-bold text-white top-2 right-3">✖</button>
+
+                                <!-- Judul Modal -->
+                                <h2 class="text-xl font-bold mb-4 text-center">Detail Pengguna</h2>
+                                
+                                <!-- Isi Modal (Rata Kiri & Sejajar) -->
+                                <div class="space-y-5">
+                                    <div class="grid grid-cols-2 gap-x-2">
+                                        <span><strong>ID</strong></span>
+                                        <span>{{ $user->id_user }}</span>
+
+                                        <span><strong>Nama</strong></span>
+                                        <span>{{ $user->nama }}</span>
+
+                                        <span><strong>Username</strong></span>
+                                        <span>{{ $user->username }}</span>
+
+                                        <!-- Ekskul -->
+                                        <span><strong>Ekskul</strong></span>
+                                        <span>
+                                            @if ($user->ekskuls->isEmpty())
+                                                Tidak ada ekskul
+                                            @else
+                                                {{ $user->ekskuls->pluck('nama_ekskul')->implode(' - ') }}
+                                            @endif
+                                        </span>
+
+                                        <span><strong>Jabatan</strong></span>
+                                        <span>
+                                            @if ($user->ekskulUser && $user->ekskulUser->jabatan)
+                                                {{ $user->ekskulUser->jabatan }}
+                                            @else
+                                                Tidak ada jabatan
+                                            @endif
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- JavaScript untuk Menutup Modal -->
+                        <script>
+                            function closeDetailModal(id) {
+                                document.getElementById('detailModal-' + id).classList.add('hidden');
+                            }
+                        </script>
+
+
                             <button
                                 onclick="openUbahModal('{{ $user->id_user }}', '{{ $user->username }}', '{{ $user->nama }}', '{{ $user->role }}')"
                                 class="px-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
@@ -116,22 +166,6 @@
         </div>
     </div>
 
-    <!-- Modal Detail Akun -->
-    <div id="modalDetailAkun" class="fixed inset-0 z-50 hidden overflow-y-auto bg-gray-900 bg-opacity-50">
-        <div class="flex items-center justify-center min-h-screen">
-            <div class="relative p-6 text-white bg-blue-800 rounded-lg shadow-lg w-96">
-                <button onclick="closeDetailModal()" class="absolute font-bold text-white top-2 right-3">✖</button>
-                <h2 class="mb-4 text-xl font-semibold text-center">DETAIL</h2>
-                <div class="grid grid-cols-2 gap-2">
-                    <span class="font-bold">User ID</span> <span>: <span id="detailId"></span></span>
-                    <span class="font-bold">Username</span> <span>: <span id="detailUsername"></span></span>
-                    <span class="font-bold">Nama</span> <span>: <span id="detailNama"></span></span>
-                    <span class="font-bold">Ekskul</span> <span>: <span id="detailEkskul"></span></span>
-                    <span class="font-bold">Jabatan</span> <span>: <span id="detailJabatan"></span></span>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Modal Ubah Akun -->
     <div id="modalUbahAkun" class="fixed inset-0 z-50 hidden overflow-y-auto bg-gray-900 bg-opacity-50">
@@ -199,30 +233,6 @@
     </script>
 
     <script>
-        function openDetailModal(id, username, nama, ekskul, jabatan) {
-            document.getElementById('detailId').innerText = id;
-            document.getElementById('detailUsername').innerText = username;
-            document.getElementById('detailNama').innerText = nama;
-
-            // Pastikan ekskul adalah array, lalu ubah ke format teks
-            let ekskulList = "-"; // Default jika tidak ada ekskul
-            if (Array.isArray(ekskul)) {
-                ekskulList = ekskul.map(e => e.nama_ekskul).join(", ");
-            }
-            document.getElementById('detailEkskul').innerText = ekskulList;
-
-            // Tampilkan jabatan atau "-"
-            document.getElementById('detailJabatan').innerText = jabatan ? jabatan : "-";
-
-            document.getElementById('modalDetailAkun').classList.remove('hidden');
-        }
-
-        function closeDetailModal() {
-            document.getElementById('modalDetailAkun').classList.add('hidden');
-        }
-    </script>
-
-    <script>
         function openUbahModal(id, username, nama, role) {
             document.getElementById('ubahUserId').value = id;
             document.getElementById('ubahUsername').value = username;
@@ -264,5 +274,27 @@
             }
         }
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const openButtons = document.querySelectorAll('[data-modal-target]');
+        const closeButtons = document.querySelectorAll('[data-modal-close]');
+
+        openButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modal = document.querySelector(button.getAttribute('data-modal-target'));
+                if (modal) modal.classList.remove('hidden');
+            });
+        });
+
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modal = document.querySelector(button.getAttribute('data-modal-close'));
+                if (modal) modal.classList.add('hidden');
+            });
+        });
+    });
+</script>
+
 
 </x-layout>
