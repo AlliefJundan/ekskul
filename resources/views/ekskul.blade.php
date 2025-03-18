@@ -7,7 +7,7 @@
         <!-- Header -->
         <h1 class="mb-8 text-4xl font-bold text-center">{{ $ekskul->nama_ekskul }}</h1>
 
-        <div class="p-6 bg-white rounded-lg shadow-lg">
+        <div class="p-6 bg-wite rounded-lg shadow-lg">
             <!-- Nama Ekskul (Tengah) -->
             <h3
                 class="text-2xl font-bold text-center mb-4 flex justify-center bg-ekskul text-black px-4 py-2 rounded-lg inline-block">
@@ -111,38 +111,76 @@
                 <p class="mb-4 text-gray-600">
                     {{ $ekskul->deskripsi }}
                 </p>
+                @if (auth()->user()->role === 'admin' || optional(auth()->user()->ekskulUser)->jabatan == 2)
+                    <!-- Tombol untuk membuka modal Tambah Gambar -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#modalTambahGambar">
+                        Tambah Gambar
+                    </button>
 
-                <!-- Tombol untuk membuka modal -->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#modalTambahGambar">
-                    Tambah Gambar
-                </button>
+                    <!-- Tombol Hapus Gambar -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#modalHapusGambar">
+                        Hapus Gambar
+                    </button>
 
-                <!-- Modal -->
-                <div class="modal fade" id="modalTambahGambar" tabindex="-1" aria-labelledby="modalTambahGambarLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modalTambahGambarLabel">Tambah Gambar</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="{{ route('ekskul.tambahGambar', ['id' => $ekskul->id_ekskul]) }}"
-                                    method="POST" enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="mb-3">
-                                        <label for="image" class="form-label">Pilih Gambar</label>
-                                        <input type="file" class="form-control" name="image" required>
-                                    </div>
-                                    <button type="submit" class="btn btn-success">Upload</button>
-                                </form>
+
+                    <!-- Modal Tambah Gambar -->
+                    <div class="modal fade" id="modalTambahGambar" tabindex="-1" aria-labelledby="modalTambahGambarLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalTambahGambarLabel">Tambah Gambar</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('ekskul.tambahGambar', ['id' => $ekskul->id_ekskul]) }}"
+                                        method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <div class="mb-3">
+                                            <label for="image" class="form-label">Pilih Gambar</label>
+                                            <input type="file" class="form-control" name="image" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-success">Upload</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+
+                    <!-- Modal Hapus Gambar -->
+                    <div class="modal fade" id="modalHapusGambar" tabindex="-1" aria-labelledby="modalHapusGambarLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="modalHapusGambarLabel">Hapus Gambar</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ route('ekskul.hapusGambar', ['id' => $ekskul->id_ekskul]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <div class="mb-3">
+                                            <label for="gambar_id" class="form-label">Pilih Gambar yang akan dihapus</label>
+                                            <select name="gambar_id" class="form-control" required>
+                                                @foreach ($ekskul->gambarList as $gambar)
+                                                    <option value="{{ $gambar->id }}">{{ $gambar->gambar }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="btn btn-danger">Hapus</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+
             <!-- Bagian Materi (Lebar 3 Kolom di Layar Besar) -->
             <div class="grid col-span-2 gap-2">
                 @if ($materi->count() > 0)
@@ -184,7 +222,7 @@
                     </div>
                 @else
                     <div class="col-span-full text-center">
-                        <h1 class="text-gray-600 font-semibold">Tidak ada materi tersedia untuk ekskul ini.</h1>
+                        <h1 class="text-gray-600 font-semibold"> Tidak ada materi tersedia untuk ekskul ini.</h1>
                     </div>
                 @endif
             </div>

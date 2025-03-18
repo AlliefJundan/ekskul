@@ -7,6 +7,8 @@ use App\Models\Materi;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\GambarEkskul;
+use Illuminate\Support\Facades\Storage;
+
 class EkskulController extends Controller
 {
 
@@ -109,5 +111,15 @@ class EkskulController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Gambar berhasil ditambahkan!');
+    }
+    public function hapusGambar(Request $request, $id)
+    {
+        $gambar = GambarEkskul::find($request->gambar_id);
+        if ($gambar) {
+            Storage::delete('public/' . $gambar->gambar);
+            $gambar->delete();
+            return redirect()->back()->with('success', 'Gambar berhasil dihapus.');
+        }
+        return redirect()->back()->with('error', 'Gambar tidak ditemukan.');
     }
 }

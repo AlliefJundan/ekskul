@@ -110,4 +110,5 @@ Route::middleware(['auth'])->group(function () {
 
     Route::put('/ekskul/{id}', [EkskulController::class, 'update'])->name('ekskul.update');
     Route::delete('/ekskul/{id}', [EkskulController::class, 'destroy'])->name('ekskul.destroy');
+    Route::delete('/ekskul/hapus-gambar/{id}', [EkskulController::class, 'hapusGambar'])->name('ekskul.hapusGambar');
 });

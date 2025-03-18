@@ -116,8 +116,8 @@
                             class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
                             Lihat
                         </a>
-
-                        <!-- Tombol Edit -->
+                        @if (auth()->user()->role === 'admin' || optional(auth()->user()->ekskulUser)->jabatan == 2)
+                             <!-- Tombol Edit -->
                         <button @click="editOpen = true"
                             class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition">
                             Edit
@@ -133,6 +133,7 @@
                                 Hapus
                             </button>
                         </form>
+                        @endif
                     </div>
                 </div>
             </div>
