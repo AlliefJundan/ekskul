@@ -6,15 +6,20 @@
                 <form action="{{ route('login.submit') }}" method="POST">
                     @csrf
                     <div class="mb-4">
-                        <label for="username" class="text-white">Username</label>
-                        <input type="text" name="username" class="w-full p-2 mt-1 text-black border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Masukan Username" required>
+                        <div class="flex justify-center"><label for="username" class="text-white">Username</label></div>
+                        <input type="text" name="username"
+                            class="w-full p-2 mt-1 text-black border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                            placeholder="Masukan Username" required>
                     </div>
                     <div class="mb-4">
                         <label for="password" class="text-white">Password</label>
-                        <input type="password" name="password" class="w-full p-2 mt-1 text-black border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500" placeholder="Masukan Password" required>
+                        <input type="password" name="password"
+                            class="w-full p-2 mt-1 text-black border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
+                            placeholder="Masukan Password" required>
                     </div>
                     <div class="flex justify-center mt-5">
-                        <button type="submit" class="px-4 py-2 font-bold text-black bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-600">Login</button>
+                        <button type="submit"
+                            class="px-4 py-2 font-bold text-black bg-yellow-500 rounded-lg shadow-md hover:bg-yellow-600">Login</button>
                     </div>
                 </form>
                 @if (session('gagal'))

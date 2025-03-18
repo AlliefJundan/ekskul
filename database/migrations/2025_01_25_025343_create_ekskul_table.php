@@ -18,7 +18,6 @@ return new class extends Migration
             $table->integer("jml_anggota")->default(0);
             $table->text('deskripsi')->nullable();
             $table->string("gambar")->nullable();
-            $table->integer("jadwal")->nullable();
             $table->timestamps();
         });
     }

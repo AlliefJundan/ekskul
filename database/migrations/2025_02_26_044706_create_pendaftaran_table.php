@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_pendaftaran');
             $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_ekskul');
-            $table->enum('status', ['pending', 'diterima', 'ditolak']);
+            $table->enum('status', ['pending', 'diterima', 'ditolak', 'keluar', 'dikeluarkan']);
             $table->timestamps();
 
             $table->foreign("id_ekskul")->references("id_ekskul")->on("ekskul")->onDelete("cascade");

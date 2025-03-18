@@ -67,41 +67,57 @@
             <div class="md:col-span-2 bg-indigo-900 rounded-lg shadow-lg hover:shadow-xl transition duration-300 p-5">
                 @if ($kuis->count() > 0)
                     @foreach ($kuis as $item)
+                        @php
+                            $sudahMengirim = in_array($item->id_kuis, $hasilKuis);
+                        @endphp
+
                         <div
                             class="shadow-lg rounded-lg p-4 flex flex-col md:flex-row justify-between items-center bg-white mb-3">
                             <h3 class="text-indigo-900 font-bold">{{ $item->nama_kuis }}</h3>
                             <div class="flex flex-col md:flex-row gap-4 w-full md:w-auto mt-2 md:mt-0">
+                                <!-- Tombol Ikuti -->
                                 <a href="{{ $item->isi_kuis }}" target="_blank"
-                                    class="px-4 py-2 bg-ekskul hover:bg-orange-600 text-indigo-900 font-bold rounded-lg shadow-md text-center">Ikuti</a>
+                                    class="px-4 py-2 bg-ekskul hover:bg-orange-600 text-indigo-900 font-bold rounded-lg shadow-md text-center 
+                {{ $sudahMengirim ? 'opacity-50 cursor-not-allowed pointer-events-none' : '' }}">
+                                    Ikuti
+                                </a>
+
+                                <!-- Modal Tambah Hasil -->
                                 <x-modal title="Masukan Hasil Kuis" trigger="Tambah Hasil"
-                                    buttonClass="bg-ekskul text-ekskul2 px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition text-center">
+                                    buttonClass="bg-ekskul text-ekskul2 px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition text-center 
+                {{ $sudahMengirim ? 'opacity-50 cursor-not-allowed pointer-events-none' : '' }}">
                                     <form action="{{ route('kuis.hasil') }}" method="POST"
                                         enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" name="id_kuis" value="{{ $item->id_kuis }}">
                                         <input type="hidden" name="id_user" value="{{ Auth::user()->id_user }}">
                                         <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
+
                                         <div class="mb-4">
                                             <label class="block text-white">Score</label>
                                             <input type="number" name="skor"
                                                 class="w-full border border-gray-300 rounded-md p-2"
                                                 placeholder="Masukan score" required>
                                         </div>
+
                                         <div class="mb-4">
                                             <label class="block text-white">Bukti</label>
                                             <input type="file" name="bukti" accept=".jpg,.jpeg,.png,.pdf"
                                                 class="w-full border border-gray-300 rounded-md p-2 bg-gray-100">
                                         </div>
+
                                         <div class="mt-6 flex justify-center">
                                             <button type="submit"
-                                                class="bg-ekskul text-ekskul2 font-bold px-4 py-2 rounded-md hover:bg-blue-600 transition">✔
-                                                Simpan</button>
+                                                class="bg-ekskul text-ekskul2 font-bold px-4 py-2 rounded-md hover:bg-blue-600 transition">
+                                                ✔ Simpan
+                                            </button>
                                         </div>
                                     </form>
                                 </x-modal>
                             </div>
                         </div>
                     @endforeach
+
                     <div class="mt-6">
                         {{ $kuis->appends(['search' => request('search')])->links('pagination::tailwind') }}
                     </div>

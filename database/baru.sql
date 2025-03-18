@@ -17,7 +17,7 @@ INSERT INTO `users` (`nama`, `username`, `password`, `id_kelas`, `role`) VALUES
 ('User Six', '2223607457', '$2y$12$7ueCKGRw1ooWKL.tWgCm8Ow.1vKkQHItSp7yIX0csnHk3frmkQQme', '1', 'user'),
 ('User Seven', '2223607934', '$2y$12$7ueCKGRw1ooWKL.tWgCm8Ow.1vKkQHItSp7yIX0csnHk3frmkQQme', '2', 'user'),
 ('User Eight', '2223607993', '$2y$12$7ueCKGRw1ooWKL.tWgCm8Ow.1vKkQHItSp7yIX0csnHk3frmkQQme', '3', 'user'),
-('User Nine', '2223607795', '$2y$12$7ueCKGRw1ooWKL.tWgCm8Ow.1vKkQHItSp7yIX0csnHk3frmkQQme', '2', 'user');
+('User Nine', '2223607795', '$2y$12$7ueCKGRw1ooWKL.t    gCm8Ow.1vKkQHItSp7yIX0csnHk3frmkQQme', '2', 'user');
 
 -- Insert 2 data ke tabel ekskul
 INSERT INTO `ekskul` (`nama_ekskul`, `slug`, `gambar`, `deskripsi`) VALUES
@@ -44,3 +44,14 @@ INSERT INTO `ekskul_user` (`user_id`, `ekskul_id`, `jabatan`, `created_at`, `upd
 (10, 2, 4, NOW(), NOW()), -- Bendahara Paskibra
 (1, 2, null, NOW(), NOW()); -- Admin ikut dalam Paskibra tanpa jabatan
 
+INSERT INTO `pendaftaran` (`id_user`, `id_ekskul`, `status`) VALUES
+(2, 1, 'diterima'),
+(3, 1, 'diterima'),
+(4, 1, 'diterima'),
+(5, 1, 'diterima'),
+(6, 1, 'diterima'),
+(7, 2, 'diterima'),
+(8, 2, 'diterima'),
+(9, 2, 'diterima'),
+(10, 2, 'diterima'),
+(1, 2, 'diterima');

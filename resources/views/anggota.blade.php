@@ -119,7 +119,7 @@
                                             <x-modal title="Yakin ingin mengeluarkan {{ $item->nama }}?"
                                                 trigger="Keluarkan"
                                                 buttonClass="bg-red-500 text-white px-4 py-2 rounded-md font-bold hover:bg-red-600 transition">
-                                                <form action="{{ route('anggota.keluar', $ekskul->slug) }}"
+                                                <form action="{{ route('anggota.keluarkan', $ekskul->slug) }}"
                                                     method="POST"
                                                     onsubmit="return confirm('Yakin ingin mengeluarkan {{ $item->nama }} yang seorang {{ $jabatanMap[$targetJabatan] ?? 'Anggota' }}?')">
                                                     @csrf

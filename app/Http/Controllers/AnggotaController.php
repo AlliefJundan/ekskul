@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Ekskul;
 use App\Models\EkskulUser;
+use App\Models\Notifikasi;
 use App\Models\Pendaftaran;
 use Illuminate\Http\Request;
+use App\Models\NotifikasiTarget;
 
 class AnggotaController extends Controller
 {
@@ -145,6 +147,43 @@ class AnggotaController extends Controller
         $keluar->status = 'dikeluarkan';
         $keluar->save();
 
+        Notifikasi::create([
+            'title' => 'Dikeluarkan dari ekskul ' . $keluar->ekskul->nama_ekskul,
+            'category' => 'dikeluarkan',
+            'id_ekskul' => $request->ekskul_id,
+            'description' => 'Anda telah dikeluarkan dari ekskul ' . $keluar->ekskul->nama_ekskul,
+        ]);
+
+        $id_notifikasi = Notifikasi::orderByDesc('id_notifikasi')->first()->id_notifikasi;
+
+        NotifikasiTarget::create([
+            'id_notifikasi' => $id_notifikasi,
+            'id_user' => $request->user_id,
+        ]);
+
         return redirect()->back()->with('success', 'Anggota berhasil dikeluarkan.');
+    }
+
+    public function keluar(Request $request)
+    {
+        $user = auth()->user();
+        $request->validate([
+            'id_ekskul' => 'required|integer|exists:ekskul,id_ekskul'
+        ]);
+
+        $keluar = EkskulUser::where('ekskul_id', $request->id_ekskul)
+            ->where('user_id', $user->id_user)
+            ->first();
+
+        $pendaftaran = Pendaftaran::where('id_user', $user->id_user)
+            ->where('id_ekskul', $request->id_ekskul)
+            ->where('status', 'diterima')
+            ->first();
+
+        $keluar->delete();
+        $pendaftaran->status = 'keluar';
+        $pendaftaran->save();
+
+        return redirect()->back()->with('success', 'Anda telah keluar dari ekskul.');
     }
 }

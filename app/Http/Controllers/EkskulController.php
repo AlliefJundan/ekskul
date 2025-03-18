@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Ekskul;
 use App\Models\Materi;
+use App\Models\EkskulUser;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Models\GambarEkskul;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 class EkskulController extends Controller
 {
@@ -35,9 +37,19 @@ class EkskulController extends Controller
             ->orderBy('id_materi', 'desc')
             ->paginate(7);
 
+        $user = auth()->user();
 
+        $isNotAdmin = User::where('id_user', $user->id_user)
+            ->where('role', '!=', 'admin')
+            ->exists();
 
-        return view('ekskul', compact('ekskul', 'materi'));
+        $hasNullJabatan = EkskulUser::where('ekskul_id', $ekskul->id_ekskul)
+            ->where('user_id', $user->id_user)->whereNull('jabatan')
+            ->first();
+
+        $tanpaJabatan = $isNotAdmin && $hasNullJabatan;
+
+        return view('ekskul', compact('ekskul', 'materi', 'tanpaJabatan', 'user'));
     }
 
 
