@@ -17,7 +17,7 @@
         x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100"
         x-transition:leave-end="opacity-0 scale-90" style="display: none;">
 
-        <div class="bg-indigo-900 rounded-lg p-6 w-96 shadow-lg relative w-[500px] ">
+        <div class="bg-indigo-900 rounded-lg p-4 w-96 shadow-lg relative w-[500px] ">
             <button @click="open = false" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">
                 ✖
             </button>

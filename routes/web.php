@@ -42,7 +42,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/ekskul/jabatan/ganti/{slug}', [AnggotaController::class, 'jabatanUpdate'])->name('jabatan.jabatanUpdate');
         Route::post('/ekskul/jabatan/lepas/{slug}', [AnggotaController::class, 'jabatanRemove'])->name('jabatan.jabatanRemove');
         Route::delete('/ekskul/anggota/keluar/{slug}', [AnggotaController::class, 'keluarkanAnggota'])->name('anggota.keluarkan');
-        Route::post('/keluar', [AnggotaController::class, 'keluar'])->name('anggota.keluar');
+        Route::post('/keluar/ekskul/{slug}', [AnggotaController::class, 'keluar'])->name('anggota.keluar');
 
         // Absensi
         Route::get('/ekskul/absensi/{slug}', [AbsensiController::class, 'index'])->name('absensi.index');

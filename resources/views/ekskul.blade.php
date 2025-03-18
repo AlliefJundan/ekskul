@@ -7,23 +7,54 @@
         <!-- Header -->
         <h1 class="mb-8 text-4xl font-bold text-center">{{ $ekskul->nama_ekskul }}</h1>
 
-
-        @if ($tanpaJabatan)
-            <form method="POST" action="{{ route('anggota.keluar') }}">
-                @csrf
-                <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
-                <div class="flex justify-end">
-                    <button type="submit" class="btn btn-danger">Keluar</button>
-                </div>
-            </form>
-        @endif
-
         <div class="p-6 bg-white rounded-lg shadow-lg">
             <!-- Nama Ekskul (Tengah) -->
-            <h3
-                class="text-2xl font-bold text-center mb-4 flex justify-center bg-ekskul text-black px-4 py-2 rounded-lg inline-block">
-                Ekskul {{ $ekskul->nama_ekskul }}
-            </h3>
+            <div class="flex items-center justify-between mb-4 bg-ekskul text-black px-4 py-2 rounded-lg">
+                <div></div>
+                <h3 class="text-2xl font-bold text-center">Ekskul {{ $ekskul->nama_ekskul }}</h3>
+               <div class="relative ml-3" x-data="{ isOpen: false }">
+                    <div>
+                        <button type="button" @click="isOpen = !isOpen" @keydown.escape.window="isOpen = false"
+                            class="relative flex items-center justify-center w-10 h-10 rounded-full bg-[#F78903] text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#F78903] focus:outline-none hover:bg-[#d97802]"
+                            id="user-menu-button" :aria-expanded="isOpen.toString()" aria-haspopup="true">
+                            <span class="sr-only">Open user menu</span>
+                            <!-- Ikon elipsis vertikal -->
+                            <svg class="w-6 h-6" fill="none" stroke="black" stroke-width="4" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6h.01M12 12h.01M12 18h.01">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Dropdown menu -->
+                    <div x-show="isOpen" x-transition:enter="transition ease-out duration-100 transform"
+                        x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75 transform"
+                        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                        @click.away="isOpen = false"
+                        class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none"
+                        role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
+                        @if ($tanpaJabatan)
+                            <x-modal trigger="keluar" role="menuitem"
+                                title="Apakah anda yakin ingin keluar dari ekskul ini?"
+                                buttonClass="block px-4 py-2 text-sl  text-red-700">
+                                <form method="POST" action="{{ route('anggota.keluar', $ekskul->slug) }}"
+                                    onsubmit="return confirm('Anda yakin ingin keluar dari Ekskul {{ $ekskul->nama_ekskul }}? ')">
+                                    @csrf
+                                    <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
+                                    <div class="px-4 py-2 text-sm text-gray-700 flex justify-end">
+                                        <button @click="open = false"
+                                            class="btn btn-secondary font-semibold mx-3">Batal</button>
+                                        <button type="submit" class="btn btn-danger font-semibold">Keluar</button>
+                                    </div>
+                                </form>
+                            </x-modal>
+                        @endif
+                    </div>
+                </div>
+
+            </div>
             <!-- Bagian Konten -->
             <div class="flex flex-col lg:flex-row items-center lg:items-start space-y-6 lg:space-y-0 lg:space-x-6">
                 <!-- Logo Ekskul (Kiri) -->
@@ -130,8 +161,8 @@
                 </button>
 
                 <!-- Modal -->
-                <div class="modal fade" id="modalTambahGambar" tabindex="-1" aria-labelledby="modalTambahGambarLabel"
-                    aria-hidden="true">
+                <div class="modal fade" id="modalTambahGambar" tabindex="-1"
+                    aria-labelledby="modalTambahGambarLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
