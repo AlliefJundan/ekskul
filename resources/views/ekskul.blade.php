@@ -112,17 +112,17 @@
                     {{ $ekskul->deskripsi }}
                 </p>
                 @if (auth()->user()->role === 'admin' || optional(auth()->user()->ekskulUser)->jabatan == 2)
-                    <!-- Tombol untuk membuka modal Tambah Gambar -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-    data-bs-target="#modalTambahGambar">
-    Tambah Gambar
-</button>
+                                        <!-- Tombol untuk membuka modal Tambah Gambar -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#modalTambahGambar">
+                        Tambah Gambar
+                    </button>
 
-<!-- Tombol Hapus Gambar -->
-<button type="button" class="btn btn-danger" data-bs-toggle="modal"
-    data-bs-target="#modalHapusGambar">
-    Hapus Gambar
-</button>
+                    <!-- Tombol Hapus Gambar -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#modalHapusGambar">
+                        Hapus Gambar
+                    </button>       
                 @endif
 
 
