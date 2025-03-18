@@ -116,24 +116,7 @@
                             class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition">
                             Lihat
                         </a>
-                        @if (auth()->user()->role === 'admin' || optional(auth()->user()->ekskulUser)->jabatan == 2)
-                             <!-- Tombol Edit -->
-                        <button @click="editOpen = true"
-                            class="bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition">
-                            Edit
-                        </button>
-
-                        <!-- Tombol Hapus -->
-                        <form action="{{ route('ekskul.destroy', $ekskul->id_ekskul) }}" method="POST"
-                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus ekskul ini?')">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition">
-                                Hapus
-                            </button>
-                        </form>
-                        @endif
+                     
                     </div>
                 </div>
             </div>

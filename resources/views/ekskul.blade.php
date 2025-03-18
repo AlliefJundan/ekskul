@@ -35,6 +35,78 @@
                         @click.away="isOpen = false"
                         class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none"
                         role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
+                       @if (auth()->user()->role === 'admin' || optional(auth()->user()->ekskulUser)->jabatan == 2)
+                             <!-- Tombol Edit -->
+                        <div x-data="{ editOpen: false }">
+    <!-- Tombol Edit -->
+    <button @click="editOpen = true"
+        class="block px-4 py-2 text-sl  text-red-700">
+        Edit
+    </button>
+
+    <!-- Modal Edit Ekskul -->
+    <div x-show="editOpen" @click.away="editOpen = false"
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 scale-90"
+        x-transition:enter-end="opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-90"
+        style="display: none;">
+        <div class="bg-white rounded-lg p-6 w-96 shadow-lg relative">
+            <button @click="editOpen = false"
+                class="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl">
+                ✖
+            </button>
+            <h2 class="text-xl font-bold mb-4">Edit Ekskul</h2>
+            <form action="{{ route('ekskul.update', $ekskul->id_ekskul) }}" method="POST"
+                enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+
+                <div class="mb-3">
+                    <label for="nama_ekskul" class="block text-sm font-medium text-gray-700">Nama Ekskul</label>
+                    <input type="text" name="nama_ekskul" id="nama_ekskul" class="form-input mt-1 block w-full"
+                        value="{{ $ekskul->nama_ekskul }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="deskripsi" class="block text-sm font-medium text-gray-700">Deskripsi</label>
+                    <textarea name="deskripsi" id="deskripsi" class="form-input mt-1 block w-full" rows="3"
+                        required>{{ $ekskul->deskripsi }}</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="gambar" class="block text-sm font-medium text-gray-700">Gambar Ekskul</label>
+                    <input type="file" name="gambar" id="gambar" class="form-input mt-1 block w-full">
+                    <small class="text-gray-500">Kosongkan jika tidak ingin mengubah gambar.</small>
+                </div>
+
+                <div class="mt-6 flex justify-end">
+                    <button type="submit"
+                        class="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+                        <!-- Tombol Hapus -->
+                        <form action="{{ route('ekskul.destroy', $ekskul->id_ekskul) }}" method="POST"
+                            onsubmit="return confirm('Apakah Anda yakin ingin menghapus ekskul ini?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                class="block px-4 py-2 text-sl  text-red-700">
+                                Hapus
+                            </button>
+                        </form>
+                        @endif
+              
 
                         @if ($tanpaJabatan)
                             <x-modal trigger="keluar" role="menuitem"
