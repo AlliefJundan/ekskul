@@ -9,10 +9,53 @@
 
         <div class="p-6 bg-wite rounded-lg shadow-lg">
             <!-- Nama Ekskul (Tengah) -->
-            <h3
-                class="text-2xl font-bold text-center mb-4 flex justify-center bg-ekskul text-black px-4 py-2 rounded-lg inline-block">
-                Ekskul {{ $ekskul->nama_ekskul }}
-            </h3>
+            <div class="flex items-center justify-between mb-4 bg-ekskul text-black px-4 py-2 rounded-lg">
+                <div></div>
+                <h3 class="text-2xl font-bold text-center">Ekskul {{ $ekskul->nama_ekskul }}</h3>
+                <div class="relative ml-3" x-data="{ isOpen: false }">
+                    <div>
+                        <button type="button" @click="isOpen = !isOpen" @keydown.escape.window="isOpen = false"
+                            class="relative flex items-center justify-center w-10 h-10 rounded-full bg-[#F78903] text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-[#F78903] focus:outline-none hover:bg-[#d97802]"
+                            id="user-menu-button" :aria-expanded="isOpen.toString()" aria-haspopup="true">
+                            <span class="sr-only">Open user menu</span>
+                            <!-- Ikon elipsis vertikal -->
+                            <svg class="w-6 h-6" fill="none" stroke="black" stroke-width="4" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6h.01M12 12h.01M12 18h.01">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Dropdown menu -->
+                    <div x-show="isOpen" x-transition:enter="transition ease-out duration-100 transform"
+                        x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-75 transform"
+                        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                        @click.away="isOpen = false"
+                        class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none"
+                        role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
+
+                        @if ($tanpaJabatan)
+                            <x-modal trigger="keluar" role="menuitem"
+                                title="Apakah anda yakin ingin keluar dari ekskul ini?"
+                                buttonClass="block px-4 py-2 text-sl  text-red-700">
+                                <form method="POST" action="{{ route('anggota.keluar', $ekskul->slug) }}"
+                                    onsubmit="return confirm('Anda yakin ingin keluar dari Ekskul {{ $ekskul->nama_ekskul }}? ')">
+                                    @csrf
+                                    <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
+                                    <div class="px-4 py-2 text-sm text-gray-700 flex justify-end">
+                                        <button @click="open = false"
+                                            class="btn btn-secondary font-semibold mx-3">Batal</button>
+                                        <button type="submit" class="btn btn-danger font-semibold">Keluar</button>
+                                    </div>
+                                </form>
+                            </x-modal>
+                        @endif
+                    </div>
+                </div>
+
+            </div>
             <!-- Bagian Konten -->
             <div class="flex flex-col lg:flex-row items-center lg:items-start space-y-6 lg:space-y-0 lg:space-x-6">
                 <!-- Logo Ekskul (Kiri) -->
@@ -113,121 +156,124 @@
                 </p>
                 @if (auth()->user()->role === 'admin' || optional(auth()->user()->ekskulUser)->jabatan == 2)
                     <!-- Tombol untuk membuka modal Tambah Gambar -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal"
-    data-bs-target="#modalTambahGambar">
-    Tambah Gambar
-</button>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#modalTambahGambar">
+                        Tambah Gambar
+                    </button>
 
-<!-- Tombol Hapus Gambar -->
-<button type="button" class="btn btn-danger" data-bs-toggle="modal"
-    data-bs-target="#modalHapusGambar">
-    Hapus Gambar
-</button>
+                    <!-- Tombol Hapus Gambar -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        data-bs-target="#modalHapusGambar">
+                        Hapus Gambar
+                    </button>
                 @endif
 
 
-<!-- Modal Tambah Gambar -->
-<div class="modal fade" id="modalTambahGambar" tabindex="-1" aria-labelledby="modalTambahGambarLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalTambahGambarLabel">Tambah Gambar</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('ekskul.tambahGambar', ['id' => $ekskul->id_ekskul]) }}"
-                    method="POST" enctype="multipart/form-data">
-                    @csrf
-                    <div class="mb-3">
-                        <label for="image" class="form-label">Pilih Gambar</label>
-                        <input type="file" class="form-control" name="image" required>
-                    </div>
-                    <button type="submit" class="btn btn-success">Upload</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Modal Hapus Gambar -->
-<div class="modal fade" id="modalHapusGambar" tabindex="-1" aria-labelledby="modalHapusGambarLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalHapusGambarLabel">Hapus Gambar</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                    aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form action="{{ route('ekskul.hapusGambar', ['id' => $ekskul->id_ekskul]) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <div class="mb-3">
-                        <label for="gambar_id" class="form-label">Pilih Gambar yang akan dihapus</label>
-                        <select name="gambar_id" class="form-control" required>
-                            @foreach ($ekskul->gambarList as $gambar)
-                                <option value="{{ $gambar->id }}">{{ $gambar->gambar }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-danger">Hapus</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-            <!-- Bagian Materi (Lebar 3 Kolom di Layar Besar) -->
-            <div class="grid col-span-2 gap-2">
-                @if ($materi->count() > 0)
-                    @foreach ($materi as $item)
-                        <div
-                            class="bg-white rounded-lg shadow-lg w-full hover:shadow-2xl transition duration-300 p-5 h-auto pb-2">
-                            <!-- Judul Materi -->
-                            <h3 class="text-indigo-900 font-bold text-lg mb-2 truncate">{{ $item->user->nama }}</h3>
-                            <p class="text-gray-500 text-sm">{{ $item->created_at->diffForHumans() }}</p>
-                            <hr>
-
-                            <!-- Isi Materi -->
-                            <h3 class="text-indigo-900 font-bold mt-3 text-lg mb-2">
-                                {{ $item->isi_materi }}
-                            </h3>
-
-                            <!-- Tombol Lampiran & Download -->
-                            @if ($item->lampiran_materi)
-                                <div class="flex justify-between items-center mt-3">
-                                    <!-- Lihat Lampiran -->
-                                    <a href="{{ asset('storage/' . $item->lampiran_materi) }}" target="_blank"
-                                        class="text-blue-500 underline text-sm hover:text-blue-700 transition">
-                                        Lihat Lampiran
-                                    </a>
-
-                                    <!-- Tombol Unduh -->
-                                    <a href="{{ route('materi.download', $item->id_materi) }}"
-                                        class="bg-green-500 text-white px-3 py-1 rounded-md text-sm hover:bg-green-600 transition">
-                                        Download
-                                    </a>
-                                </div>
-                            @endif
+                <!-- Modal Tambah Gambar -->
+                <div class="modal fade" id="modalTambahGambar" tabindex="-1"
+                    aria-labelledby="modalTambahGambarLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalTambahGambarLabel">Tambah Gambar</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('ekskul.tambahGambar', ['id' => $ekskul->id_ekskul]) }}"
+                                    method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <label for="image" class="form-label">Pilih Gambar</label>
+                                        <input type="file" class="form-control" name="image" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Upload</button>
+                                </form>
+                            </div>
                         </div>
-                    @endforeach
+                    </div>
+                </div>
 
-                    <!-- Pagination Links -->
-                    <div class="col-span-full md-5 mt-6 flex justify-center">
-                        {{ $materi->appends(request()->query())->links('pagination::tailwind') }}
+                <!-- Modal Hapus Gambar -->
+                <div class="modal fade" id="modalHapusGambar" tabindex="-1" aria-labelledby="modalHapusGambarLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalHapusGambarLabel">Hapus Gambar</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ route('ekskul.hapusGambar', ['id' => $ekskul->id_ekskul]) }}"
+                                    method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <div class="mb-3">
+                                        <label for="gambar_id" class="form-label">Pilih Gambar yang akan
+                                            dihapus</label>
+                                        <select name="gambar_id" class="form-control" required>
+                                            @foreach ($ekskul->gambarList as $gambar)
+                                                <option value="{{ $gambar->id }}">{{ $gambar->gambar }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-danger">Hapus</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                @else
-                    <div class="col-span-full text-center">
-                        <h1 class="text-gray-600 font-semibold"> Tidak ada materi tersedia untuk ekskul ini.</h1>
-                    </div>
-                @endif
+                </div>
+
+                <!-- Bagian Materi (Lebar 3 Kolom di Layar Besar) -->
+                <div class="grid col-span-2 gap-2">
+                    @if ($materi->count() > 0)
+                        @foreach ($materi as $item)
+                            <div
+                                class="bg-white rounded-lg shadow-lg w-full hover:shadow-2xl transition duration-300 p-5 h-auto pb-2">
+                                <!-- Judul Materi -->
+                                <h3 class="text-indigo-900 font-bold text-lg mb-2 truncate">{{ $item->user->nama }}
+                                </h3>
+                                <p class="text-gray-500 text-sm">{{ $item->created_at->diffForHumans() }}</p>
+                                <hr>
+
+                                <!-- Isi Materi -->
+                                <h3 class="text-indigo-900 font-bold mt-3 text-lg mb-2">
+                                    {{ $item->isi_materi }}
+                                </h3>
+
+                                <!-- Tombol Lampiran & Download -->
+                                @if ($item->lampiran_materi)
+                                    <div class="flex justify-between items-center mt-3">
+                                        <!-- Lihat Lampiran -->
+                                        <a href="{{ asset('storage/' . $item->lampiran_materi) }}" target="_blank"
+                                            class="text-blue-500 underline text-sm hover:text-blue-700 transition">
+                                            Lihat Lampiran
+                                        </a>
+
+                                        <!-- Tombol Unduh -->
+                                        <a href="{{ route('materi.download', $item->id_materi) }}"
+                                            class="bg-green-500 text-white px-3 py-1 rounded-md text-sm hover:bg-green-600 transition">
+                                            Download
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+
+                        <!-- Pagination Links -->
+                        <div class="col-span-full md-5 mt-6 flex justify-center">
+                            {{ $materi->appends(request()->query())->links('pagination::tailwind') }}
+                        </div>
+                    @else
+                        <div class="col-span-full text-center">
+                            <h1 class="text-gray-600 font-semibold"> Tidak ada materi tersedia untuk ekskul ini.</h1>
+                        </div>
+                    @endif
+                </div>
+
             </div>
-
         </div>
-    </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
