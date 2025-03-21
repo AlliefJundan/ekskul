@@ -46,12 +46,14 @@
                                                 @csrf
                                                 <input type="hidden" name="jabatan_id" value="{{ $jabatanId }}">
 
-                                                <label class="block text-white">Pemegang Saat Ini</label>
+                                                <label class="block text-gray-700 font-semibold">Pemegang Saat
+                                                    Ini</label>
                                                 <input type="text"
                                                     class="w-full mb-3 border rounded-md p-2 bg-gray-100"
                                                     value="{{ $pemegangJabatan->nama ?? 'Belum Ada' }}" readonly>
 
-                                                <label class="block text-white">Pilih Anggota Baru</label>
+                                                <label class="block text-gray-700 font-semibold">Pilih Anggota
+                                                    Baru</label>
                                                 <select name="nama_baru"
                                                     class="w-full border rounded-md p-2 bg-gray-100">
                                                     <option value="">-- Pilih Anggota --</option>
@@ -62,7 +64,7 @@
                                                         @endif
                                                     @endforeach
                                                 </select>
-                                                <div class="flex justify-end mt-4">
+                                                <div class="flex justify-center mt-4">
                                                     <input type="submit" value="Simpan"
                                                         class="bg-ekskul text-ekskul2 px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition">
                                                 </div>
@@ -72,7 +74,7 @@
                                         {{-- Modal untuk melepas jabatan --}}
                                         @if ($pemegangJabatan)
                                             <x-modal trigger="Lepas Jabatan" title="Konfirmasi Lepas Jabatan"
-                                                buttonClass="bg-red-500 text-white px-4 py-2 ml-5 rounded-md font-bold hover:bg-red-600 transition">
+                                                buttonClass="bg-red-500 text-gray-700 px-4 py-2 ml-5 rounded-md font-bold hover:bg-red-600 transition">
                                                 <form method="post"
                                                     action="{{ route('jabatan.jabatanRemove', $ekskul->slug) }}"
                                                     onsubmit="return confirm('Apakah Anda yakin untuk melepas jabatan {{ $jabatanNama }} dari {{ $pemegangJabatan->nama }}?')">
@@ -80,12 +82,13 @@
                                                     <input type="hidden" name="jabatan_id"
                                                         value="{{ $jabatanId }}">
 
-                                                    <div class="mb-4 text-white">
-                                                        Apakah Anda yakin ingin melepas jabatan ini dari
+                                                    <div class="mb-4 text-gray-700 font-semibold">
+                                                        Apakah Anda yakin ingin melepas jabatan {{ $jabatanNama }}
+                                                        dari
                                                         {{ $pemegangJabatan->nama }}?
                                                     </div>
 
-                                                    <div class="flex justify-end">
+                                                    <div class="flex justify-center">
                                                         <input type="submit" value="Lepas Jabatan"
                                                             class="bg-red-600 text-white px-4 py-2 rounded-md font-bold hover:bg-red-700 transition">
                                                     </div>

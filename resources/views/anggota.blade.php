@@ -37,7 +37,7 @@
                         @php
                             $pemegangJabatan = $anggota->firstWhere('pivot.jabatan', $jabatanId);
                         @endphp
-                        <div class="text-white font-bold h-10">
+                        <div class="text-gray-700 font-bold h-10">
                             {{ $jabatanMap[$jabatanId] }} = {{ $pemegangJabatan->nama ?? 'Belum Ada' }}
                         </div>
                     @endforeach

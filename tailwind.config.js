@@ -15,7 +15,7 @@ export default {
                 'ekskul': '#F78903',
                 'nav-text': '#black',
                 'ekskul2' : '#1F1B9D',
-                'ekskul3' : '#B75600'
+                'ekskul3' : '#ff4a00'
       },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],

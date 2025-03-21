@@ -2,14 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kuis;
 use App\Models\User;
 use App\Models\Ekskul;
 use App\Models\Materi;
+use App\Models\Kegiatan;
+use App\Models\HasilKuis;
 use App\Models\EkskulUser;
+use App\Models\Notifikasi;
+use App\Models\Pendaftaran;
 use Illuminate\Support\Str;
 use App\Models\GambarEkskul;
-use Illuminate\Support\Facades\Storage;
+use App\Models\NotifikasiTarget;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class EkskulController extends Controller
 {
@@ -96,8 +102,27 @@ class EkskulController extends Controller
 
     public function destroy($id)
     {
-        Ekskul::findOrFail($id)->delete();
-        return redirect()->back()->with('success', 'Ekskul berhasil dihapus!');
+
+        // Delete related rows in child tables
+        HasilKuis::where('id_ekskul', $id)->delete();
+        Kuis::where('id_ekskul', $id)->delete();
+        Materi::where('id_ekskul', $id)->delete();
+        Kegiatan::where('id_ekskul', $id)->delete();
+        Pendaftaran::where('id_ekskul', $id)->delete();
+        EkskulUser::where('ekskul_id', $id)->delete();
+        GambarEkskul::where('ekskul_id', $id)->delete();
+        $notifikasi = Notifikasi::where('id_ekskul', $id)->get();
+        foreach ($notifikasi as $notif) {
+            NotifikasiTarget::where('id_notifikasi', $notif->id_notifikasi)->delete();
+        }
+        Notifikasi::where('id_ekskul', $id)->delete();
+
+        $ekskul = Ekskul::findOrFail($id)->delete();
+
+
+        // Finally, delete the parent row in the ekskul table
+
+        return redirect()->route('dashboard_admin')->with('success', 'Ekskul berhasil dihapus!');
     }
 
     public function updateJumlahAnggota($id)

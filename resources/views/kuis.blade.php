@@ -17,13 +17,13 @@
                             @csrf
                             <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
                             <div class="mb-4">
-                                <label class="block text-white">Nama Kuis</label>
+                                <label class="block text-gray-700 font-semibold">Nama Kuis</label>
                                 <input type="text" name="nama_kuis"
                                     class="w-full border border-gray-300 rounded-md p-2" placeholder="Masukan Nama Kuis"
                                     required>
                             </div>
                             <div class="mb-4">
-                                <label class="block text-white">Link Kuis</label>
+                                <label class="block text-gray-700 font-semibold">Link Kuis</label>
                                 <input type="text" name="isi_kuis"
                                     class="w-full border border-gray-300 rounded-md p-2" placeholder="Masukan Link Kuis"
                                     required>
@@ -94,14 +94,14 @@
                                         <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
 
                                         <div class="mb-4">
-                                            <label class="block text-white">Score</label>
+                                            <label class="block text-gray-700 font-semibold ">Score</label>
                                             <input type="number" name="skor"
                                                 class="w-full border border-gray-300 rounded-md p-2"
                                                 placeholder="Masukan score" required>
                                         </div>
 
                                         <div class="mb-4">
-                                            <label class="block text-white">Bukti</label>
+                                            <label class="block text-gray-700 font-semibold">Bukti</label>
                                             <input type="file" name="bukti" accept=".jpg,.jpeg,.png,.pdf"
                                                 class="w-full border border-gray-300 rounded-md p-2 bg-gray-100">
                                         </div>

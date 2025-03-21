@@ -27,14 +27,13 @@
                         <input type="hidden" name="id_user" value="{{ Auth::user()->id_user }}">
 
                         <div class="mb-4">
-                            <label class="block text-white">Isi Materi</label>
+                            <label class="block text-gray-700 font-semibold">Isi Materi</label>
                             <textarea name="isi_materi" class="w-full border border-gray-300 rounded-md p-2" placeholder="Masukkan Materi" required></textarea>
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-white">Lampiran (Opsional)</label>
-                            <input type="file" name="lampiran_materi"
-                                class="w-full text-white border border-gray-300 rounded-md p-2">
+                            <label class="block text-gray-700 font-semibold">Lampiran (Opsional)</label>
+                            <input type="file" name="lampiran_materi" class="form-control">
                         </div>
 
                         <div class="mt-6 flex justify-center">
@@ -138,8 +137,8 @@
         </div>
         <!-- Modal Edit -->
         <div id="editModal" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div class="bg-ekskul2 p-6 rounded-lg shadow-lg w-[400px]">
-                <h2 class="text-center text-white text-xl font-bold mb-4">Edit Materi</h2>
+            <div class="bg-gray-200 p-6 rounded-lg shadow-lg w-[400px]">
+                <h2 class="text-center text-gray-700 text-xl font-bold mb-4">Edit Materi</h2>
 
                 <form id="editForm" method="POST" enctype="multipart/form-data">
                     @csrf
@@ -147,20 +146,21 @@
 
                     <!-- Isi Materi -->
                     <div class="mb-4">
-                        <label class="text-white block">Isi Materi</label>
-                        <textarea id="editIsiMateri" name="isi_materi" class="w-full border rounded p-2" rows="4" required></textarea>
+                        <label class="text-gray-700 font-semibold block">Isi Materi</label>
+                        <textarea id="editIsiMateri" name="isi_materi" class="w-full border rounded-md p-2" rows="4" required></textarea>
                     </div>
 
                     <!-- Lampiran (Opsional) -->
                     <div class="mb-4">
-                        <label class="text-white block">Lampiran</label>
-                        <input type="file" name="lampiran_materi" class="text-white w-full border p-2">
+                        <label class="text-gray-700 font-semibold block">Lampiran</label>
+                        <input type="file" name="lampiran_materi" class="form-control rounded-md">
 
                         <!-- Tampilkan Lampiran Saat Ini -->
-                        <p class="text-white text-sm mt-2">Lampiran saat ini:
-                            <a id="editLampiranLink" href="#" target="_blank" class="text-ekskul">Lihat
+                        <p class="text-gray-700 text-sm font-semibold mt-2">Lampiran saat ini:
+                            <a id="editLampiranLink" href="#" target="_blank"
+                                class="text-gray-800 hover:text-blue-500">Lihat
                                 Lampiran</a>
-                            <span id="editLampiranNama" class="text-yellow-500"></span>
+                            <span id="editLampiranNama" class="text-gray-900"></span>
                         </p>
                     </div>
 

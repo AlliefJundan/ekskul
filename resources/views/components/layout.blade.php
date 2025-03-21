@@ -33,7 +33,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="bg-gray-100">
     <div class="min-h-full">
         <x-Navbar></x-Navbar>
         <main>
@@ -42,7 +42,7 @@
             </div>
         </main>
     </div>
-    <h1 class="text-white py-4 px-4">HALLO SEMUANYA!!!! BAKNUS DISINI :D</h1>
+    <h1 class="text-gray-100 py-4 px-4">HALLO SEMUANYA!!!! BAKNUS DISINI :D</h1>
 </body>
 
 </html>
