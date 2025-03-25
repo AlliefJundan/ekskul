@@ -14,7 +14,7 @@
                 $hasJabatan =
                     $user &&
                     $user
-                        ->ekskulUser()
+                        ->ekskulUser()  
                         ->whereBetween('jabatan', [1, 2])
                         ->exists();
             @endphp

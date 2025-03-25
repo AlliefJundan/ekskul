@@ -40,13 +40,13 @@ class AbsensiController extends Controller
                 ->orderBy('tanggal', 'desc')
                 ->get();
         }
+$count = [
+    'Hadir' => $absensi->where('kehadiran', 'hadir')->where('status', 'terverifikasi')->count(),
+    'Izin' => $absensi->where('kehadiran', 'izin')->where('status', 'terverifikasi')->count(),
+    'Sakit' => $absensi->where('kehadiran', 'sakit')->where('status', 'terverifikasi')->count(),
+    'Alfa' => $absensi->where('kehadiran', 'alpa')->where('status', 'terverifikasi')->count(),
+];
 
-        $count = [
-            'Hadir' => $absensi->where('kehadiran', 'hadir')->count(),
-            'Izin' => $absensi->where('kehadiran', 'izin')->count(),
-            'Sakit' => $absensi->where('kehadiran', 'sakit')->count(),
-            'Alfa' => $absensi->where('kehadiran', 'alpa')->count(),
-        ];
 
         $jumlahKegiatan = Kegiatan::where('id_ekskul', $ekskul->id_ekskul)->count();
 
@@ -137,7 +137,14 @@ class AbsensiController extends Controller
         $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
         $user = Auth::user();
 
-        if (!($user->role === 'admin' || in_array(optional($user->ekskulUser)->jabatan, [1, 2, 3]))) {
+        // Pastikan hanya admin atau pengurus ekskul yang bisa konfirmasi
+        if (!(auth()->user()->role === 'admin' || optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan)) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'error' => 'Anda tidak memiliki akses untuk konfirmasi kegiatan.',
+                    'redirect_url' => route('absensi.index', $slug)
+                ], 403);
+            }
             return redirect()->route('absensi.index', $slug)->with('error', 'Anda tidak memiliki akses untuk konfirmasi kegiatan.');
         }
 
@@ -147,9 +154,23 @@ class AbsensiController extends Controller
             ->exists();
 
         if ($kegiatanHariIni) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'ada_kegiatan' => true,
+                    'redirect_url' => route('absensi.index', $slug)
+                ]);
+            }
             return redirect()->route('absensi.index', $slug)->with('error', 'Kegiatan sudah dibuat hari ini, tidak bisa menambahkan lagi.');
         }
 
+        // Jika request AJAX hanya untuk cek kegiatan, cukup kirim response JSON
+        if ($request->ajax()) {
+            return response()->json([
+                'ada_kegiatan' => false
+            ]);
+        }
+
+        // Jika menerima data mulai & berakhir, buat kegiatan baru
         if ($request->has('mulai') && $request->has('berakhir')) {
             Kegiatan::create([
                 'id_ekskul' => $ekskul->id_ekskul,
@@ -162,12 +183,11 @@ class AbsensiController extends Controller
                 'title' => 'Kegiatan Baru',
                 'category' => 'kegiatan',
                 'id_ekskul' => $ekskul->id_ekskul,
-                'description' => 'hari ini ada kegiatan dari jam ' . $request->mulai . ' hingga ' . $request->berakhir,
+                'description' => 'Hari ini ada kegiatan dari jam ' . $request->mulai . ' hingga ' . $request->berakhir,
             ]);
 
             $users = EkskulUser::where('ekskul_id', $ekskul->id_ekskul)->pluck('user_id');
-            $id_notifikasi = Notifikasi::orderByDesc('id_notifikasi')->first()->id_notifikasi;
-
+            $id_notifikasi = Notifikasi::latest('id_notifikasi')->value('id_notifikasi');
 
             foreach ($users as $user_id) {
                 NotifikasiTarget::create([
@@ -181,6 +201,7 @@ class AbsensiController extends Controller
 
         return redirect()->route('absensi.index', $slug);
     }
+
 
     public function view_pdf($slug, Request $request)
     {
@@ -206,34 +227,46 @@ class AbsensiController extends Controller
     }
     public function rekap($slug, Request $request)
     {
-        $bulan = $request->query('bulan'); // Ambil bulan dari query parameter
+        $bulan = $request->query('bulan', date('m')); // Ambil bulan dari query, default bulan sekarang
         $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
 
         $rekapAbsen = User::whereHas('absensi', function ($query) use ($ekskul, $bulan) {
             $query->where('id_ekskul', $ekskul->id_ekskul)
-                ->whereMonth('tanggal', $bulan); // Filter berdasarkan bulan
-        })->withCount([
-            'absensi as hadir' => function ($query) use ($ekskul, $bulan) {
-                $query->where('id_ekskul', $ekskul->id_ekskul)
-                    ->whereMonth('tanggal', $bulan)
-                    ->where('kehadiran', 'hadir');
-            },
-            'absensi as izin' => function ($query) use ($ekskul, $bulan) {
-                $query->where('id_ekskul', $ekskul->id_ekskul)
-                    ->whereMonth('tanggal', $bulan)
-                    ->where('kehadiran', 'izin');
-            },
-            'absensi as sakit' => function ($query) use ($ekskul, $bulan) {
-                $query->where('id_ekskul', $ekskul->id_ekskul)
-                    ->whereMonth('tanggal', $bulan)
-                    ->where('kehadiran', 'sakit');
-            },
-            'absensi as alpa' => function ($query) use ($ekskul, $bulan) {
-                $query->where('id_ekskul', $ekskul->id_ekskul)
-                    ->whereMonth('tanggal', $bulan)
-                    ->where('kehadiran', 'alpa');
-            },
-        ])->get();
+                ->whereMonth('tanggal', $bulan);
+        })
+            ->withCount([
+                // Hitung jumlah yang belum terverifikasi untuk kolom konfirmasi
+                'absensi as konfirmasi' => function ($query) use ($ekskul, $bulan) {
+                    $query->where('id_ekskul', $ekskul->id_ekskul)
+                        ->whereMonth('tanggal', $bulan)
+                        ->where('status', 'belum terverifikasi'); // Menampilkan yang belum terverifikasi
+                },
+                // Hanya hitung jika statusnya sudah terverifikasi
+                'absensi as hadir' => function ($query) use ($ekskul, $bulan) {
+                    $query->where('id_ekskul', $ekskul->id_ekskul)
+                        ->whereMonth('tanggal', $bulan)
+                        ->where('status', 'terverifikasi') // Hanya yang sudah terverifikasi
+                        ->where('kehadiran', 'hadir');
+                },
+                'absensi as izin' => function ($query) use ($ekskul, $bulan) {
+                    $query->where('id_ekskul', $ekskul->id_ekskul)
+                        ->whereMonth('tanggal', $bulan)
+                        ->where('status', 'terverifikasi') // Hanya yang sudah terverifikasi
+                        ->where('kehadiran', 'izin');
+                },
+                'absensi as sakit' => function ($query) use ($ekskul, $bulan) {
+                    $query->where('id_ekskul', $ekskul->id_ekskul)
+                        ->whereMonth('tanggal', $bulan)
+                        ->where('status', 'terverifikasi') // Hanya yang sudah terverifikasi
+                        ->where('kehadiran', 'sakit');
+                },
+                'absensi as alpa' => function ($query) use ($ekskul, $bulan) {
+                    $query->where('id_ekskul', $ekskul->id_ekskul)
+                        ->whereMonth('tanggal', $bulan)
+                        ->where('status', 'terverifikasi') // Hanya yang sudah terverifikasi
+                        ->where('kehadiran', 'alpa');
+                },
+            ])->get();
 
         return view('rekap_absensi', compact('rekapAbsen', 'ekskul', 'bulan'));
     }

@@ -48,7 +48,7 @@
             </div>
 
             <!-- Card Kegiatan dengan Tombol Rekap -->
-            @if (auth()->user()->role === 'admin' || in_array(optional(auth()->user()->ekskulUser)->jabatan, [1, 2, 3]))
+            @if (auth()->user()->role === 'admin' || in_array(optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan, [1, 2]))
                 <div class="bg-blue-900 rounded-lg shadow-lg p-6 w-full md:w-1/2 max-w-lg">
                     <h2 class="text-lg font-bold mb-4 text-white">Informasi Kegiatan</h2>
 
@@ -137,7 +137,7 @@
                         <th class="p-3">Nama User</th>
                         <th class="p-3">Kehadiran</th>
                         <th class="p-3">Status</th>
-                        @if (auth()->user()->role === 'admin' || in_array(optional(auth()->user()->ekskulUser)->jabatan, [1, 2]))
+                        @if(auth()->user()->role === 'admin' || in_array(optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan, [1, 2]))
                             <th class="p-3">Aksi</th>
                         @endif
 
@@ -151,7 +151,7 @@
                             <td class="p-3">{{ ucfirst($absen->kehadiran) }}</td>
                             <td class="p-3">{{ ucfirst($absen->status) }}</td>
                             <td class="p-3">
-                                @if (auth()->user()->role === 'admin' || in_array(optional(auth()->user()->ekskulUser)->jabatan, [1, 2]))
+                                @if(auth()->user()->role === 'admin' || in_array(optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan, [1, 2]))
                                     @if ($absen->status === 'belum terverifikasi')
                                         <form action="{{ route('absensi.verifikasi', $absen->id_absensi) }}"
                                             method="POST">
