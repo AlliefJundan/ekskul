@@ -1,24 +1,26 @@
-@php
-    $no = 1;
-    $jabatanMap = [
-        1 => 'Pembina',
-        2 => 'Ketua',
-        3 => 'Sekretaris',
-        4 => 'Bendahara',
-        null => 'Anggota',
-    ];
-
-    $userRole = optional(auth()->user())->role;
-    $userJabatan = optional(auth()->user()->ekskulUser)->jabatan;
-    $canManage = $userRole == 'admin' || $userJabatan == 1 || $userJabatan == 2;
-    $isAdmin = $userRole == 'admin';
-    $isPembina = $userJabatan == 1;
-@endphp
-
 <x-layout>
+    @php
+        $no = 1;
+        $jabatanMap = [
+            1 => 'Pembina',
+            2 => 'Ketua',
+            3 => 'Sekretaris',
+            4 => 'Bendahara',
+            null => 'Anggota',
+        ];
+
+        $userRole = optional(auth()->user())->role;
+        $userJabatan = optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan;
+        $canManage = $userRole == 'admin' || $userJabatan == 1 || $userJabatan == 2;
+        $isAdmin = $userRole == 'admin';
+        $isPembina = $userJabatan == 1;
+        // $isPembina = true;
+    @endphp
+
     <div class="container px-4 mx-auto mt-8">
         <x-button1 href="{{ route('ekskul.show', $ekskul->slug) }}">Kembali</x-button1>
-        <h1 class="text-4xl font-bold text-center mb-4">Anggota Ekskul {{ $ekskul->nama_ekskul }}</h1>
+        <h1 class="text-4xl font-bold text-center mb-4">Anggota Ekskul
+            {{ $ekskul->nama_ekskul }}</h1>
 
         @if ($isAdmin || $isPembina)
             <div class="flex justify-start gap-4">
@@ -60,10 +62,12 @@
 
                             @if ($canManage)
                                 <th class="py-2 flex justify-start">
+                                    @php
+                                        $canKick = false;
+                                    @endphp
                                     @foreach ($anggota as $item)
                                         @php
                                             $targetJabatan = $item->pivot->jabatan;
-                                            $canKick = false;
 
                                             if ($isAdmin) {
                                                 $canKick = true;

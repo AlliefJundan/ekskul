@@ -23,4 +23,9 @@ class EkskulUser extends Model
     {
         return $this->belongsTo(Ekskul::class, 'ekskul_id');
     }
+
+    public function getCurrentEkskul($id_ekskul)
+    {
+        return $this->where('user_id', auth()->user()->id_user)->where('ekskul_id', $id_ekskul)->first();
+    }
 }

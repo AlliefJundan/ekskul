@@ -6,7 +6,7 @@
                 <form action="{{ route('login.submit') }}" method="POST">
                     @csrf
                     <div class="mb-4">
-                        <div class="flex justify-center"><label for="username" class="text-white">Username</label></div>
+                        <label for="username" class="text-white">Username</label>
                         <input type="text" name="username"
                             class="w-full p-2 mt-1 text-black border rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-500"
                             placeholder="Masukan Username" required>

@@ -20,7 +20,7 @@
             <div class="relative flex justify-center">
                 <a href="#"
                     class="relative inline-flex items-center px-6 py-3 text-white bg-indigo-900 font-semibold text-lg rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-transform duration-300">
-                    Galeri
+                    Ekstrakurikuler
                     <span class="absolute -bottom-1 -right-1 bg-orange-400 h-full w-full rounded-2xl -z-10"></span>
                 </a>
             </div>

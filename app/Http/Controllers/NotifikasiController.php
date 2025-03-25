@@ -48,6 +48,6 @@ class NotifikasiController extends Controller
             ->where('is_read', false)
             ->update(['is_read' => true]);
 
-        return response()->json(['success' => true]);
+        return redirect()->back()->with('success', 'Berhasil membaca semua notifikasi');
     }
 }

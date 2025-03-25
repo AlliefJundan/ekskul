@@ -316,35 +316,37 @@
             <div class="grid col-span-2 gap-2">
                 @if ($materi->count() > 0)
                     @foreach ($materi as $item)
-                        <div
-                            class="bg-white rounded-lg shadow-lg w-full hover:shadow-2xl transition duration-300 p-5 h-auto pb-2">
-                            <!-- Judul Materi -->
-                            <h3 class="text-indigo-900 font-bold text-lg mb-2 truncate">{{ $item->user->nama }}
-                            </h3>
-                            <p class="text-gray-500 text-sm">{{ $item->created_at->diffForHumans() }}</p>
-                            <hr>
+                        <div>
+                            <div
+                                class="bg-white rounded-lg shadow-lg w-full hover:shadow-2xl transition duration-300 p-5 ">
+                                <!-- Judul Materi -->
+                                <h3 class="text-indigo-900 font-bold text-lg mb-2 truncate">{{ $item->user->nama }}
+                                </h3>
+                                <p class="text-gray-500 text-sm">{{ $item->created_at->diffForHumans() }}</p>
+                                <hr>
 
-                            <!-- Isi Materi -->
-                            <h3 class="text-indigo-900 font-bold mt-3 text-lg mb-2">
-                                {{ $item->isi_materi }}
-                            </h3>
+                                <!-- Isi Materi -->
+                                <h3 class="text-indigo-900 font-bold mt-3 text-lg mb-2">
+                                    {{ $item->isi_materi }}
+                                </h3>
 
-                            <!-- Tombol Lampiran & Download -->
-                            @if ($item->lampiran_materi)
-                                <div class="flex justify-between items-center mt-3">
-                                    <!-- Lihat Lampiran -->
-                                    <a href="{{ asset('storage/' . $item->lampiran_materi) }}" target="_blank"
-                                        class="text-blue-500 underline text-sm hover:text-blue-700 transition">
-                                        Lihat Lampiran
-                                    </a>
+                                <!-- Tombol Lampiran & Download -->
+                                @if ($item->lampiran_materi)
+                                    <div class="flex justify-between items-center mt-3">
+                                        <!-- Lihat Lampiran -->
+                                        <a href="{{ asset('storage/' . $item->lampiran_materi) }}" target="_blank"
+                                            class="text-blue-500 underline text-sm hover:text-blue-700 transition">
+                                            Lihat Lampiran
+                                        </a>
 
-                                    <!-- Tombol Unduh -->
-                                    <a href="{{ route('materi.download', $item->id_materi) }}"
-                                        class="bg-green-500 text-white px-3 py-1 rounded-md text-sm hover:bg-green-600 transition">
-                                        Download
-                                    </a>
-                                </div>
-                            @endif
+                                        <!-- Tombol Unduh -->
+                                        <a href="{{ route('materi.download', $item->id_materi) }}"
+                                            class="bg-green-500 text-white px-3 py-1 rounded-md text-sm hover:bg-green-600 transition">
+                                            Download
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
                         </div>
                     @endforeach
 
