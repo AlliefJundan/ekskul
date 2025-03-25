@@ -13,7 +13,7 @@ class NotifikasiController extends Controller
     {
         $user = auth()->user();
         $notifikasi = NotifikasiTarget::where('id_user', $user->id_user)
-            ->with(['notifikasi.ekskul'])
+            ->with(['notifikasi.ekskul'])->orderBy('created_at', 'desc')
             ->get();
 
         return view('notifikasi', compact('notifikasi'));

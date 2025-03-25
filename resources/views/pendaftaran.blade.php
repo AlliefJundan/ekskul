@@ -44,7 +44,7 @@
                                                     value="{{ $item->id_user }}">
                                                 <div class="flex justify-center gap-2 p-1">
                                                     <button @click="open = false"
-                                                        class="px-2 py-1 font-bold text-white text-xl bg-red-500 rounded hover:bg-red-700">Batal</button>
+                                                        class="px-2 py-1 font-bold text-ekskul2 text-xl bg-red-500 rounded hover:bg-red-700">Tolak</button>
                                                     <button type="submit"
                                                         class="bg-ekskul font-bold text-ekskul2 px-4 py-2 rounded-md hover:bg-blue-600 transition">
                                                         ✔ Terima

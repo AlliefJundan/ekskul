@@ -32,15 +32,20 @@ Route::middleware(['auth'])->group(function () {
     // Ekskul (dengan middleware cek.keanggotaan, kecuali store)
     Route::post('/ekskul/store', [EkskulController::class, 'store'])->name('ekskul.store'); // Dikecualikan dari middleware cek.keanggotaan
 
+    Route::middleware(['role:admin,jabatan:1'])->group(function () {
+        Route::get('/ekskul/jabatan/{ekskul:slug}', [AnggotaController::class, 'jabatanShow'])->name('jabatan.jabatanShow');
+        Route::post('/ekskul/jabatan/ganti/{ekskul:slug}', [AnggotaController::class, 'jabatanUpdate'])->name('jabatan.jabatanUpdate');
+        Route::post('/ekskul/jabatan/lepas/{ekskul:slug}', [AnggotaController::class, 'jabatanRemove'])->name('jabatan.jabatanRemove');
+    });
     Route::middleware(['cek.keanggotaan'])->group(function () {
         Route::get('/ekskul/{slug}', [EkskulController::class, 'show'])->name('ekskul.show');
 
         // Anggota Ekskul
         Route::get('/ekskul/anggota/{slug}', [AnggotaController::class, 'show'])->name('anggota.show');
-        Route::get('/ekskul/jabatan/{slug}', [AnggotaController::class, 'jabatanShow'])->name('jabatan.jabatanShow');
         Route::post('/ekskul/anggota/{slug}', [AnggotaController::class, 'keluar'])->name('anggota.keluar');
-        Route::post('/ekskul/jabatan/ganti/{slug}', [AnggotaController::class, 'jabatanUpdate'])->name('jabatan.jabatanUpdate');
-        Route::post('/ekskul/jabatan/lepas/{slug}', [AnggotaController::class, 'jabatanRemove'])->name('jabatan.jabatanRemove');
+
+        // Jabatan
+
         Route::delete('/ekskul/anggota/keluar/{slug}', [AnggotaController::class, 'keluarkanAnggota'])->name('anggota.keluarkan');
         Route::post('/keluar/ekskul/{slug}', [AnggotaController::class, 'keluar'])->name('anggota.keluar');
 
@@ -52,8 +57,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/kuis/store', [KuisController::class, 'store'])->name('kuis.store');
     Route::post('/kuis/hasil', [KuisController::class, 'hasil'])->name('kuis.hasil');
-    Route::get('/kuis/{slug}', [KuisController::class, 'show'])->name('kuis.show');
-    Route::get('/kuis/hasil/{slug}', [KuisController::class, 'hasilKuis'])->name('kuis.hasilKuis');
 
     // Hasil Kuis
     Route::get('/kuis/hasil/jawaban/{slug}', [HasilKuisController::class, 'hasil'])
@@ -62,6 +65,10 @@ Route::middleware(['auth'])->group(function () {
     // Kuis (dengan middleware cek.keanggotaan)
     Route::middleware(['cek.keanggotaan'])->group(function () {
         Route::get('/ekskul/pendaftaran/{slug}', [PendaftaranController::class, 'show'])->name('pendaftaran.show');
+
+        //Kuis
+        Route::get('/kuis/hasil/{slug}', [KuisController::class, 'hasilKuis'])->name('kuis.hasilKuis');
+        Route::get('/kuis/{slug}', [KuisController::class, 'show'])->name('kuis.show');
 
         //absensi dan kegiatan
         Route::get('/kegiatan/konfirmasi/{slug}', [AbsensiController::class, 'konfirmasiKegiatan'])->name('kegiatan.konfirmasi');

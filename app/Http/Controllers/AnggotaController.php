@@ -18,12 +18,17 @@ class AnggotaController extends Controller
         $anggota = $ekskul->users()
             ->with(['kelas']) // Load relasi kelas langsung
             ->withPivot('jabatan')
-            ->orderByRaw('CASE 
-        WHEN ekskul_user.jabatan IS NULL THEN 2 
-        ELSE 1 
-    END, ekskul_user.jabatan ASC')
+            ->orderByRaw('CASE WHEN ekskul_user.jabatan IS NULL THEN 2 ELSE 1 END, ekskul_user.jabatan ASC')
             ->get();
-        return view('anggota', compact('ekskul', 'anggota'));
+
+        $userRole = optional(auth()->user())->role;
+        $userJabatan = optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan;
+        $canManage = $userRole == 'admin' || $userJabatan == 1 || $userJabatan == 2;
+        $isAdmin = $userRole == 'admin';
+        $isPembina = $userJabatan == 1;
+        $hasJabatan = $userJabatan == 1 || $userJabatan == 2;
+
+        return view('anggota', compact('ekskul', 'anggota', 'hasJabatan', 'canManage', 'userJabatan', 'isAdmin', 'isPembina'));
     }
 
 

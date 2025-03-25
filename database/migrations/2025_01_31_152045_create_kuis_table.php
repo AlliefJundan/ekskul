@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string("slug");
             $table->string("isi_kuis");
             $table->unsignedBigInteger("id_ekskul");
+            $table->timestamps();
+
 
             $table->foreign("id_ekskul")->references("id_ekskul")->on("ekskul");
         });

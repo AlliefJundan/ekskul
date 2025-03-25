@@ -9,44 +9,39 @@
             null => 'Anggota',
         ];
 
-        $userRole = optional(auth()->user())->role;
-        $userJabatan = optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan;
-        $canManage = $userRole == 'admin' || $userJabatan == 1 || $userJabatan == 2;
-        $isAdmin = $userRole == 'admin';
-        $isPembina = $userJabatan == 1;
-        // $isPembina = true;
     @endphp
 
     <div class="container px-4 mx-auto mt-8">
         <x-button1 href="{{ route('ekskul.show', $ekskul->slug) }}">Kembali</x-button1>
-        <h1 class="text-4xl font-bold text-center mb-4">Anggota Ekskul
+        <h1 class="mb-8 text-4xl font-bold text-center">Anggota Ekskul
             {{ $ekskul->nama_ekskul }}</h1>
 
-        @if ($isAdmin || $isPembina)
+        @if ($isAdmin || $userJabatan <= 2)
             <div class="flex justify-start gap-4">
                 <x-button2 href="{{ route('pendaftaran.show', $ekskul->slug) }}"
                     class="bg-ekskul2 text-white px-4 py-2
                     rounded-md font-bold hover:bg-orange-600 transition">
                     Permintaan Masuk
                 </x-button2>
-
-                <x-modal trigger="Jabatan" title="Jabatan" class="flex justify-center"
-                    buttonClass="bg-ekskul2 text-white px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition">
-                    @php
-                        $jabatanFix = [1, 2, 3, 4];
-                    @endphp
-                    @foreach ($jabatanFix as $jabatanId)
+                @if ($isAdmin || $isPembina)
+                    <x-modal trigger="Jabatan" title="Jabatan" class="flex justify-center"
+                        buttonClass="bg-ekskul2 text-white px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition">
                         @php
-                            $pemegangJabatan = $anggota->firstWhere('pivot.jabatan', $jabatanId);
+                            $jabatanFix = [1, 2, 3, 4];
                         @endphp
-                        <div class="text-gray-700 font-bold h-10">
-                            {{ $jabatanMap[$jabatanId] }} = {{ $pemegangJabatan->nama ?? 'Belum Ada' }}
+                        @foreach ($jabatanFix as $jabatanId)
+                            @php
+                                $pemegangJabatan = $anggota->firstWhere('pivot.jabatan', $jabatanId);
+                            @endphp
+                            <div class="text-gray-700 font-bold h-10">
+                                {{ $jabatanMap[$jabatanId] }} = {{ $pemegangJabatan->nama ?? 'Belum Ada' }}
+                            </div>
+                        @endforeach
+                        <div class="flex justify-center mt-4">
+                            <x-button1 href="{{ route('jabatan.jabatanShow', $ekskul->slug) }}">Ubah</x-button1>
                         </div>
-                    @endforeach
-                    <div class="flex justify-center mt-4">
-                        <x-button1 href="{{ route('jabatan.jabatanShow', $ekskul->slug) }}">Ubah</x-button1>
-                    </div>
-                </x-modal>
+                    </x-modal>
+                @endif
             </div>
         @endif
 

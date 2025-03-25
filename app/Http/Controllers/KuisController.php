@@ -21,7 +21,7 @@ class KuisController extends Controller
 
         $kuis = Kuis::where('id_ekskul', $ekskul->id_ekskul)
             ->when($search, function ($query, $search) {
-                return $query->where('nama_kuis', 'like', "%$search%");
+                return $query->where('slug', 'like', "%$search%");
             })
             ->orderBy('id_kuis', 'desc')
             ->paginate(10);
@@ -43,7 +43,7 @@ class KuisController extends Controller
             'id_ekskul' => 'required|exists:ekskul,id_ekskul'
         ]);
 
-        $slug = Str::slug($request->nama_kuis) . '-' . now(); // Bikin slug unik
+        $slug = Str::slug($request->nama_kuis) . '-' . now()->format('Y-d-M-His');
 
         Kuis::create([
             'nama_kuis' => $request->nama_kuis,

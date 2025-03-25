@@ -3,9 +3,7 @@
         <div class="flex items-center mb-8">
             <x-button1 href="{{ route('ekskul.show', $ekskul->slug) }}">Kembali</x-button>
         </div>
-        <h1 class="text-4xl font-bold text-center mb-4">Kuis untuk {{ $ekskul->nama_ekskul }}</h1>
-
-
+        <h1 class="mb-8 text-4xl font-bold text-center">Kuis ekskul {{ $ekskul->nama_ekskul }}</h1>
         <!-- Header & Form Pencarian -->
         <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
             <div class="w-full md:w-auto">
@@ -56,7 +54,8 @@
         <div class="grid gap-6 mt-8 grid-cols-1 md:grid-cols-3">
             <!-- Card Kecil (Total Kuis) -->
             <div
-                class="bg-ekskul rounded-lg shadow-lg hover:shadow-xl transition duration-300 p-5 flex flex-col justify-center items-center text-center">
+                class="bg-ekskul rounded-lg shadow-lg hover:shadow-xl transition duration-300 p-5 flex flex-col 
+                justify-center items-center text-center self-start">
                 <h4 class="text-xl text-ekskul2 font-bold mb-2">Total Kuis</h4>
                 <p class="text-gray-700 font-bold">
                     <span class="text-xl font-bold text-indigo-900">{{ $kuis->total() }}</span> kuis tersedia.

@@ -49,13 +49,17 @@ class EkskulController extends Controller
             ->where('role', '!=', 'admin')
             ->exists();
 
+        $jabatanUser = auth()->user()->ekskulUser()
+            ->where('ekskul_id', $ekskul->id_ekskul)
+            ->first()?->jabatan;
+
         $hasNullJabatan = EkskulUser::where('ekskul_id', $ekskul->id_ekskul)
             ->where('user_id', $user->id_user)->whereNull('jabatan')
             ->first();
 
         $tanpaJabatan = $isNotAdmin && $hasNullJabatan;
 
-        return view('ekskul', compact('ekskul', 'materi', 'tanpaJabatan', 'user'));
+        return view('ekskul', compact('ekskul', 'materi', 'tanpaJabatan', 'user', 'jabatanUser'));
     }
 
 

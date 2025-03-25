@@ -5,7 +5,7 @@
                 <x-button1 href="{{ route('ekskul.show', $ekskul->slug) }}">Kembali</x-button>
             </div>
         </div>
-        <h1 class="text-2xl font-bold text-center md:flex-1">Materi untuk {{ $ekskul->slug }}</h1>
+        <h1 class="mb-8 text-4xl font-bold text-center">Materi ekskul {{ $ekskul->slug }}</h1>
 
         <!-- Header Materi -->
         <div class="flex justify-between">
