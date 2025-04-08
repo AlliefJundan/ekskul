@@ -67,4 +67,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Pendaftaran::class, 'id_ekskul', 'id_ekskul');
     }
+    public function notifikasiUser()
+    {
+        return $this->hasMany(NotifikasiTarget::class, 'id_user');
+    }
 }

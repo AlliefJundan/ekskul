@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger("id_ekskul");
             $table->string("skor");
             $table->string("bukti");
+            $table->enum("status", ["pending", "diterima", "ditolak"]);
             $table->timestamps();
 
             $table->foreign("id_kuis")->references("id_kuis")->on("kuis");

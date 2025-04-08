@@ -27,9 +27,9 @@ class Notifikasi extends Model
         $ekskul = $this->ekskul; // Pastikan relasi sudah ada
 
         switch ($this->category) {
-            case 'Materi':
+            case 'materi':
                 return route('materi.index', ['slug' => $ekskul->slug]);
-            case 'Kuis':
+            case 'kuis':
                 return route('kuis.show', ['slug' => $ekskul->slug]);
             case 'Pendaftaran':
                 return route('pendaftaran.show', ['slug' => $ekskul->slug]);
@@ -37,7 +37,7 @@ class Notifikasi extends Model
                 return route('ekskul.show', ['slug' => $ekskul->slug]);
             case 'kegiatan':
                 return route('ekskul.show', ['slug' => $ekskul->slug]);
-            case 'Pendaftaran':
+            case 'pendaftaran':
                 return route('dashboard_admin');
             default:
                 return route('dashboard_admin'); // Default jika kategori tidak dikenali
