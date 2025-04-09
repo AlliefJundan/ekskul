@@ -17,12 +17,14 @@ INSERT INTO `users` (`nama`, `username`, `password`, `id_kelas`, `role`) VALUES
 ('User Six', '2223607457', '$2y$12$7ueCKGRw1ooWKL.tWgCm8Ow.1vKkQHItSp7yIX0csnHk3frmkQQme', '1', 'user'),
 ('User Seven', '2223607934', '$2y$12$7ueCKGRw1ooWKL.tWgCm8Ow.1vKkQHItSp7yIX0csnHk3frmkQQme', '2', 'user'),
 ('User Eight', '2223607993', '$2y$12$7ueCKGRw1ooWKL.tWgCm8Ow.1vKkQHItSp7yIX0csnHk3frmkQQme', '3', 'user'),
-('User Nine', '2223607795', '$2y$12$7ueCKGRw1ooWKL.t    gCm8Ow.1vKkQHItSp7yIX0csnHk3frmkQQme', '2', 'user');
+('User Nine', '2223607795', '$2y$12$7ueCKGRw1ooWKL.tWgCm8Ow.1vKkQHItSp7yIX0csnHk3frmkQQme', '2', 'user'),
+('Rizla', '123456', '$2y$12$7ueCKGRw1ooWKL.tWgCm8Ow.1vKkQHItSp7yIX0csnHk3frmkQQme', '2', 'user');
 
 -- Insert 2 data ke tabel ekskul
 INSERT INTO `ekskul` (`nama_ekskul`, `slug`, `gambar`, `deskripsi`) VALUES
 ('Basket', 'basket', 'pp_ekskul/VmxnbbwGnCUi0U9kWhkWZRW2e9uMhvjG8Qbt1CzO.jpg', 'Ekstrakurikuler Basket'),
-('Paskibra', 'paskibra', 'pp_ekskul/Osf5jstKX8niY7kltQUvMuv4oB3wSjza9vxBMjIX.png', 'Ekstrakurikuler Paskibra');
+('Paskibra', 'paskibra', 'pp_ekskul/Osf5jstKX8niY7kltQUvMuv4oB3wSjza9vxBMjIX.png', 'Ekstrakurikuler '),
+('Futsal', 'futsal', 'pp_ekskul/Osf5jstKX8niY7kltQUvMuv4oB3wSjza9vxBMjIX.png', 'Ekstrakurikuler Futsal');
 
 -- Insert 5 data ke tabel jabatan
 INSERT INTO `jabatan` (`nama_jabatan`, `slug`) VALUES
@@ -42,7 +44,8 @@ INSERT INTO `ekskul_user` (`user_id`, `ekskul_id`, `jabatan`, `created_at`, `upd
 (8, 2, 2, NOW(), NOW()), -- Wakil Ketua Paskibra
 (9, 2, 3, NOW(), NOW()), -- Sekretaris Paskibra
 (10, 2, 4, NOW(), NOW()), -- Bendahara Paskibra
-(1, 2, null, NOW(), NOW()); -- Admin ikut dalam Paskibra tanpa jabatan
+(1, 2, null, NOW(), NOW()), -- Admin ikut dalam Paskibra tanpa jabatan
+(11, 3, 2, NOW(), NOW()); -- Admin ikut dalam Paskibra tanpa jabatan
 
 INSERT INTO `pendaftaran` (`id_user`, `id_ekskul`, `status`) VALUES
 (2, 1, 'diterima'),
@@ -54,4 +57,5 @@ INSERT INTO `pendaftaran` (`id_user`, `id_ekskul`, `status`) VALUES
 (8, 2, 'diterima'),
 (9, 2, 'diterima'),
 (10, 2, 'diterima'),
-(1, 2, 'diterima');
+(1, 2, 'diterima'),
+(11, 3, 'diterima');

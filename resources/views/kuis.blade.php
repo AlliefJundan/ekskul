@@ -3,44 +3,51 @@
         <div class="flex items-center mb-8">
             <x-button1 href="{{ route('ekskul.show', $ekskul->slug) }}">Kembali</x-button>
         </div>
-        <h1 class="text-4xl font-bold text-center mb-4">Kuis untuk {{ $ekskul->nama_ekskul }}</h1>
-
-
+        <h1 class="mb-8 text-4xl font-bold text-center">Kuis ekskul {{ $ekskul->nama_ekskul }}</h1>
         <!-- Header & Form Pencarian -->
         <div class="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
             <div class="w-full md:w-auto">
-                @if (auth()->check() &&
+                @php
+                    $currentEkskul = (new \App\Models\EkskulUser())->getCurrentEkskul($ekskul->id_ekskul);
+                    $canManageKuis =
+                        auth()->check() &&
                         (auth()->user()->role === 'admin' ||
-                            (optional(auth()->user()->ekskulUser)->jabatan >= 1 && optional(auth()->user()->ekskulUser)->jabatan <= 4)))
-                    <x-modal title="Tambah Kuis" trigger="Tambah Kuis">
-                        <form action="{{ route('kuis.store') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
-                            <div class="mb-4">
-                                <label class="block text-gray-700 font-semibold">Nama Kuis</label>
-                                <input type="text" name="nama_kuis"
-                                    class="w-full border border-gray-300 rounded-md p-2" placeholder="Masukan Nama Kuis"
-                                    required>
-                            </div>
-                            <div class="mb-4">
-                                <label class="block text-gray-700 font-semibold">Link Kuis</label>
-                                <input type="text" name="isi_kuis"
-                                    class="w-full border border-gray-300 rounded-md p-2" placeholder="Masukan Link Kuis"
-                                    required>
-                            </div>
-                            <div class="mt-6 flex justify-center">
-                                <button type="submit"
-                                    class="bg-ekskul font-bold text-ekskul2 px-4 py-2 rounded-md hover:bg-blue-600 transition">✔
-                                    Simpan</button>
-                            </div>
-                        </form>
-                    </x-modal>
+                            (optional($currentEkskul)->jabatan >= 1 && optional($currentEkskul)->jabatan < 4));
+                @endphp
+
+                @if ($canManageKuis)
+                    <div class="flex flex-wrap items-center gap-3">
+                        <x-modal title="Tambah Kuis" trigger="Tambah Kuis">
+                            <form action="{{ route('kuis.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 font-semibold">Nama Kuis</label>
+                                    <input type="text" name="nama_kuis"
+                                        class="w-full border border-gray-300 rounded-md p-2"
+                                        placeholder="Masukan Nama Kuis" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 font-semibold">Link Kuis</label>
+                                    <input type="text" name="isi_kuis"
+                                        class="w-full border border-gray-300 rounded-md p-2"
+                                        placeholder="Masukan Link Kuis" required>
+                                </div>
+                                <div class="mt-6 flex justify-center">
+                                    <button type="submit"
+                                        class="bg-ekskul font-bold text-ekskul2 px-4 py-2 rounded-md hover:bg-blue-600 transition">✔
+                                        Simpan</button>
+                                </div>
+                            </form>
+                        </x-modal>
+
+                        <a href="{{ route('kuis.hasilKuis', $ekskul->slug) }}"
+                            class="px-4 py-2 font-semibold text-black rounded-lg shadow-md bg-ekskul hover:bg-orange-600">
+                            Lihat Hasil Kuis
+                        </a>
+                    </div>
                 @endif
             </div>
-            <a href="{{ route('kuis.hasilKuis', $ekskul->slug) }}"
-                class="px-4 py-2 font-semibold ml-3 text-black rounded-lg shadow-md bg-ekskul hover:bg-orange-600">
-                Lihat Hasil Kuis
-            </a>
 
             <h1 class="text-2xl font-bold text-center md:flex-1"></h1>
 
@@ -56,7 +63,8 @@
         <div class="grid gap-6 mt-8 grid-cols-1 md:grid-cols-3">
             <!-- Card Kecil (Total Kuis) -->
             <div
-                class="bg-ekskul rounded-lg shadow-lg hover:shadow-xl transition duration-300 p-5 flex flex-col justify-center items-center text-center">
+                class="bg-ekskul rounded-lg shadow-lg hover:shadow-xl transition duration-300 p-5 flex flex-col 
+                justify-center items-center text-center self-start">
                 <h4 class="text-xl text-ekskul2 font-bold mb-2">Total Kuis</h4>
                 <p class="text-gray-700 font-bold">
                     <span class="text-xl font-bold text-indigo-900">{{ $kuis->total() }}</span> kuis tersedia.

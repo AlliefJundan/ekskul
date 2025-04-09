@@ -5,21 +5,22 @@
                 <x-button1 href="{{ route('ekskul.show', $ekskul->slug) }}">Kembali</x-button>
             </div>
         </div>
-        <h1 class="text-2xl font-bold text-center md:flex-1">Materi untuk {{ $ekskul->slug }}</h1>
+        <h1 class="mb-8 text-4xl font-bold text-center">Materi ekskul
+            {{ $ekskul->slug }}{{ auth()->user()->ekskulUser->jabatan }}</h1>
 
         <!-- Header Materi -->
         <div class="flex justify-between">
+
+
             @php
-                $user = auth()->user();
-                $hasJabatan =
-                    $user &&
-                    $user
-                        ->ekskulUser()  
-                        ->whereBetween('jabatan', [1, 2])
-                        ->exists();
+                $currentEkskul = (new \App\Models\EkskulUser())->getCurrentEkskul($ekskul->id_ekskul);
+                $canManageMateri =
+                    auth()->check() &&
+                    (auth()->user()->role === 'admin' ||
+                        (optional($currentEkskul)->jabatan >= 1 && optional($currentEkskul)->jabatan < 4));
             @endphp
-            <!-- Tombol hanya muncul jika user memiliki jabatan 1 atau 2 -->
-            @if ($hasJabatan || $user->role === 'admin')
+
+            @if ($canManageMateri)
                 <x-modal title="Tambah Materi" trigger="Tambah Materi">
                     <form action="{{ route('materi.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -106,7 +107,7 @@
                                             ->exists();
                                 @endphp
                                 <!-- Tombol hanya muncul jika user memiliki jabatan 1 atau 2 -->
-                                @if ($hasJabatan || $user->role === 'admin')
+                                @if ($canManageMateri)
                                     <!-- Tombol Edit & Hapus (Di Bawah, Tetap Rata Kanan) -->
                                     <div class="flex flex-wrap gap-2">
                                         <a href="javascript:void(0);"

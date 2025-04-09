@@ -27,7 +27,6 @@
             <thead>
                 <tr class="bg-gray-300">
                     <th class="p-2 text-center text-gray-800 border-gray-300">No</th>
-                    <th class="p-2 text-center text-gray-800 border-gray-300">User ID</th>
                     <th class="p-2 text-center text-gray-800 border-gray-300">Nama</th>
                     <th class="p-2 text-center text-gray-800 border-gray-300">Username</th>
                     <th class="p-2 text-center text-gray-800 border-gray-300">Role</th>
@@ -39,7 +38,6 @@
                     <tr class="text-center {{ $index % 2 == 0 ? 'bg-maroon-600' : 'bg-maroon-700' }}">
                         <td class="p-2 font-bold text-gray-800 border border-gray-300">
                             {{ ($akun->currentPage() - 1) * $akun->perPage() + $index + 1 }}</td>
-                        <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->id_user }}</td>
                         <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->nama }}</td>
                         <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->username }}</td>
                         <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->role }}</td>
@@ -74,16 +72,7 @@
                                             @if ($user->ekskuls->isEmpty())
                                                 Tidak ada ekskul
                                             @else
-                                                {{ $user->ekskuls->pluck('nama_ekskul')->implode(' - ') }}
-                                            @endif
-                                        </span>
-
-                                        <span><strong>Jabatan</strong></span>
-                                        <span>
-                                            @if ($user->ekskulUser && $user->ekskulUser->jabatan)
-                                                {{ $user->ekskulUser->jabatan }}
-                                            @else
-                                                Tidak ada jabatan
+                                                {{ $user->ekskuls->pluck('nama_ekskul')->implode(', ') }}
                                             @endif
                                         </span>
                                     </div>

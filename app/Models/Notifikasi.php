@@ -31,8 +31,6 @@ class Notifikasi extends Model
                 return route('materi.index', ['slug' => $ekskul->slug]);
             case 'Kuis':
                 return route('kuis.show', ['slug' => $ekskul->slug]);
-                // case 'Kegiatan':
-                //     return route('kegiatan.index', ['slug' => $ekskul->slug]);
             case 'Pendaftaran':
                 return route('pendaftaran.show', ['slug' => $ekskul->slug]);
             case 'diterima':

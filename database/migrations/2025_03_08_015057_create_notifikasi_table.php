@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('notifikasi', function (Blueprint $table) {
             $table->id('id_notifikasi');
             $table->string('title');
-            $table->enum('category', ['materi', 'pendaftaran', 'uuis', 'kegiatan', 'diterima', 'ditolak', 'dikeluarkan', 'keluar', 'lainya']);
+            $table->enum('category', ['materi', 'pendaftaran', 'kuis', 'kegiatan', 'diterima', 'ditolak', 'dikeluarkan', 'keluar', 'lainya']);
             $table->unsignedBigInteger('id_ekskul')->nullable();
             $table->text('description');
             $table->timestamps();
