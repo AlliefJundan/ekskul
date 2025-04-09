@@ -27,7 +27,7 @@ class KuisController extends Controller
             ->paginate(10);
 
         // Ambil daftar hasil kuis yang sudah dikirim oleh user
-        $hasilKuis = HasilKuis::where('id_user', $user->id_user)
+        $hasilKuis = HasilKuis::where('id_user', $user->id_user)->where('status', '!=', 'ditolak')
             ->pluck('id_kuis')
             ->toArray();
 
@@ -95,10 +95,11 @@ class KuisController extends Controller
             'id_ekskul' => $request->id_ekskul,
             'skor' => $request->skor,
             'bukti' => $request->file('bukti')->store('bukti_kuis', 'public'),
+            'status' => 'pending',
         ]);
 
         return redirect()->route('kuis.show', Ekskul::find($request->id_ekskul)->slug)
-            ->with('success', 'Kuis berhasil ditambahkan.');
+            ->with('success', 'Hasil berhasil ditambahkan.');
     }
 
     public function hasilKuis(Request $request, $slug)

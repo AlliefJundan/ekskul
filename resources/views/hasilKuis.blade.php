@@ -34,7 +34,8 @@
                     {{ $kuis->appends(['search' => request('search')])->links('pagination::tailwind') }}
                 </div>
             @else
-                <h1 class="text-white font-semibold mb-2">Tidak ada kuis tersedia untuk ekskul ini.</h1>
+                <h1 class="text-white text-center font-semibold mb-2">Tidak ada hasil kuis tersedia untuk ekskul ini.
+                </h1>
             @endif
         </div>
     </div>

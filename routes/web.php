@@ -58,9 +58,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/kuis/store', [KuisController::class, 'store'])->name('kuis.store');
     Route::post('/kuis/hasil', [KuisController::class, 'hasil'])->name('kuis.hasil');
 
+
     // Hasil Kuis
     Route::get('/kuis/hasil/jawaban/{slug}', [HasilKuisController::class, 'hasil'])
         ->name('hasil_kuis.hasil');
+    Route::put('/hasil/{id}/terima', [HasilKuisController::class, 'terima'])->name('hasil.terima');
+    Route::put('/hasil/{id}/tolak', [HasilKuisController::class, 'tolak'])->name('hasil.tolak');
 
     // Kuis (dengan middleware cek.keanggotaan)
     Route::middleware(['cek.keanggotaan'])->group(function () {

@@ -29,8 +29,22 @@
                             <a href="{{ route('akun.index') }}"
                                 class="text-white font-semibold hover:text-amber-400 block md:inline-block">Akun</a>
                         @endif
-                        <a href="/notifikasi" class="text-white font-semibold hover:text-amber-400 block md:inline-block"><i
-                                class="fa fa-bell" aria-hidden="true"></i></a>
+                        <a href="{{ route('notifikasi.index') }}"
+                            class="relative text-white font-semibold hover:text-amber-400 block md:inline-block">
+                            <i class="fa fa-bell" aria-hidden="true"></i>
+
+                            @php
+                                $jumlahBelumDibaca = auth()->user()->notifikasiUser->where('is_read', false)->count();
+                            @endphp
+
+                            @if ($jumlahBelumDibaca > 0)
+                                <span
+                                    class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
+                                    {{ $jumlahBelumDibaca }}
+                                </span>
+                            @endif
+                        </a>
+
 
                         <form action="{{ route('logout') }}" method="post" class="inline">
                             @csrf
@@ -55,8 +69,22 @@
                     @auth
                         <a href="{{ route('dashboard_admin') }}"
                             class="text-white font-semibold hover:text-amber-400 block md:inline-block">Dashboard</a>
-                        <a href="notifikasi" class="text-white font-semibold hover:text-amber-400 block md:inline-block">
-                            <i class="fa fa-bell" aria-hidden="true"></i></a>
+                        <a href="{{ route('notifikasi.index') }}"
+                            class="relative text-white font-semibold hover:text-amber-400 block md:inline-block">
+                            <i class="fa fa-bell" aria-hidden="true"></i>
+
+                            @php
+                                $jumlahBelumDibaca = auth()->user()->notifikasiUser->where('is_read', false)->count();
+                            @endphp
+
+                            @if ($jumlahBelumDibaca > 0)
+                                <span
+                                    class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full px-1.5 py-0.5">
+                                    {{ $jumlahBelumDibaca }}
+                                </span>
+                            @endif
+                        </a>
+
                         <form action="{{ route('logout') }}" method="post" class="inline">
                             @csrf
                             <button type="submit" class="text-white  hover:text-amber-400 block md:inline-block ">

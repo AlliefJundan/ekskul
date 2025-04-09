@@ -36,6 +36,15 @@
 <body class="bg-gray-100">
     <div class="min-h-full">
         <x-Navbar></x-Navbar>
+        @if (session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-2 rounded mb-4">
+                {{ session('success') }}
+            </div>
+        @elseif(session('error'))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded mb-4">
+                {{ session('error') }}
+        @endif
+
         <main>
             <div class="">
                 {{ $slot }}
