@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('password', 255);
             $table->string('nama', 100)->unique();
             $table->unsignedBigInteger('id_kelas')->nullable();
+            $table->string('foto')->nullable();
             $table->enum('role', ['admin', 'user']);
 
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas');

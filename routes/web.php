@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KuisController;
 use App\Http\Controllers\EkskulController;
 use App\Http\Controllers\MateriController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\DashboardController;
@@ -24,6 +25,11 @@ Route::middleware(['guest'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     // Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // Profil
+    Route::get('/profil', [ProfilController::class, 'index'])->name('profil.index');
+    Route::put('/profil/PasswordUpdate', [ProfilController::class, 'password'])->name('profil.password');
+    Route::put('/profil/foto', [ProfilController::class, 'foto'])->name('profil.foto');
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard_admin');

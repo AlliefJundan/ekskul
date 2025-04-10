@@ -22,6 +22,7 @@ class User extends Authenticatable
         'nama',
         'id_kelas',
         'id_ekskul',
+        'foto',
         'role',
     ];
 

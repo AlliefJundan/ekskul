@@ -30,62 +30,76 @@
                     <th class="p-2 text-center text-gray-800 border-gray-300">Nama</th>
                     <th class="p-2 text-center text-gray-800 border-gray-300">Username</th>
                     <th class="p-2 text-center text-gray-800 border-gray-300">Role</th>
+                    <th class="p-2 text-center text-gray-800 border-gray-300">Foto</th>
                     <th class="flex justify-center p-2 text-gray-800 border-gray-300">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($akun as $index => $user)
-                    <tr class="text-center {{ $index % 2 == 0 ? 'bg-maroon-600' : 'bg-maroon-700' }}">
+                    <tr class="text-center items-center {{ $index % 2 == 0 ? 'bg-maroon-600' : 'bg-maroon-700' }}">
                         <td class="p-2 font-bold text-gray-800 border border-gray-300">
                             {{ ($akun->currentPage() - 1) * $akun->perPage() + $index + 1 }}</td>
                         <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->nama }}</td>
                         <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->username }}</td>
                         <td class="p-2 font-bold text-gray-800 border border-gray-300">{{ $user->role }}</td>
+                        <td class="p-2 border border-gray-300">
+                            <div class="flex items-center justify-center">
+                                <x-image-modal :img-src="$user->foto
+                                    ? asset('storage/' . $user->foto)
+                                    : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png'" />
+                            </div>
+
+                        </td>
+
+                        {{-- asdasdasd --}}
                         <td class="flex justify-center gap-2 p-2 border border-gray-300">
-                        <button data-modal-target="#detailModal-{{ $user->id_user }}" class="px-2 py-1 font-bold text-white bg-green-500 rounded hover:bg-green-700">
-                            Detail
-                        </button>
-                        <!-- Modal -->
-                        <div id="detailModal-{{ $user->id_user }}" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                            <div class="bg-ekskul2 rounded-lg p-6 w-1/3 text-left relative">
-                                <!-- Tombol Tutup (Pojok Kanan Atas) -->
-                                <button onclick="closeDetailModal('{{ $user->id_user }}')" class="absolute font-bold text-white top-2 right-3">✖</button>
+                            <button data-modal-target="#detailModal-{{ $user->id_user }}"
+                                class="px-2 py-1 font-bold text-white bg-green-500 rounded hover:bg-green-700">
+                                Detail
+                            </button>
+                            <!-- Modal -->
+                            <div id="detailModal-{{ $user->id_user }}"
+                                class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                                <div class="bg-ekskul2 rounded-lg p-6 w-1/3 text-left relative">
+                                    <!-- Tombol Tutup (Pojok Kanan Atas) -->
+                                    <button onclick="closeDetailModal('{{ $user->id_user }}')"
+                                        class="absolute font-bold text-white top-2 right-3">✖</button>
 
-                                <!-- Judul Modal -->
-                                <h2 class="text-xl font-bold mb-4 text-center">Detail Pengguna</h2>
-                                
-                                <!-- Isi Modal (Rata Kiri & Sejajar) -->
-                                <div class="space-y-5">
-                                    <div class="grid grid-cols-2 gap-x-2">
-                                        <span><strong>ID</strong></span>
-                                        <span>{{ $user->id_user }}</span>
+                                    <!-- Judul Modal -->
+                                    <h2 class="text-xl font-bold mb-4 text-center">Detail Pengguna</h2>
 
-                                        <span><strong>Nama</strong></span>
-                                        <span>{{ $user->nama }}</span>
+                                    <!-- Isi Modal (Rata Kiri & Sejajar) -->
+                                    <div class="space-y-5">
+                                        <div class="grid grid-cols-2 gap-x-2">
+                                            <span><strong>ID</strong></span>
+                                            <span>{{ $user->id_user }}</span>
 
-                                        <span><strong>Username</strong></span>
-                                        <span>{{ $user->username }}</span>
+                                            <span><strong>Nama</strong></span>
+                                            <span>{{ $user->nama }}</span>
 
-                                        <!-- Ekskul -->
-                                        <span><strong>Ekskul</strong></span>
-                                        <span>
-                                            @if ($user->ekskuls->isEmpty())
-                                                Tidak ada ekskul
-                                            @else
-                                                {{ $user->ekskuls->pluck('nama_ekskul')->implode(', ') }}
-                                            @endif
-                                        </span>
+                                            <span><strong>Username</strong></span>
+                                            <span>{{ $user->username }}</span>
+
+                                            <!-- Ekskul -->
+                                            <span><strong>Ekskul</strong></span>
+                                            <span>
+                                                @if ($user->ekskuls->isEmpty())
+                                                    Tidak ada ekskul
+                                                @else
+                                                    {{ $user->ekskuls->pluck('nama_ekskul')->implode(', ') }}
+                                                @endif
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- JavaScript untuk Menutup Modal -->
-                        <script>
-                            function closeDetailModal(id) {
-                                document.getElementById('detailModal-' + id).classList.add('hidden');
-                            }
-                        </script>
+                            <!-- JavaScript untuk Menutup Modal -->
+                            <script>
+                                function closeDetailModal(id) {
+                                    document.getElementById('detailModal-' + id).classList.add('hidden');
+                                }
+                            </script>
 
 
                             <button
@@ -264,26 +278,26 @@
         }
     </script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const openButtons = document.querySelectorAll('[data-modal-target]');
-        const closeButtons = document.querySelectorAll('[data-modal-close]');
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const openButtons = document.querySelectorAll('[data-modal-target]');
+            const closeButtons = document.querySelectorAll('[data-modal-close]');
 
-        openButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const modal = document.querySelector(button.getAttribute('data-modal-target'));
-                if (modal) modal.classList.remove('hidden');
+            openButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const modal = document.querySelector(button.getAttribute('data-modal-target'));
+                    if (modal) modal.classList.remove('hidden');
+                });
+            });
+
+            closeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const modal = document.querySelector(button.getAttribute('data-modal-close'));
+                    if (modal) modal.classList.add('hidden');
+                });
             });
         });
-
-        closeButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const modal = document.querySelector(button.getAttribute('data-modal-close'));
-                if (modal) modal.classList.add('hidden');
-            });
-        });
-    });
-</script>
+    </script>
 
 
 </x-layout>

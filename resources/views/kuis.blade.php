@@ -92,7 +92,7 @@
 
                                 <!-- Modal Tambah Hasil -->
                                 <x-modal title="Masukan Hasil Kuis" trigger="Tambah Hasil"
-                                    buttonClass="bg-ekskul text-ekskul2 px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition text-center 
+                                    buttonClass="bg-ekskul text-ekskul2 px-4 py-2 w-full sm:w-auto rounded-md font-bold hover:bg-orange-600 transition text-center 
                 {{ $sudahMengirim ? 'opacity-50 cursor-not-allowed pointer-events-none' : '' }}">
                                     <form action="{{ route('kuis.hasil') }}" method="POST"
                                         enctype="multipart/form-data">

@@ -13,6 +13,7 @@
                  @foreach ($ekskuls as $ekskul)
                      <?php $pembina = "{{ $ekskul->pembina->user->nama ?? 'Belum ada' }}";
                      $ketua = "{{ $ekskul->ketua->user->nama ?? 'Belum ada' }}";
+                     $ekskul->jml_anggota = $ekskul->users->count();
                      ?>
                      <div
                          class="relative bg-indigo-800 text-white max-w-sm rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">
@@ -55,9 +56,8 @@
                                      x-text="selectedEkskul.pembina?.user?.nama || 'Belum ada'"></span></p>
                              <p><strong>Nama Ketua:</strong> <span
                                      x-text="selectedEkskul.ketua?.user?.nama || 'Belum ada'"></span></p>
-                             <p><strong>Jumlah Anggota:</strong> <span x-text="{{ $ekskul->users->count() }}"></span>
+                             <p><strong>Jumlah Anggota:</strong> <span x-text="selectedEkskul.jml_anggota"></span>
                              </p>
-
                              <!-- Tombol Daftar -->
                              <div class="flex justify-center mt-6" x-data="{ openConfirm: false }">
                                  @if (auth()->check())

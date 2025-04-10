@@ -8,7 +8,7 @@
             <p class="mt-4 text-xl font-bold">SMK Bakti Nusantara 666</p>
         </div>
         @if (Auth::check())
-            <b>Halo {{ Auth::user()->nama }}</b>
+            <b>Halo! {{ Auth::user()->nama }}</b>
         @endif
 
         @if (
@@ -20,6 +20,9 @@
             <div class="text-center mt-5">
                 <h2 class="text-2xl font-bold">AYO DAFTAR ESKUL BIAR</h2>
                 <h2 class="text-2xl font-bold">HIDUP KAMU GA NGEBOSENIN</h2>
+                <div class="flex justify-center  mt-3 items-center mb-8">
+                    <x-button1 href="{{ route('ekskul.galeri') }}">Daftar Disini</x-button1>
+                </div>
             </div>
         @endif
 
