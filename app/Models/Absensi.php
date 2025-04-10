@@ -27,5 +27,8 @@ class Absensi extends Model
     {
         return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
-
+     public function getCurrentEkskul($id_ekskul)
+    {
+        return $this->where('user_id', auth()->user()->id_user)->where('ekskul_id', $id_ekskul)->first();
+    }
 }

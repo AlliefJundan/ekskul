@@ -22,29 +22,30 @@
                 @else
                     <table class="w-full border-collapse border border-gray-300 rounded-lg">
                         <thead>
-                            <tr class="bg-blue-900 text-white">
-                                <th class="border border-gray-300 px-4 py-2">No</th>
-                                <th class="borde r border-gray-300 px-4 py-2">Nama</th>
-                                <th class="border border-gray-300 px-4 py-2">Konfirmasi</th>
-                                <th class="border border-gray-300 px-4 py-2">Hadir</th>
-                                <th class="border border-gray-300 px-4 py-2">Izin</th>
-                                <th class="border border-gray-300 px-4 py-2">Sakit</th>
-                                <th class="border border-gray-300 px-4 py-2">Alpa</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-gray-100">
-                            @foreach ($rekapAbsen as $index => $rekap)
-                            <tr class="text-center">
-                                <td class="border border-gray-300 px-4 py-2">{{ $index + 1 }}</td>
-                                <td class="border border-gray-300 px-4 py-2 font-semibold">{{ $rekap->nama ?? $rekap->username ?? 'Tidak Diketahui' }}</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ $rekap->konfirmasi ?? 0 }}</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ $rekap->hadir ?? 0 }}</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ $rekap->izin ?? 0 }}</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ $rekap->sakit ?? 0 }}</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ $rekap->tidak_hadir ?? 0 }}</td>
-                            </tr>
-                            @endforeach
-                        </tbody>
+    <tr class="bg-blue-900 text-white">
+        <th class="border border-gray-300 px-4 py-2">No</th>
+        <th class="border border-gray-300 px-4 py-2">Nama</th>
+        <th class="border border-gray-300 px-4 py-2">Konfirmasi</th>
+        <th class="border border-gray-300 px-4 py-2">Hadir</th>
+        <th class="border border-gray-300 px-4 py-2">Izin</th>
+        <th class="border border-gray-300 px-4 py-2">Sakit</th>
+        <th class="border border-gray-300 px-4 py-2">Alpa</th>
+    </tr>
+</thead>
+<tbody class="bg-gray-100">
+    @foreach ($rekapAbsen as $index => $rekap)
+    <tr class="text-center">
+        <td class="border border-gray-300 px-4 py-2">{{ $index + 1 }}</td>
+        <td class="border border-gray-300 px-4 py-2 font-semibold">{{ $rekap->nama ?? $rekap->username ?? 'Tidak Diketahui' }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ $rekap->konfirmasi ?? 0 }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ $rekap->hadir ?? 0 }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ $rekap->izin ?? 0 }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ $rekap->sakit ?? 0 }}</td>
+        <td class="border border-gray-300 px-4 py-2">{{ $rekap->alpa ?? 0 }}</td>
+    </tr>
+    @endforeach
+</tbody>
+
                     </table>
                 @endif
             </div>
