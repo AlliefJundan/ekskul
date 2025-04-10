@@ -26,7 +26,7 @@
             </div>
 
             <!-- Grid Ekskul -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 justify-items-center md:justify-items-stretch">
                 @foreach ($ekskuls as $ekskul)
                     <?php $pembina = "{{ $ekskul->pembina->user->nama ?? 'Belum ada' }}";
                     $ketua = "{{ $ekskul->ketua->user->nama ?? 'Belum ada' }}";
