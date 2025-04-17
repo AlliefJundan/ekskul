@@ -35,7 +35,8 @@
                         @click.away="isOpen = false"
                         class="absolute right-0 z-10 mt-2 w-auto origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none"
                         role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button">
-                        @if (auth()->user()->role === 'admin' || optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan)
+                        @if (auth()->user()->role === 'admin' ||
+                                optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan)
                             <!-- Tombol Edit -->
                             <div x-data="{ editOpen: false }">
                                 <!-- Tombol Edit -->
@@ -98,8 +99,8 @@
                                     </div>
                                 </div>
                             </div>
-                             @endif
-                             @if (auth()->user()->role === 'admin' )
+                        @endif
+                        @if (auth()->user()->role === 'admin')
                             <!-- Tombol Hapus -->
                             <x-modal trigger="Hapus" role="menuitem"
                                 title="Apakah Anda yakin ingin menghapus ekskul {{ $ekskul->nama_ekskul }}"
@@ -118,7 +119,7 @@
                                     </div>
                                 </form>
                             </x-modal>
-                             @endif
+                        @endif
 
 
                         @if ($tanpaJabatan)
@@ -193,7 +194,8 @@
                 Anggota
             </a>
 
-            @if (auth()->user()->role === 'admin' || optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan)
+            @if (auth()->user()->role === 'admin' ||
+                    optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan)
                 <button onclick="cekKegiatan('{{ route('kegiatan.konfirmasi', $ekskul->slug) }}')"
                     class="items-center w-full text-center px-4 py-2 text-white bg-ekskul font-semibold rounded-2xl shadow-md hover:shadow-lg hover:-translate-y-1 transition-transform duration-300 sm:w-auto">
                     Lihat Absensi
@@ -239,7 +241,8 @@
                 <p class="mb-4 text-gray-600">
                     {{ $ekskul->deskripsi }}
                 </p>
-                @if (auth()->user()->role === 'admin' || in_array(optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan, [1, 2]))
+                @if (auth()->user()->role === 'admin' ||
+                        in_array(optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan, [1, 2]))
                     <!-- Tombol untuk membuka modal Tambah Gambar -->
                     <!-- Tombol untuk membuka modal Tambah Gambar -->
                     <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -271,7 +274,8 @@
                                     @csrf
                                     <div class="mb-3">
                                         <label for="image" class="form-label">Pilih Gambar</label>
-                                        <input type="file" class="form-control" name="image" required>
+                                        <input type="file" class="form-control" name="image" accept="image/*"
+                                            required>
                                     </div>
                                     <button type="submit" class="btn btn-success">Upload</button>
                                 </form>
@@ -365,60 +369,64 @@
     </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-   <script>
-    function cekKegiatan(url) {
-        fetch(url, {
-            headers: {
-                "X-Requested-With": "XMLHttpRequest" // Menandakan ini request AJAX
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.ada_kegiatan) {
-                // Jika sudah ada kegiatan, langsung redirect ke halaman absensi
-                window.location.href = data.redirect_url;
-            } else {
-                // Jika belum ada kegiatan, munculkan konfirmasi
-                Swal.fire({
-                    title: "Apakah ada kegiatan hari ini?",
-                    showDenyButton: true,
-                    confirmButtonText: "Ya",
-                    denyButtonText: "Tidak"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Jika memilih "Ya", minta input waktu
+    <script>
+        function cekKegiatan(url) {
+            fetch(url, {
+                    headers: {
+                        "X-Requested-With": "XMLHttpRequest" // Menandakan ini request AJAX
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ada_kegiatan) {
+                        // Jika sudah ada kegiatan, langsung redirect ke halaman absensi
+                        window.location.href = data.redirect_url;
+                    } else {
+                        // Jika belum ada kegiatan, munculkan konfirmasi
                         Swal.fire({
-                            title: "Masukkan Waktu Kegiatan",
-                            html: `
+                            title: "Apakah ada kegiatan hari ini?",
+                            showDenyButton: true,
+                            confirmButtonText: "Ya",
+                            denyButtonText: "Tidak"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Jika memilih "Ya", minta input waktu
+                                Swal.fire({
+                                    title: "Masukkan Waktu Kegiatan",
+                                    html: `
                                 <input type="time" id="mulai" class="swal2-input" placeholder="Mulai">
                                 <input type="time" id="berakhir" class="swal2-input" placeholder="Berakhir">
                             `,
-                            focusConfirm: false,
-                            preConfirm: () => {
-                                const mulai = document.getElementById('mulai').value;
-                                const berakhir = document.getElementById('berakhir').value;
-                                if (!mulai || !berakhir) {
-                                    Swal.showValidationMessage('Harap isi semua kolom waktu');
-                                }
-                                return { mulai, berakhir };
-                            }
-                        }).then((timeResult) => {
-                            if (timeResult.isConfirmed) {
-                                // Kirim waktu ke server melalui URL
-                                window.location.href =
-                                    `${url}?mulai=${timeResult.value.mulai}&berakhir=${timeResult.value.berakhir}`;
+                                    focusConfirm: false,
+                                    preConfirm: () => {
+                                        const mulai = document.getElementById('mulai').value;
+                                        const berakhir = document.getElementById('berakhir').value;
+                                        if (!mulai || !berakhir) {
+                                            Swal.showValidationMessage(
+                                                'Harap isi semua kolom waktu');
+                                        }
+                                        return {
+                                            mulai,
+                                            berakhir
+                                        };
+                                    }
+                                }).then((timeResult) => {
+                                    if (timeResult.isConfirmed) {
+                                        // Kirim waktu ke server melalui URL
+                                        window.location.href =
+                                            `${url}?mulai=${timeResult.value.mulai}&berakhir=${timeResult.value.berakhir}`;
+                                    }
+                                });
+                            } else {
+                                // Jika memilih "Tidak", tetap masuk ke halaman absensi
+                                window.location.href = url;
                             }
                         });
-                    } else {
-                        // Jika memilih "Tidak", tetap masuk ke halaman absensi
-                        window.location.href = url;
                     }
-                });
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    }
-</script>
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
 
 
 
