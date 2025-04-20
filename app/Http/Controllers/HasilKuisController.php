@@ -25,7 +25,10 @@ class HasilKuisController extends Controller
         $ekskul = Ekskul::where('id_ekskul', $kuis->id_ekskul)->firstOrFail();
 
         // Ambil hasil kuis berdasarkan id_kuis
-        $hasil_kuis = HasilKuis::where('id_kuis', $kuis->id_kuis)->get();
+        $hasil_kuis = HasilKuis::where('id_kuis', $kuis->id_kuis)
+            ->whereHas('user', function ($query) {
+                $query->where('deleted', false);
+            })->get();
 
         return view('hasil_kuis', compact('kuis', 'ekskul', 'hasil_kuis'));
     }

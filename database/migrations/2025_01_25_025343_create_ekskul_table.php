@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer("jml_anggota")->default(0);
             $table->text('deskripsi')->nullable();
             $table->string("gambar")->nullable();
+            $table->boolean("deleted")->default(false);
             $table->timestamps();
         });
     }

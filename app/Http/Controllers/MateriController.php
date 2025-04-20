@@ -70,7 +70,10 @@ class MateriController extends Controller
             'description' => 'Materi baru telah ditambahkan',
         ]);
 
-        $users = EkskulUser::where('ekskul_id', $request->id_ekskul)->pluck('user_id');
+        $users = EkskulUser::where('ekskul_id', $request->id_ekskul)
+            ->join('users', 'ekskul_user.user_id', '=', 'users.id_user')
+            ->where('users.deleted', false)
+            ->pluck('user_id');
         $id_notifikasi = Notifikasi::orderByDesc('id_notifikasi')->first()->id_notifikasi;
 
 
@@ -117,20 +120,20 @@ class MateriController extends Controller
      * Menghapus materi dari database.
      */
     public function destroy($id)
-{
-    $materi = Materi::findOrFail($id);
+    {
+        $materi = Materi::findOrFail($id);
 
-    // Hapus file lampiran jika ada dan file tersebut memang ada di storage
-    if ($materi->lampiran_materi && Storage::exists('public/' . $materi->lampiran_materi)) {
-        Storage::delete('public/' . $materi->lampiran_materi);
+        // Hapus file lampiran jika ada dan file tersebut memang ada di storage
+        if ($materi->lampiran_materi && Storage::exists('public/' . $materi->lampiran_materi)) {
+            Storage::delete('public/' . $materi->lampiran_materi);
+        }
+
+        // Hapus data dari database
+        $materi->delete();
+
+        // Untuk AJAX Response
+        return response()->json(['success' => true]);
     }
-
-    // Hapus data dari database
-    $materi->delete();
-
-    // Untuk AJAX Response
-    return response()->json(['success' => true]);
-}
 
 
     /**

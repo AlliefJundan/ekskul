@@ -22,7 +22,7 @@
                         @csrf
                         @method('PUT')
                         <label class="block text-gray-700 font-semibold">Pilih Gambar Baru</label>
-                        <input type="file" name="foto" class="form-control" accept="image/*">
+                        <input type="file" name="foto" class="form-control" accept="image/*" required>
 
                         <div class="mt-6 flex justify-center">
                             <button type="submit"

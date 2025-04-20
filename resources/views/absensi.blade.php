@@ -11,12 +11,8 @@
         {{-- Form untuk memilih tanggal (Hanya untuk admin, ketua, atau sekretaris) --}}
         @if (auth()->user()->role === 'admin' || optional(auth()->user()->ekskulUser)->jabatan == 2)
             <div class="flex justify-center mt-6">
-                <form action="{{ route('absensi.index', $ekskul->slug) }}"
-                    method="GET"
-                    class="flex items-center gap-4">
-                    <input type="date"
-                        name="tanggal"
-                        value="{{ request('tanggal', now()->toDateString()) }}"
+                <form action="{{ route('absensi.index', $ekskul->slug) }}" method="GET" class="flex items-center gap-4">
+                    <input type="date" name="tanggal" value="{{ request('tanggal', now()->toDateString()) }}"
                         class="p-2 text-lg text-black border border-blue-900 rounded">
                     <button type="submit"
                         class="px-6 py-2 text-lg font-semibold text-white bg-blue-900 rounded-md shadow-md">Filter</button>
@@ -48,7 +44,8 @@
             </div>
 
             <!-- Card Kegiatan dengan Tombol Rekap -->
-            @if (auth()->user()->role === 'admin' || in_array(optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan, [1, 2]))
+            @if (auth()->user()->role === 'admin' ||
+                    in_array(optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan, [1, 2]))
                 <div class="bg-blue-900 rounded-lg shadow-lg p-6 w-full md:w-1/2 max-w-lg">
                     <h2 class="text-lg font-bold mb-4 text-white">Informasi Kegiatan</h2>
 
@@ -56,103 +53,114 @@
                         <div class="text-center">
                             <span class="text-blue-400 text-4xl font-bold">{{ $jumlahKegiatan }}</span>
                             <p class="text-gray-300 text-sm">Jumlah Kegiatan</p>
-                            {{-- <button onclick="window.location.href='{{ route('', $ekskul->slug) }}'"
-                                class="mt-4 px-4 py-2 text-lg font-semibold text-white bg-green-600 rounded-md shadow-md hover:bg-green-800">
-                                Rekap Absensi
-                            </button> --}}
-                           <!-- Tombol untuk membuka modal -->
-                        <button onclick="openModal()" 
-                            class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-300 inline-block">
-                            Lihat Rekap
-                        </button>
+                            <!-- Tombol untuk membuka modal -->
+                            <button onclick="openModal()"
+                                class="mt-4 px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition duration-300 inline-block">
+                                Lihat Rekap
+                            </button>
 
-                        <!-- Modal Pilih Bulan -->
-                        <div id="modal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
-                            <div class="bg-white p-6 rounded-lg shadow-lg w-96">
-                                <h2 class="text-lg font-semibold mb-4">Pilih Bulan</h2>
-                                
-                                <!-- Dropdown Pilih Bulan -->
-                                <select id="bulan" class="text-black w-full px-4 py-2 border rounded-lg mb-4">
-                                    <option value="" disabled selected>Pilih Bulan</option>
-                                    @for ($i = 1; $i <= 12; $i++)
-                                        <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}">
-                                            {{ DateTime::createFromFormat('!m', $i)->format('F') }}
-                                        </option>
-                                    @endfor
-                                </select>
+                            <!-- Modal Pilih Bulan -->
+                            <div id="modal"
+                                class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+                                <div class="bg-white p-6 rounded-lg shadow-lg w-96">
+                                    <h2 class="text-lg font-semibold mb-4">Pilih Bulan</h2>
 
-                                <!-- Tombol Lanjut -->
-                                <button onclick="redirectToRekap('{{ route('rekap.absensi', ['slug' => $ekskul->slug]) }}')" 
-                                    class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
-                                    Lihat Rekap
-                                </button>
+                                    <!-- Dropdown Pilih Bulan -->
+                                    <select id="bulan" class="text-black w-full px-4 py-2 border rounded-lg mb-4">
+                                        <option value="" disabled selected>Pilih Bulan</option>
+                                        @for ($i = 1; $i <= 12; $i++)
+                                            <option value="{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}">
+                                                {{ DateTime::createFromFormat('!m', $i)->format('F') }}
+                                            </option>
+                                        @endfor
+                                    </select>
 
-                                <!-- Tombol Tutup -->
-                                <button onclick="closeModal()" 
-                                    class="w-full bg-gray-300 text-gray-700 px-4 py-2 mt-2 rounded-lg hover:bg-gray-400 transition">
-                                    Batal
-                                </button>
+                                    <!-- Tombol Lanjut -->
+                                    <button
+                                        onclick="redirectToRekap('{{ route('rekap.absensi', ['slug' => $ekskul->slug]) }}')"
+                                        class="w-full bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+                                        Lihat Rekap
+                                    </button>
+
+                                    <!-- Tombol Tutup -->
+                                    <button onclick="closeModal()"
+                                        class="w-full bg-gray-300 text-gray-700 px-4 py-2 mt-2 rounded-lg hover:bg-gray-400 transition">
+                                        Batal
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-
-
                         </div>
                     </div>
                 </div>
             @endif
         </div>
 
-
         <div class="flex justify-start px-10 mt-6">
-            <form action="{{ route('absensi.store') }}"
-                method="POST"
-                class="flex items-center gap-4">
+            <form action="{{ route('absensi.store') }}" method="POST" class="flex items-center gap-4">
                 @csrf
-                <input type="hidden"
-                    name="id_user"
-                    value="{{ Auth::user()->id_user }}">
-                <button type="submit"
-                    id="btnTambah"
+                <input type="hidden" name="id_user" value="{{ Auth::user()->id_user }}">
+                <button type="submit" id="btnTambah"
                     class="px-6 py-2 text-lg font-semibold text-white bg-blue-900 rounded-md shadow-md">
                     Tambah
                 </button>
-                <select name="kehadiran"
-                    class="p-2 text-lg text-black border border-blue-900 rounded">
+                <select name="kehadiran" class="p-2 text-lg text-black border border-blue-900 rounded">
                     <option value="hadir">Hadir</option>
                     <option value="izin">Izin</option>
                     <option value="sakit">Sakit</option>
                     <option value="alpa">Alfa</option>
                 </select>
-                <input type="hidden"
-                    name="id_ekskul"
-                    value="{{ $ekskul->id_ekskul }}">
+                <input type="hidden" name="id_ekskul" value="{{ $ekskul->id_ekskul }}">
             </form>
         </div>
 
         <div class="p-6 mx-10 mt-6 text-white bg-blue-900 rounded-md shadow-md">
-            <table class="w-full text-lg">
-                <thead>
-                    <tr class="border-b border-ekskul2">
-                        <th class="p-3">Tanggal</th>
-                        <th class="p-3">Nama User</th>
-                        <th class="p-3">Kehadiran</th>
-                        <th class="p-3">Status</th>
-                        @if(auth()->user()->role === 'admin' || in_array(optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan, [1, 2]))
-                            <th class="p-3">Aksi</th>
-                        @endif
+            <!-- Card View for Verification (Mobile) -->
+            <div class="block md:hidden">
+                @foreach ($absensi as $absen)
+                    @if ($absen->status === 'belum terverifikasi')
+                        <div class="bg-blue-800 p-4 rounded-lg shadow-md mb-4">
+                            <h3 class="text-white font-semibold text-xl">{{ $absen->user->nama ?? 'Tidak Diketahui' }}
+                            </h3>
+                            <p class="text-gray-300">Tanggal: {{ $absen->tanggal }}</p>
+                            <p class="text-white">Kehadiran: {{ ucfirst($absen->kehadiran) }}</p>
+                            <p class="text-gray-400">Status: {{ ucfirst($absen->status) }}</p>
+                            <form action="{{ route('absensi.verifikasi', $absen->id_absensi) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit"
+                                    class="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-md shadow-md hover:bg-green-800">
+                                    Verifikasi
+                                </button>
+                            </form>
+                        </div>
+                    @endif
+                @endforeach
+            </div>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($absensi as $absen)
+            <!-- Tabel View for Verification (Desktop) -->
+            <div class="hidden md:block">
+                <table class="w-full text-lg">
+                    <thead>
                         <tr class="border-b border-ekskul2">
-                            <td class="p-3">{{ $absen->tanggal }}</td>
-                            <td class="p-3">{{ $absen->user->nama ?? 'Tidak Diketahui' }}</td>
-                            <td class="p-3">{{ ucfirst($absen->kehadiran) }}</td>
-                            <td class="p-3">{{ ucfirst($absen->status) }}</td>
-                            <td class="p-3">
-                                @if(auth()->user()->role === 'admin' || in_array(optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan, [1, 2]))
-                                    @if ($absen->status === 'belum terverifikasi')
+                            <th class="p-3">Tanggal</th>
+                            <th class="p-3">Nama User</th>
+                            <th class="p-3">Kehadiran</th>
+                            <th class="p-3">Status</th>
+                            @if (auth()->user()->role === 'admin' ||
+                                    in_array(optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan, [1, 2]))
+                                <th class="p-3">Aksi</th>
+                            @endif
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($absensi as $absen)
+                            @if ($absen->status === 'belum terverifikasi')
+                                <tr class="border-b border-ekskul2">
+                                    <td class="p-3">{{ $absen->tanggal }}</td>
+                                    <td class="p-3">{{ $absen->user->nama ?? 'Tidak Diketahui' }}</td>
+                                    <td class="p-3">{{ ucfirst($absen->kehadiran) }}</td>
+                                    <td class="p-3">{{ ucfirst($absen->status) }}</td>
+                                    <td class="p-3">
                                         <form action="{{ route('absensi.verifikasi', $absen->id_absensi) }}"
                                             method="POST">
                                             @csrf
@@ -162,36 +170,34 @@
                                                 Verifikasi
                                             </button>
                                         </form>
-                                    @else
-                                        ✅ Sudah Diverifikasi
-                                    @endif
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
-                    
-            <!-- Script untuk Modal -->
-            <script>
-                function openModal() {
-                    document.getElementById("modal").classList.remove("hidden");
-                }
 
-                function closeModal() {
-                    document.getElementById("modal").classList.add("hidden");
-                }
+        <!-- Script untuk Modal -->
+        <script>
+            function openModal() {
+                document.getElementById("modal").classList.remove("hidden");
+            }
 
-                function redirectToRekap(baseUrl) {
-                    let bulan = document.getElementById("bulan").value;
-                    if (bulan) {
-                        window.location.href = baseUrl + "?bulan=" + bulan;
-                    } else {
-                        alert("Pilih bulan terlebih dahulu!");
-                    }
+            function closeModal() {
+                document.getElementById("modal").classList.add("hidden");
+            }
+
+            function redirectToRekap(baseUrl) {
+                let bulan = document.getElementById("bulan").value;
+                if (bulan) {
+                    window.location.href = baseUrl + "?bulan=" + bulan;
+                } else {
+                    alert("Pilih bulan terlebih dahulu!");
                 }
-            </script>
+            }
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
@@ -216,8 +222,6 @@
             });
         </script>
 
-
-
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         @if (session('error'))
@@ -239,7 +243,5 @@
                 });
             </script>
         @endif
-
-
 
 </x-layout>

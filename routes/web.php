@@ -95,6 +95,7 @@ Route::middleware(['auth'])->group(function () {
     // Akun (khusus admin)
     Route::middleware(['role:admin'])->group(function () {
         Route::resource('akun', AkunController::class);
+        Route::delete('/akun/{id_user}/delete', [AkunController::class, 'destroy'])->name('akun.destroy');
     });
 
     // Notifikasi

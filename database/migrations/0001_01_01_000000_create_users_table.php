@@ -26,6 +26,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_kelas')->nullable();
             $table->string('foto')->nullable();
             $table->enum('role', ['admin', 'user']);
+            $table->boolean('deleted')->default(false);
 
             $table->foreign('id_kelas')->references('id_kelas')->on('kelas');
         });

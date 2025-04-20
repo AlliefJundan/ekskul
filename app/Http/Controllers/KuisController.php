@@ -59,10 +59,15 @@ class KuisController extends Controller
             'description' => 'Kuis baru telah ditambahkan',
         ]);
 
-        $ekskul = EkskulUser::where('ekskul_id', $request->id_ekskul)->pluck('user_id');
         $id_notifikasi = Notifikasi::latest()->first()->id_notifikasi;
 
-        foreach ($ekskul as $user_id) {
+        // Cari user yang ikut ekskul dan belum dihapus
+        $ekskulUsers = EkskulUser::where('ekskul_id', $request->id_ekskul)
+            ->join('users', 'ekskul_user.user_id', '=', 'users.id_user')
+            ->where('users.deleted', false)
+            ->pluck('user_id');
+
+        foreach ($ekskulUsers as $user_id) {
             NotifikasiTarget::create([
                 'id_notifikasi' => $id_notifikasi,
                 'id_user' => $user_id,
@@ -72,6 +77,7 @@ class KuisController extends Controller
         return redirect()->route('kuis.show', Ekskul::find($request->id_ekskul)->slug)
             ->with('success', 'Kuis berhasil ditambahkan.');
     }
+
 
 
 
@@ -87,9 +93,8 @@ class KuisController extends Controller
         ]);
 
 
-        // Debugging
 
-        HasilKuis::create([
+        $hasil =  HasilKuis::create([
             'id_kuis' => $request->id_kuis,
             'id_user' => $request->id_user,
             'id_ekskul' => $request->id_ekskul,
@@ -98,8 +103,13 @@ class KuisController extends Controller
             'status' => 'pending',
         ]);
 
-        return redirect()->route('kuis.show', Ekskul::find($request->id_ekskul)->slug)
-            ->with('success', 'Hasil berhasil ditambahkan.');
+        if ($hasil) {
+            return redirect()->back()
+                ->with('success', 'Hasil berhasil ditambahkan.');
+        } else {
+            return redirect()->back()
+                ->with('error', 'Gagal menambahkan hasil kuis.');
+        }
     }
 
     public function hasilKuis(Request $request, $slug)

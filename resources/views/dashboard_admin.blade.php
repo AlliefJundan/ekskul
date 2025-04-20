@@ -113,7 +113,8 @@
                         <p class="mt-4"><strong>Nama Ekskul:</strong> {{ $ekskul->nama_ekskul ?? 'Belum ada' }}</p>
                         <p><strong>Nama Pembina:</strong> {{ $ekskul->pembina->user->nama ?? 'Belum ada' }}</p>
                         <p><strong>Nama Ketua:</strong> {{ $ekskul->ketua->user->nama ?? 'Belum ada' }}</p>
-                        <p><strong>Jumlah Anggota:</strong> {{ $ekskul->users->count() }}</p>
+                        <p><strong>Jumlah Anggota:</strong> {{ $ekskul->users->where('deleted', false)->count() }}</p>
+                        </p>
 
                         <div class="mt-6 flex justify-between">
                             <a href="{{ route('ekskul.show', $ekskul->slug) }}"

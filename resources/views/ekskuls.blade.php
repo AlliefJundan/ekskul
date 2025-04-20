@@ -15,7 +15,7 @@
                      <?php
                      $pembina = "{{ $ekskul->pembina->user->nama ?? 'Belum ada' }}";
                      $ketua = "{{ $ekskul->ketua->user->nama ?? 'Belum ada' }}";
-                     $ekskul->jml_anggota = $ekskul->users->count();
+                     $ekskul->jml_anggota = $ekskul->users->where('deleted', false)->count();
                      ?>
                      <div
                          class="relative bg-indigo-800 text-white w-[350px] min-w-[350px] rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-xl">

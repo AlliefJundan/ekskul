@@ -29,12 +29,12 @@ class DashboardController extends Controller
 
         if ($user->role == 'admin') {
             // Admin melihat semua ekskul
-            $ekskuls = Ekskul::all();
+            $ekskuls = Ekskul::all()->where('deleted', false);
         } else {
 
             $ekskulUser = EkskulUser::where('user_id', $user->id_user)->pluck('ekskul_id');
 
-            $ekskuls = Ekskul::whereIn('id_ekskul', $ekskulUser)->get();
+            $ekskuls = Ekskul::whereIn('id_ekskul', $ekskulUser)->where('deleted', false)->get();
         }
 
         return view('dashboard_admin', compact('ekskuls'));
@@ -53,5 +53,5 @@ class DashboardController extends Controller
         ])->get();
 
         return view('dashboard', compact('ekskuls'));
-        }
+    }
 }

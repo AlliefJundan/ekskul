@@ -73,6 +73,9 @@ class PendaftaranController extends Controller
         $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
         $pendaftaran = Pendaftaran::where('id_ekskul', $ekskul->id_ekskul)
             ->where('status', 'pending')
+            ->whereHas('user', function ($query) {
+                $query->where('deleted', false);
+            })
             ->with('user')
             ->get();
 

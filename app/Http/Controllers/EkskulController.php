@@ -23,20 +23,33 @@ class EkskulController extends Controller
 
     public function index()
     {
-        $ekskuls = Ekskul::all();
+        $ekskuls = Ekskul::all()->where('deleted', false);
         return view('home', compact('ekskuls'));
     }
 
     public function galeri()
     {
-        $ekskuls = Ekskul::all();
+        $ekskuls = Ekskul::all()->where("deleted", false);
         return view('ekskuls', compact('ekskuls'));
     }
 
     public function show(Request $request, $slug)
     {
         $ekskul = Ekskul::where('slug', $slug)
-            ->with(['pembina.user', 'ketua.user', 'sekertaris.user', 'bendahara.user'])
+            ->with([
+                'pembina.user' => function ($query) {
+                    $query->where('deleted', false);
+                },
+                'ketua.user' => function ($query) {
+                    $query->where('deleted', false);
+                },
+                'sekertaris.user' => function ($query) {
+                    $query->where('deleted', false);
+                },
+                'bendahara.user' => function ($query) {
+                    $query->where('deleted', false);
+                },
+            ])
             ->firstOrFail();
 
         $materi = Materi::where('id_ekskul', $ekskul->id_ekskul)
@@ -47,6 +60,7 @@ class EkskulController extends Controller
 
         $isNotAdmin = User::where('id_user', $user->id_user)
             ->where('role', '!=', 'admin')
+            ->where('deleted', false) // Pastikan user aktif
             ->exists();
 
         $jabatanUser = auth()->user()->ekskulUser()
@@ -54,15 +68,14 @@ class EkskulController extends Controller
             ->first()?->jabatan;
 
         $hasNullJabatan = EkskulUser::where('ekskul_id', $ekskul->id_ekskul)
-            ->where('user_id', $user->id_user)->whereNull('jabatan')
+            ->where('user_id', $user->id_user)
+            ->whereNull('jabatan')
             ->first();
 
         $tanpaJabatan = $isNotAdmin && $hasNullJabatan;
 
         return view('ekskul', compact('ekskul', 'materi', 'tanpaJabatan', 'user', 'jabatanUser'));
     }
-
-
 
     public function store(Request $request)
     {
@@ -106,28 +119,14 @@ class EkskulController extends Controller
 
     public function destroy($id)
     {
-
-        // Delete related rows in child tables
-        HasilKuis::where('id_ekskul', $id)->delete();
-        Kuis::where('id_ekskul', $id)->delete();
-        Materi::where('id_ekskul', $id)->delete();
-        Kegiatan::where('id_ekskul', $id)->delete();
-        Pendaftaran::where('id_ekskul', $id)->delete();
-        EkskulUser::where('ekskul_id', $id)->delete();
-        GambarEkskul::where('ekskul_id', $id)->delete();
-        $notifikasi = Notifikasi::where('id_ekskul', $id)->get();
-        foreach ($notifikasi as $notif) {
-            NotifikasiTarget::where('id_notifikasi', $notif->id_notifikasi)->delete();
-        }
-        Notifikasi::where('id_ekskul', $id)->delete();
-
-        $ekskul = Ekskul::findOrFail($id)->delete();
+        $ekskul = Ekskul::findOrFail($id);
 
 
-        // Finally, delete the parent row in the ekskul table
-
+        $ekskul->deleted = true;
+        $ekskul->save();
         return redirect()->route('dashboard_admin')->with('success', 'Ekskul berhasil dihapus!');
     }
+
 
     public function updateJumlahAnggota($id)
     {

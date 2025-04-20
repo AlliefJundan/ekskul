@@ -40,12 +40,12 @@ class AbsensiController extends Controller
                 ->orderBy('tanggal', 'desc')
                 ->get();
         }
-$count = [
-    'Hadir' => $absensi->where('kehadiran', 'hadir')->where('status', 'terverifikasi')->count(),
-    'Izin' => $absensi->where('kehadiran', 'izin')->where('status', 'terverifikasi')->count(),
-    'Sakit' => $absensi->where('kehadiran', 'sakit')->where('status', 'terverifikasi')->count(),
-    'Alfa' => $absensi->where('kehadiran', 'alpa')->where('status', 'terverifikasi')->count(),
-];
+        $count = [
+            'Hadir' => $absensi->where('kehadiran', 'hadir')->where('status', 'terverifikasi')->count(),
+            'Izin' => $absensi->where('kehadiran', 'izin')->where('status', 'terverifikasi')->count(),
+            'Sakit' => $absensi->where('kehadiran', 'sakit')->where('status', 'terverifikasi')->count(),
+            'Alfa' => $absensi->where('kehadiran', 'alpa')->where('status', 'terverifikasi')->count(),
+        ];
 
 
         $jumlahKegiatan = Kegiatan::where('id_ekskul', $ekskul->id_ekskul)->count();
@@ -186,7 +186,10 @@ $count = [
                 'description' => 'Hari ini ada kegiatan dari jam ' . $request->mulai . ' hingga ' . $request->berakhir,
             ]);
 
-            $users = EkskulUser::where('ekskul_id', $ekskul->id_ekskul)->pluck('user_id');
+            $users = EkskulUser::where('ekskul_id', $request->id_ekskul)
+                ->join('users', 'ekskul_user.user_id', '=', 'users.id_user')
+                ->where('users.deleted', false)
+                ->pluck('user_id');
             $id_notifikasi = Notifikasi::latest('id_notifikasi')->value('id_notifikasi');
 
             foreach ($users as $user_id) {

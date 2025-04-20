@@ -16,6 +16,7 @@ class AnggotaController extends Controller
     {
         $ekskul = Ekskul::where('slug', $slug)->firstOrFail();
         $anggota = $ekskul->users()
+            ->where('users.deleted', false) // Ambil hanya yang belum dihapus
             ->with(['kelas']) // Load relasi kelas langsung
             ->withPivot('jabatan')
             ->orderByRaw('CASE WHEN ekskul_user.jabatan IS NULL THEN 2 ELSE 1 END, ekskul_user.jabatan ASC')

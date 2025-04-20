@@ -15,6 +15,12 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
     {{-- font awesome --}}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+
+    {{-- Cropper.js --}}
+    <link href="https://unpkg.com/cropperjs/dist/cropper.min.css" rel="stylesheet" />
+    <script src="https://unpkg.com/cropperjs/dist/cropper.min.js"></script>
 
     <!-- Alpine.js -->
 
@@ -47,7 +53,7 @@
         @endif
 
         <main>
-            <div class="">
+            <div class="bg-gray-100">
                 {{ $slot }}
             </div>
         </main>

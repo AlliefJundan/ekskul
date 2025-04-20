@@ -6,7 +6,7 @@
             </div>
         </div>
         <h1 class="mb-8 text-4xl font-bold text-center">Materi ekskul
-            {{ $ekskul->slug }}{{ auth()->user()->ekskulUser->jabatan }}</h1>
+            {{ $ekskul->nama_ekskul }}</h1>
 
         <!-- Header Materi -->
         <div class="flex justify-between">

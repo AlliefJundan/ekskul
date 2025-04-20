@@ -41,7 +41,7 @@
                             <div x-data="{ editOpen: false }">
                                 <!-- Tombol Edit -->
                                 <button @click="editOpen = true"
-                                    class="block px-4 py-2 text-sl font-semibold w-full text-start text-red-700">
+                                    class="block px-4 py-2 text-sl font-semibold w-full text-start text-black">
                                     Edit
                                 </button>
 
@@ -69,14 +69,13 @@
                                                 <label for="nama_ekskul"
                                                     class="block text-sm font-medium text-gray-700">Nama Ekskul</label>
                                                 <input type="text" name="nama_ekskul" id="nama_ekskul"
-                                                    class="form-input mt-1 block w-full"
-                                                    value="{{ $ekskul->nama_ekskul }}" required>
+                                                    class="form-control" value="{{ $ekskul->nama_ekskul }}" required>
                                             </div>
 
                                             <div class="mb-3">
                                                 <label for="deskripsi"
                                                     class="block text-sm font-medium text-gray-700">Deskripsi</label>
-                                                <textarea name="deskripsi" id="deskripsi" class="form-input mt-1 block w-full" rows="3" required>{{ $ekskul->deskripsi }}</textarea>
+                                                <textarea name="deskripsi" id="deskripsi" class="form-control" rows="3" required>{{ $ekskul->deskripsi }}</textarea>
                                             </div>
 
                                             <div class="mb-3">
@@ -84,7 +83,7 @@
                                                     class="block text-sm font-medium text-gray-700">Gambar
                                                     Ekskul</label>
                                                 <input type="file" name="gambar" id="gambar"
-                                                    class="form-input mt-1 block w-full">
+                                                    class="form-control">
                                                 <small class="text-gray-500">Kosongkan jika tidak ingin mengubah
                                                     gambar.</small>
                                             </div>
