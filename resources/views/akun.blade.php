@@ -74,6 +74,7 @@
                                 <th class="p-2 text-center text-gray-800 border-gray-300">No</th>
                                 <th class="p-2 text-center text-gray-800 border-gray-300">Nama</th>
                                 <th class="p-2 text-center text-gray-800 border-gray-300">Username</th>
+                                <th class="p-2 text-center text-gray-800 border-gray-300">Kelas</th>
                                 <th class="p-2 text-center text-gray-800 border-gray-300">Role</th>
                                 <th class="p-2 text-center text-gray-800 border-gray-300">Foto</th>
                                 <th class="flex justify-center p-2 text-gray-800 border-gray-300">Aksi</th>
@@ -89,6 +90,11 @@
                                         {{ Str::limit($user->nama, '50', '...') }}</td>
                                     <td class="p-2 font-bold text-gray-800 border border-gray-300">
                                         {{ $user->username }}
+                                    </td>
+                                    <td class="p-2 font-bold text-gray-800 border border-gray-300">
+                                        {{ optional($user->kelas)->kelas ?? '-' }}
+                                        {{ optional($user->kelas)->jurusan ?? '-' }}
+                                        {{ optional($user->kelas)->nomor_kelas ?? '-' }}
                                     </td>
                                     <td class="p-2 font-bold text-gray-800 border border-gray-300">
                                         {{ $user->role }}
@@ -116,6 +122,15 @@
                                                 <div class="flex items-start">
                                                     <div class="w-1/3 font-semibold text-left">Username:</div>
                                                     <div class="w-2/3 text-left break-words">{{ $user->username }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="flex items-start">
+                                                    <div class="w-1/3 font-semibold text-left">Kelas:</div>
+                                                    <div class="w-2/3 text-left break-words">
+                                                        {{ optional($user->kelas)->kelas ?? '-' }}
+                                                        {{ optional($user->kelas)->jurusan ?? '-' }}
+                                                        {{ optional($user->kelas)->nomor_kelas ?? '-' }}
                                                     </div>
                                                 </div>
 
@@ -248,7 +263,10 @@
                                         <span class="font-semibold ">{{ $user->role }}</span>
                                     </div>
                                 </div>
-                                <p class="text-sm  font-semibold">{{ $user->username }}</p>
+                                <p class="text-sm  font-semibold">{{ $user->username }} --
+                                    {{ optional($user->kelas)->kelas ?? '-' }}
+                                    {{ optional($user->kelas)->jurusan ?? '-' }}
+                                    {{ optional($user->kelas)->nomor_kelas ?? '-' }}</p>
                                 <div class="mt-3 flex items-center justify-between">
                                     <x-image-modal :img-src="$user->foto
                                         ? asset('storage/' . $user->foto)
@@ -269,6 +287,15 @@
                                                 <div class="flex items-start">
                                                     <div class="w-1/3 font-semibold text-left">Username:</div>
                                                     <div class="w-2/3 text-left break-words">{{ $user->username }}
+                                                    </div>
+                                                </div>
+
+                                                <div class="flex items-start">
+                                                    <div class="w-1/3 font-semibold text-left">Kelas:</div>
+                                                    <div class="w-2/3 text-left break-words">
+                                                        {{ optional($user->kelas)->kelas ?? '-' }}
+                                                        {{ optional($user->kelas)->jurusan ?? '-' }}
+                                                        {{ optional($user->kelas)->nomor_kelas ?? '-' }}
                                                     </div>
                                                 </div>
 

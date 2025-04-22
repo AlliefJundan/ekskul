@@ -14,7 +14,7 @@
         <x-button1 href="{{ route('ekskul.show', $ekskul->slug) }}">Kembali</x-button1>
         <h1 class="mb-8 text-4xl font-bold text-center">Anggota Ekskul {{ $ekskul->nama_ekskul }}</h1>
 
-        @if ($isAdmin || $userJabatan <= 2)
+        @if ($isAdmin || $hasJabatan)
             <div class="flex justify-start gap-4 mb-4">
                 <x-button2 href="{{ route('pendaftaran.show', $ekskul->slug) }}"
                     class="bg-ekskul2 text-white px-4 py-2 rounded-md font-bold hover:bg-orange-600 transition">

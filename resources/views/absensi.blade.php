@@ -124,14 +124,17 @@
                             <p class="text-gray-300">Tanggal: {{ $absen->tanggal }}</p>
                             <p class="text-white">Kehadiran: {{ ucfirst($absen->kehadiran) }}</p>
                             <p class="text-gray-400">Status: {{ ucfirst($absen->status) }}</p>
-                            <form action="{{ route('absensi.verifikasi', $absen->id_absensi) }}" method="POST">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit"
-                                    class="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-md shadow-md hover:bg-green-800">
-                                    Verifikasi
-                                </button>
-                            </form>
+                            @if (auth()->user()->role === 'admin' ||
+                                    in_array(optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan, [1, 2, 3]))
+                                <form action="{{ route('absensi.verifikasi', $absen->id_absensi) }}" method="POST">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit"
+                                        class="mt-4 px-6 py-2 bg-green-600 text-white font-semibold rounded-md shadow-md hover:bg-green-800">
+                                        Verifikasi
+                                    </button>
+                                </form>
+                            @endif
                         </div>
                     @endif
                 @endforeach
@@ -161,15 +164,18 @@
                                     <td class="p-3">{{ ucfirst($absen->kehadiran) }}</td>
                                     <td class="p-3">{{ ucfirst($absen->status) }}</td>
                                     <td class="p-3">
-                                        <form action="{{ route('absensi.verifikasi', $absen->id_absensi) }}"
-                                            method="POST">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit"
-                                                class="px-4 py-2 text-white bg-green-600 rounded-md shadow-md hover:bg-green-800">
-                                                Verifikasi
-                                            </button>
-                                        </form>
+                                        @if (auth()->user()->role === 'admin' ||
+                                                in_array(optional(auth()->user()->ekskulUser->getCurrentEkskul($ekskul->id_ekskul))->jabatan, [1, 2, 3]))
+                                            <form action="{{ route('absensi.verifikasi', $absen->id_absensi) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit"
+                                                    class="px-4 py-2 text-white bg-green-600 rounded-md shadow-md hover:bg-green-800">
+                                                    Verifikasi
+                                                </button>
+                                            </form>
+                                        @endif
                                     </td>
                                 </tr>
                             @endif

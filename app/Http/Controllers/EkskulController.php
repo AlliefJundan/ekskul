@@ -96,6 +96,7 @@ class EkskulController extends Controller
 
         return redirect()->back()->with('success', 'Ekskul berhasil ditambahkan!');
     }
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -106,6 +107,7 @@ class EkskulController extends Controller
 
         $ekskul = Ekskul::findOrFail($id);
         $ekskul->nama_ekskul = $request->nama_ekskul;
+        $ekskul->slug = Str::slug($request->nama_ekskul);
         $ekskul->deskripsi = $request->deskripsi;
 
         if ($request->hasFile('gambar')) {
@@ -114,8 +116,11 @@ class EkskulController extends Controller
         }
 
         $ekskul->save();
-        return redirect()->back()->with('success', 'Ekskul berhasil diperbarui!');
+
+        // Redirect berdasarkan slug
+        return redirect()->route('ekskul.show', $ekskul->slug)->with('success', 'Ekskul berhasil diperbarui!');
     }
+
 
     public function destroy($id)
     {
