@@ -11,12 +11,7 @@
             <b>Halo! {{ Auth::user()->nama }}</b>
         @endif
 
-        @if (
-            !auth()->check() ||
-                (auth()->user()->role !== 'admin' &&
-                    (!optional(auth()->user()->ekskulUser) ||
-                        optional(auth()->user()->ekskulUser)->jabatan < 1 ||
-                        optional(auth()->user()->ekskulUser)->jabatan > 4)))
+        @if (!auth()->check() || auth()->user()->role !== 'admin')
             <div class="text-center mt-5">
                 <h2 class="text-2xl font-bold">AYO DAFTAR ESKUL BIAR</h2>
                 <h2 class="text-2xl font-bold">HIDUP KAMU GA NGEBOSENIN</h2>
@@ -25,7 +20,6 @@
                 </div>
             </div>
         @endif
-
 
         <!-- Tombol Tambah Ekskul -->
         <div x-data="{ modalTambah: false }">
